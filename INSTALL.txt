@@ -1,6 +1,6 @@
 $Id: $
 
-WebLucene Installation 
+NXLucene Installation 
 =======================
 
 Requierements 
@@ -22,14 +22,14 @@ Requierements
   - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
 
   - PyLucene >= 1.9rc1 : http://pylucene.osafoundation.org/ You don't
-    need to install it yourself. WebLucene will take care of this
+    need to install it yourself. NXLucene will take care of this
     deps.
 
   - elementtree and cElementTree >= 1.2.6-20050316
 
 Testing for developpers
 
-  When working from a WebLucene checkout, do an in-place build instead::
+  When working from a NXLucene checkout, do an in-place build instead::
 
     $ python setup.py build_ext -i
 
@@ -57,20 +57,20 @@ Installation
 
   Linux is currently the only supported platdform.
 
-  Uncompress the WebLucene archive :
+  Uncompress the NXLucene archive :
 
-    $ tar -xzf WebLucene-x.x-x.tgz
+    $ tar -xzf NXLucene-x.x-x.tgz
  
   In the resulting folder 
 
    $ python setup.py build
    $ sudo python setup.py install
 
-  This will install the core WebLucene libs within the site-packages
+  This will install the core NXLucene libs within the site-packages
   of the Python interpertor. They might be useful for Python third
   party apps.
 
-  You can now start the WebLucene server :
+  You can now start the NXLucene server :
 
-   $ cd WebLucene/bin
+   $ cd NXLucene/bin
    $ ./weblucenectl start

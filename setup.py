@@ -36,7 +36,7 @@ import zpkgsetup.setup
 VERSION = "0.0.1"
 
 context = zpkgsetup.setup.SetupContext(
-    "WebLucene", VERSION, __file__)
+    "NXLucene", VERSION, __file__)
 
 context.load_metadata(
     os.path.join(here,
