@@ -1,0 +1,21 @@
+#!/usr/bin/env python2.4
+
+import os
+import sys
+
+SCRIPT_NAME = os.path.abspath(__file__)
+INSTANCE_HOME = os.path.dirname(os.path.dirname(SCRIPT_NAME))
+SOFTWARE_HOME = os.path.join(INSTANCE_HOME, "src")
+
+if SOFTWARE_HOME not in sys.path:
+    sys.path.insert(0, SOFTWARE_HOME)
+
+os.environ['INSTANCE_HOME'] = INSTANCE_HOME
+os.environ['SOFTWARE_HOME'] = SOFTWARE_HOME
+
+CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "weblucene.conf")
+
+sys.argv[1:1] = ["-C", CONFIG_FILE]
+
+from weblucene.run import main
+main()

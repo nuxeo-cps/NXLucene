@@ -1,0 +1,76 @@
+$Id: $
+
+WebLucene Installation 
+=======================
+
+Requierements 
+
+  - Linux
+
+  - gcc 3.3.x on Linux installations appears to ship with gcj. If your
+  gcc installation does not include gcj, you need to upgrade it.  The
+  version of gcc currently recommended is gcc 3.4.4. See below for
+  instructions on how to build it.
+
+  - Python-2.4 or later
+  
+  - Zope Interfaces >= 3.0.1 (http://zope.org/Products/ZopeInterface) - if
+  you have ZopeX3 (at least version 3.0.0c1) installed that should
+  work too.
+
+  
+  - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
+
+  - PyLucene >= 1.9rc1 : http://pylucene.osafoundation.org/ You don't
+    need to install it yourself. WebLucene will take care of this
+    deps.
+
+  - elementtree and cElementTree >= 1.2.6-20050316
+
+Testing for developpers
+
+  When working from a WebLucene checkout, do an in-place build instead::
+
+    $ python setup.py build_ext -i
+
+  followed by::
+
+    $ ./test -vk -s weblucene
+
+  The test runner is a zope.testing runner. Use --help for all
+  available options.
+
+  This command will run all the tests, printing a single dot for each
+  test.  When it finishes, it will print a test summary.  The exact
+  number of tests can vary depending on platform and available
+  third-party libraries.::
+
+    Running tests from src
+    Running tests at level 1
+    Running unit tests:
+      Running:
+        ..................................................
+        .
+      Ran 51 tests with 0 failures and 0 errors in 14.796 seconds.
+
+Installation
+
+  Linux is currently the only supported platdform.
+
+  Uncompress the WebLucene archive :
+
+    $ tar -xzf WebLucene-x.x-x.tgz
+ 
+  In the resulting folder 
+
+   $ python setup.py build
+   $ sudo python setup.py install
+
+  This will install the core WebLucene libs within the site-packages
+  of the Python interpertor. They might be useful for Python third
+  party apps.
+
+  You can now start the WebLucene server :
+
+   $ cd WebLucene/bin
+   $ ./weblucenectl start
