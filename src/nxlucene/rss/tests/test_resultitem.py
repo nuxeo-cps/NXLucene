@@ -26,12 +26,12 @@ try:
 except ImportError:
     import elementtree.ElementTree as etree
 
-from weblucene.rss.resultitem import ResultItem
+from nxlucene.rss.resultitem import ResultItem
 
 class ResultItemTestCase(unittest.TestCase):
 
     def test_interface(self):
-        from weblucene.rss.interfaces import IResultItem
+        from nxlucene.rss.interfaces import IResultItem
         from zope.interface.verify import verifyClass
         self.assert_(verifyClass(IResultItem, ResultItem))
 
@@ -41,13 +41,13 @@ class ResultItemTestCase(unittest.TestCase):
         xml = etree.tostring(elt)
         self.assertEqual(
             xml,
-            """<ns0:item xmlns:ns0="http://backend.userland.com/rss2"><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/weblucene/" /></ns0:item>""")
+            """<ns0:item xmlns:ns0="http://backend.userland.com/rss2"><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/" /></ns0:item>""")
 
     def test_getElement_with_prop(self):
         ri = ResultItem()
         elt = ri.getElement('1', {'name':'Anguenot', 'givenName':'Julien'})
         xml = etree.tostring(elt)
-        self.assertEqual(xml, """<ns0:item xmlns:ns0="http://backend.userland.com/rss2"><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/weblucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item>""")
+        self.assertEqual(xml, """<ns0:item xmlns:ns0="http://backend.userland.com/rss2"><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item>""")
 
 def test_suite():
     suite = unittest.TestSuite()

@@ -26,9 +26,9 @@ except ImportError:
 
 import zope.interface
 
-from weblucene.rss.interfaces import IResultItem
-from weblucene.rss import RSSElement
-from weblucene.rss import WebLuceneElement
+from nxlucene.rss.interfaces import IResultItem
+from nxlucene.rss import RSSElement
+from nxlucene.rss import NXLuceneElement
 
 class ResultItem(object):
     """RSS Result item 
@@ -48,9 +48,9 @@ class ResultItem(object):
         elt.append(iguid)
 
         # fields
-        ifields = WebLuceneElement('fields')
+        ifields = NXLuceneElement('fields')
         for k, v in fields_map.items():
-            ielt = WebLuceneElement('field')
+            ielt = NXLuceneElement('field')
             ielt.attrib['id'] = k
             ielt.text = v
             ifields.append(ielt)

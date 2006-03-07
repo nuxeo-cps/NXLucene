@@ -26,13 +26,13 @@ try:
 except ImportError:
     import elementtree.ElementTree as etree
 
-from weblucene.rss.resultset import ResultSet
-from weblucene.rss.adapter import PythonResultSet
+from nxlucene.rss.resultset import ResultSet
+from nxlucene.rss.adapter import PythonResultSet
 
 class ResultSetTestCase(unittest.TestCase):
 
     def test_interface(self):
-        from weblucene.rss.interfaces import IResultSet
+        from nxlucene.rss.interfaces import IResultSet
         from zope.interface.verify import verifyClass
         self.assert_(verifyClass(IResultSet, ResultSet))
 
@@ -46,12 +46,12 @@ class ResultSetTestCase(unittest.TestCase):
         rs = ResultSet()
         rs.addItem('1', {'name' : 'Anguenot', 'givenName' : 'Julien'})
         xml = etree.tostring(rs._doc)
-        self.assertEqual(xml, """<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/weblucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
+        self.assertEqual(xml, """<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
 
     def test_getStream_base(self):
         rs = ResultSet()
         rs.addItem('1', {'name' : 'Anguenot', 'givenName' : 'Julien'})
-        self.assertEqual(rs.getStream(), """<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/weblucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
+        self.assertEqual(rs.getStream(), """<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
 
     def test_adapter(self):
         rs = ResultSet()

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""WebLucene runner
+"""NXLucene configuration. 
 
 $Id$
 """
@@ -25,7 +25,7 @@ try:
 except ImportError:
     import elementtree.ElementTree as etree
 
-NS = 'http://namespaces.nuxeo.org/weblucene'
+NS = 'http://namespaces.nuxeo.org/nxlucene'
 
 class WebLuceneConfiguration(object):
     """WebLucene configuration
@@ -37,33 +37,33 @@ class WebLuceneConfiguration(object):
         self._conf = etree.XML(conf)
 
     def getPort(self):
-        port = self._conf.find('{http://namespaces.nuxeo.org/weblucene}port')
+        port = self._conf.find('{%s}port' % NS)
         return int(port.text.strip())
 
     def getStoreDirPath(self):
         store_dir_path = self._conf.find(
-            '{http://namespaces.nuxeo.org/weblucene}store_dir').text.strip()
+            '{%s}store_dir' % NS).text.strip()
         if not store_dir_path.startswith('/'):
             return os.environ.get('INSTANCE_HOME') + '/var/' + store_dir_path
         return store_dir_path
 
     def getThreadsNumber(self):
         threads = self._conf.find(
-            '{http://namespaces.nuxeo.org/weblucene}threads')
+            '{%s}threads' % NS)
         return int(threads.text.strip())
 
     def getLogLevel(self):
         logs = self._conf.find(
-            '{http://namespaces.nuxeo.org/weblucene}logs')
+            '{%s}logs' % NS)
         loglevel = logs.find(
-            '{http://namespaces.nuxeo.org/weblucene}level')
+            '{%s}level' % NS)
         return loglevel.text.strip()
 
     def getLogFile(self):
         logs = self._conf.find(
-            '{http://namespaces.nuxeo.org/weblucene}logs')
+            '{%s}logs' % NS)
         logfile = logs.find(
-            '{http://namespaces.nuxeo.org/weblucene}file')
+            '{%s}file' % NS)
         logfilepath = logfile.text.strip()
         if not logfilepath.startswith('/'):
             return os.environ.get('INSTANCE_HOME') + '/log/' + logfilepath

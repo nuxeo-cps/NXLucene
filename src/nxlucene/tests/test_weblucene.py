@@ -24,7 +24,7 @@ from zope.testing.doctest import DocFileTest
 
 def test_suite():
     return unittest.TestSuite((
-        DocFileTest('README.txt', package="weblucene"),
+        DocFileTest('README.txt', package="nxlucene"),
         ))
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 # See http://hathawaymix.org/Weblog/2004-12-30
 # Changing the LD_LIBRARY_PATH once Python is loaded is ignored
-export LD_LIBRARY_PATH='../src/weblucene/PyLucene/gcj/'
+export LD_LIBRARY_PATH='../src/nxlucene/PyLucene/gcj/'
 
-exec ./runweblucene "$*"
+exec ./runnxlucene "$*"
 

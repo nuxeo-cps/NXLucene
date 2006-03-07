@@ -30,9 +30,9 @@ import PyLucene
 
 import zope.interface
 
-from weblucene.server import LuceneServer
-from weblucene.rss.adapter import PythonResultSet
-from weblucene.rss.resultset import ResultSet
+from nxlucene.server import LuceneServer
+from nxlucene.rss.adapter import PythonResultSet
+from nxlucene.rss.resultset import ResultSet
 
 class P(object):
     zope.interface.implements(zope.interface.Interface)
@@ -56,7 +56,7 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
-        from weblucene.interfaces import ILuceneServer
+        from nxlucene.interfaces import ILuceneServer
         self.assert_(verifyClass(ILuceneServer, LuceneServer))
 
     def test_optimize(self):

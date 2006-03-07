@@ -22,8 +22,8 @@ $Id$
 
 import unittest
 
-from weblucene.rss.resultset import ResultSet
-from weblucene.rss.adapter import PythonResultSet
+from nxlucene.rss.resultset import ResultSet
+from nxlucene.rss.adapter import PythonResultSet
 
 class PythonResultSetTestCase(unittest.TestCase):
 

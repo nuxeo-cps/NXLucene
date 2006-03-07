@@ -28,10 +28,10 @@ except ImportError:
 
 import zope.interface
 
-from weblucene.rss import RSSElement
+from nxlucene.rss import RSSElement
 
-from weblucene.rss.interfaces import IResultSet
-from weblucene.rss.resultitem import ResultItem
+from nxlucene.rss.interfaces import IResultSet
+from nxlucene.rss.resultitem import ResultItem
 
 class ResultSet(object):
     """RSS result set

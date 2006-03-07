@@ -24,7 +24,7 @@ import unittest
 
 import PyLucene
 
-from weblucene.indexer import LuceneIndexer
+from nxlucene.indexer import LuceneIndexer
 
 class LuceneIndexerTestCase(unittest.TestCase):
 

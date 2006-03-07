@@ -13,9 +13,9 @@ if SOFTWARE_HOME not in sys.path:
 os.environ['INSTANCE_HOME'] = INSTANCE_HOME
 os.environ['SOFTWARE_HOME'] = SOFTWARE_HOME
 
-CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "weblucene.conf")
+CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "nxlucene.conf")
 
 sys.argv[1:1] = ["-C", CONFIG_FILE]
 
-from weblucene.run import main
+from nxlucene.run import main
 main()

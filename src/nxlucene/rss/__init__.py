@@ -28,6 +28,6 @@ def RSSElement(tag):
     return etree.Element(
         "{http://backend.userland.com/rss2}" + tag)
 
-def WebLuceneElement(tag):
+def NXLuceneElement(tag):
     return etree.Element(
-        "{http://namespaces.nuxeo.org/weblucene/}" + tag)
+        "{http://namespaces.nuxeo.org/nxlucene/}" + tag)

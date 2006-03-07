@@ -33,10 +33,10 @@ from twisted.web import server
 
 import zope.interface
 
-from weblucene.xmlrpc import XMLRPCLuceneServer
-from weblucene.server import LuceneServer
-from weblucene.rss.resultset import ResultSet
-from weblucene.rss.adapter import PythonResultSet
+from nxlucene.xmlrpc import XMLRPCLuceneServer
+from nxlucene.server import LuceneServer
+from nxlucene.rss.resultset import ResultSet
+from nxlucene.rss.adapter import PythonResultSet
 
 class P(object):
     zope.interface.implements(zope.interface.Interface)
@@ -67,7 +67,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
-        from weblucene.interfaces import IXMLRPCLuceneServer
+        from nxlucene.interfaces import IXMLRPCLuceneServer
         self.assert_(verifyClass(IXMLRPCLuceneServer, XMLRPCLuceneServer))
 
     def test_adapter(self):

@@ -26,8 +26,8 @@ except ImportError:
 
 import zope.interface
 
-from weblucene.rss.interfaces import IResultSet
-from weblucene.rss.interfaces import IPythonResultSet
+from nxlucene.rss.interfaces import IResultSet
+from nxlucene.rss.interfaces import IPythonResultSet
 
 class PythonResultSet(object):
     """Transform a IResultSet to IPythonResultSet
@@ -56,7 +56,7 @@ class PythonResultSet(object):
 
     def _getFieldsFor(self, fields_node):
         return fields_node.getiterator(
-            "{http://namespaces.nuxeo.org/weblucene/}field")
+            "{http://namespaces.nuxeo.org/nxlucene/}field")
 
     def _getUidFor(self, item_node):
         return item_node.find(
