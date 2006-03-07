@@ -157,12 +157,12 @@ class LuceneServer(object):
 
     def _unindexob(self, uid, lock=True):
 
-        if lock:
-            self.write_lock.acquire()
-
         reader = self._getReader()
         if reader is None:
             return False
+
+        if lock:
+            self.write_lock.acquire()
 
         ireader = reader.get()
 
@@ -249,6 +249,8 @@ class LuceneServer(object):
         return LuceneSearcher(self.store_dir)
 
     def _getReader(self):
+        if not os.path.exists(self.store_dir):
+            return None
         try:
             reader = LuceneReader(self.store_dir)
         except PyLucene.JavaError:
