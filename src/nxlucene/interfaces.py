@@ -104,6 +104,10 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         """Return the amount of document within the indexes store.
         """
 
+    def xmlrpc_hasUID(uid):
+        """Has the store a document having this UID ?
+        """
+
 class ILuceneServer(zope.interface.Interface):
     """Lucene server interface
 

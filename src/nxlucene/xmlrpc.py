@@ -87,6 +87,9 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core.log.info("search results is empty")
         return rss.resultset.ResultSet().getStream()
 
+    def xmlrpc_hasUID(self, uid):
+        return self._core.getDocumentByUID(uid) is not None
+
     def xmlrpc_clean(self):
         return self._core.clean()
 
