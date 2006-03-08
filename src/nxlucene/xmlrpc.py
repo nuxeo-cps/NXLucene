@@ -31,10 +31,11 @@ from stream import XMLQueryInputStream
 class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     """Lucene XML-RPC server
 
-    See ILuceeneXMLRPCServer for exaustive comments
+    See ILuceeneXMLRPCServer for more exaustive comments
     """
 
     zope.interface.implements(IXMLRPCLuceneServer)
+
     __user_for__ = ILuceneServer
 
     def __init__(self, core):
@@ -42,47 +43,41 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         assert (core is not None)
         self._core = core
 
-    # XXX implementation is here only for testing purpose. The stream
-    # must be passed as arguments to the internal API so that it can
-    # extract and use the additional information (i.e : field type,...)
-    
-    def xmlrpc_indexob(self, uid, xml_stream=''):
-        self._core.log.info("xmlrpc_indexob : requested "
-                             "uid=%s, xml_stream=%s" % (uid, xml_stream))
-        # XXX return an error code
-        if xml_stream:
-            istream = XMLInputStream(xml_stream)
+    def xmlrpc_indexDocument(self, uid, xml_query=''):
+        self._core.log.info("xmlrpc_indexDocument : requested "
+                             "uid=%s, xml_query=%s" % (uid, xml_query))
+        if xml_query:
+            istream = XMLInputStream(xml_query)
             attributs = istream.getAttributNames()
             self._core._indexob(uid, istream, attributs)
             return True
         else:
             return False
 
-    def xmlrpc_reindexob(self, uid, xml_stream=''):
+    def xmlrpc_reindexDocument(self, uid, xml_query=''):
         self._core.log.info("xmlrpc_reindexob : requested "
-                             "uid=%s, xml_stream=%s" % (uid, xml_stream))
-        # XXX return an error code
-        if xml_stream:
+                             "uid=%s, xml_query=%s" % (uid, xml_query))
+        if xml_query:
             # XXX temporarly way of handling this.
-            istream = XMLInputStream(xml_stream)
+            istream = XMLInputStream(xml_query)
             attributs = istream.getAttributNames()
             self._core._reindexob(uid, istream, attributs)
             return True
         else:
             return False
 
-    def xmlrpc_unindexob(self, uid):
+    def xmlrpc_unindexDocument(self, uid):
         self._core.log.info("xmlrpc_unindexob : requested " "uid=%s" % uid)
         # XXX handle error message
         # java.lang.ArrayIndexOutOfBoundsException ?
         self._core._unindexob(uid)
         return True
 
-    def xmlrpc_search(self, xml_stream=''):
-        self._core.log.info("xmlrpc_search : requested " "xml_stream=%s" %
-                             xml_stream)
-        if xml_stream:
-            istream = XMLQueryInputStream(xml_stream)
+    def xmlrpc_searchQuery(self, xml_query=''):
+        self._core.log.info("xmlrpc_search : requested " "xml_query=%s" %
+                             xml_query)
+        if xml_query:
+            istream = XMLQueryInputStream(xml_query)
             # XXX istream.getAnalyzer()
             rss = self._core._search(
                 istream.getReturnFields(), istream.getKwargs())
@@ -95,9 +90,6 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_clean(self):
         return self._core.clean()
 
-    def xmlrpc_debug(self, msg):
-        return msg
-
     def xmlrpc_getStoreDir(self):
         return self._core.store_dir
 
@@ -107,3 +99,6 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
 
     def xmlrpc_getDocumentNumber(self):
         return len(self._core)
+
+    def xmlrpc_debug(self, msg):
+        return msg

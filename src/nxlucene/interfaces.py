@@ -1,75 +1,39 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""WebLucene interfaces
+"""NXLucene interfaces
 
 $Id$
 """
 
 import zope.interface
 
-class ILuceneServer(zope.interface.Interface):
-    """Lucene server interface
-
-    This is the core lucene server definition.
-    """
-
-    store_dir = zope.interface.Attribute(
-        u"Directory where the lucene indexes are stored",
-        )
-    
-    port = zope.interface.Attribute(
-        u"Port on which the server is listening"
-        )
-
-    def optimize(indexer=None):
-        """Optimze the lucene indexes store
-
-        `indexer` : PyLucene.IndexWriter instance
-
-        If `indexer` is not given as a parameter the internals of this
-        function will create and close one to realize the
-        optimization.
-        """
-
-    def clean():
-        """Clean the whole indexes store.
-
-        This method will remove *all* the documents stored within the
-        store.
-        """
-
-    def __len__():
-        """Return the amount of documents within the store.
-        """
-
 class IXMLRPCLuceneServer(zope.interface.Interface):
     """XML-RPC Lucene Server interface
 
-    XXX This interface is really not final. Some signature need to be
-    changed.
+    This is used as an adapter to ILuceneServer instance.
     """
 
-    def xmlrpc_indexob(uid, xml_stream=''):
-        """Index a Python object.
+    def xmlrpc_indexDocument(uid, xml_query=''):
+        """Index a document
 
-        `uid` is the key for this object.
+        `uid` is the key for this document.
 
-        `xml_stream` is an xml stream containing the list of indexes,
-                     values and types for a given object,
+        `xml_query` is an xml query containing the list of fields,
+                    to index the document with and their properties.
 
         <doc>
           <fields>
@@ -80,13 +44,14 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         </doc>
         """
 
-    def xmlrpc_reindexob(uid, xml_stream=''):
-        """Reindex a Python object
+    def xmlrpc_reindexDocument(uid, xml_query=''):
+        """Reindex a document
 
-        `uid` is the key for this object
+        `uid` is the key for this document.
 
-        `xml_stream` is an xml stream containing the list of indexes,
-                     values and types for a given object,
+        `xml_query` is an xml query containing the list of fields to
+        reindex and their properties.
+
          <doc>
           <fields>
             <field id="name" attribute="name" type="text">
@@ -96,18 +61,20 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         </doc>
         """
 
-    def xmlrpc_unindexob(uid):
-        """Unindex a Python object given its uid
+    def xmlrpc_unindexDocument(uid):
+        """Unindex a document given its uid.
         """
 
     def xmlrpc_clean():
-        """Clear the whole indexes
+        """Clear the whole indexes.
+
+        This method removve *all* the indexes and documents from the store.
         """
 
-    def xmlrpc_search(xml_stream=''):
+    def xmlrpc_searchQuery(xml_query=''):
         """Searching.
 
-        `xml_stream` should look like this :
+        `xml_query` should look like this :
 
         <search>
           <analyzer>standard</analyzer>
@@ -135,6 +102,41 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
 
     def xmlrpc_getDocumentNumber():
         """Return the amount of document within the indexes store.
+        """
+
+class ILuceneServer(zope.interface.Interface):
+    """Lucene server interface
+
+    This is the core lucene server definition.
+    """
+
+    store_dir = zope.interface.Attribute(
+        u"Directory where the lucene indexes are stored",
+        )
+
+    port = zope.interface.Attribute(
+        u"Port on which the server is listening"
+        )
+
+    def optimize(indexer=None):
+        """Optimze the lucene indexes store
+
+        `indexer` : PyLucene.IndexWriter instance
+
+        If `indexer` is not given as a parameter the internals of this
+        function will create and close one to realize the
+        optimization.
+        """
+
+    def clean():
+        """Clean the whole indexes store.
+
+        This method will remove *all* the documents stored within the
+        store.
+        """
+
+    def __len__():
+        """Return the amount of documents within the store.
         """
 
 class ILuceneIndexer(zope.interface.Interface):

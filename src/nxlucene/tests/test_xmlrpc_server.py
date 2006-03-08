@@ -134,7 +134,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
         
-        defer = self._client.callRemote('indexob', '1', stream)
+        defer = self._client.callRemote('indexDocument', '1', stream)
         defer.addCallbacks(self._callback, self._errback)
         
         reactor.callLater(1, reactor.crash)
@@ -151,7 +151,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        defer = self._client.callRemote('indexob', '2', stream)
+        defer = self._client.callRemote('indexDocument', '2', stream)
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(0.1, reactor.crash)
@@ -180,7 +180,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
         
-        defer = self._client.callRemote('reindexob', '1', stream)
+        defer = self._client.callRemote('reindexDocument', '1', stream)
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
@@ -197,7 +197,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
         
-        defer = self._client.callRemote('reindexob', '2', stream)
+        defer = self._client.callRemote('reindexDocument', '2', stream)
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
@@ -216,7 +216,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         self._client = None
         self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
 
-        defer = self._client.callRemote('unindexob', '1')
+        defer = self._client.callRemote('unindexDocument', '1')
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
@@ -224,7 +224,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
         self.assertEqual(self.logs, [True])
         
-        defer = self._client.callRemote('unindexob', '2')
+        defer = self._client.callRemote('unindexDocument', '2')
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
@@ -258,7 +258,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
         self.logs = []
 
-        defer = self._client.callRemote('search', stream)
+        defer = self._client.callRemote('searchQuery', stream)
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
@@ -292,7 +292,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
         self.logs = []
 
-        defer = self._client.callRemote('search', stream)
+        defer = self._client.callRemote('searchQuery', stream)
         defer.addCallbacks(self._callback, self._errback)
 
         reactor.callLater(1, reactor.crash)
