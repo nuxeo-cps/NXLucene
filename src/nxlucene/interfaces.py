@@ -100,7 +100,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         """Optmize the index store.
         """
 
-    def xmlrpc_getDocumentNumber():
+    def xmlrpc_getNumberOfDocuments():
         """Return the amount of document within the indexes store.
         """
 

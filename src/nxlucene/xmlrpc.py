@@ -97,7 +97,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core.optimize()
         return True
 
-    def xmlrpc_getDocumentNumber(self):
+    def xmlrpc_getNumberOfDocuments(self):
         return len(self._core)
 
     def xmlrpc_debug(self, msg):
