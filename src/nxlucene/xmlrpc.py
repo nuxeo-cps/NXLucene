@@ -49,7 +49,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         if xml_query:
             istream = XMLInputStream(xml_query)
             attributs = istream.getAttributNames()
-            self._core._indexob(uid, istream, attributs)
+            self._core.indexDocument(uid, istream, attributs)
             return True
         else:
             return False
@@ -61,7 +61,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
             # XXX temporarly way of handling this.
             istream = XMLInputStream(xml_query)
             attributs = istream.getAttributNames()
-            self._core._reindexob(uid, istream, attributs)
+            self._core.reindexDocument(uid, istream, attributs)
             return True
         else:
             return False
@@ -70,7 +70,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core.log.info("xmlrpc_unindexob : requested " "uid=%s" % uid)
         # XXX handle error message
         # java.lang.ArrayIndexOutOfBoundsException ?
-        self._core._unindexob(uid)
+        self._core.unindexDocument(uid)
         return True
 
     def xmlrpc_searchQuery(self, xml_query=''):
@@ -79,7 +79,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         if xml_query:
             istream = XMLQueryInputStream(xml_query)
             # XXX istream.getAnalyzer()
-            rss = self._core._search(
+            rss = self._core.searchQuery(
                 istream.getReturnFields(), istream.getKwargs())
             self._core.log.info("search results %s" %rss)
             return rss

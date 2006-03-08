@@ -30,7 +30,7 @@ import PyLucene
 
 import zope.interface
 
-from nxlucene.server import LuceneServer
+from nxlucene.core import LuceneServer
 from nxlucene.rss.adapter import PythonResultSet
 from nxlucene.rss.resultset import ResultSet
 
@@ -64,8 +64,8 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def _indexObjects(self):
         self.assertEqual(len(self._server), 0)
-        self._server._indexob(1, self._o1, attributs=('name',))
-        self._server._indexob(2, self._o2, attributs=('name',))
+        self._server.indexDocument(1, self._o1, attributs=('name',))
+        self._server.indexDocument(2, self._o2, attributs=('name',))
         self.assertEqual(len(self._server), 2)
 
     def test_clean(self):
@@ -83,42 +83,42 @@ class LuceneServerTestCase(unittest.TestCase):
         self._indexObjects()
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on uid (with return fields)
-        res = self._server._search(return_fields=('name',), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=('name',), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1', u'name':u'foo'},))
  
         # Search o1 on name (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'foo'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'foo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on name (with return fields)
-        res = self._server._search(return_fields=('name',), kws={u'name':u'foo'})
+        res = self._server.searchQuery(return_fields=('name',), kws={u'name':u'foo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1', u'name':u'foo'},))
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'2'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'2'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Search o2 on uid (with return fields)
-        res = self._server._search(return_fields=('name',), kws={u'uid':u'2'})
+        res = self._server.searchQuery(return_fields=('name',), kws={u'uid':u'2'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2', u'name':u'bar'},))
  
         # Search o2 on name (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'bar'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'bar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Search o2 on name (with return fields)
-        res = self._server._search(return_fields=('name',), kws={u'name':u'bar'})
+        res = self._server.searchQuery(return_fields=('name',), kws={u'name':u'bar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2', u'name':u'bar'},))
 
@@ -127,29 +127,29 @@ class LuceneServerTestCase(unittest.TestCase):
         self._indexObjects()
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'2'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'2'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Unindex o1
-        self._server._unindexob(1)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        self._server.unindexDocument(1)
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'2'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'2'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Unindex o1
-        self._server._unindexob(2)
-        res = self._server._search(return_fields=(), kws={u'uid':u'2'})
+        self._server.unindexDocument(2)
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'2'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
@@ -158,56 +158,56 @@ class LuceneServerTestCase(unittest.TestCase):
         self._indexObjects()
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'foo'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'foo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'bar'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'bar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Reindex o1 with a new name
         self._o1.name = 'newfoo'
-        self._server._reindexob(1, self._o1, attributs=('name',))
+        self._server.reindexDocument(1, self._o1, attributs=('name',))
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=('name',),
+        res = self._server.searchQuery(return_fields=('name',),
                                    kws={u'name':u'foo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'newfoo'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'newfoo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'bar'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'bar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Reindex o2 with a new name
         self._o2.name = 'newbar'
-        self._server._reindexob(2, self._o2, attributs=('name',))
+        self._server.reindexDocument(2, self._o2, attributs=('name',))
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'foo'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'foo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'newfoo'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'newfoo'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'bar'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'bar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'name':u'newbar'})
+        res = self._server.searchQuery(return_fields=(), kws={u'name':u'newbar'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'2'},))
 
@@ -216,24 +216,24 @@ class LuceneServerTestCase(unittest.TestCase):
         self._indexObjects()
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'1'},))
 
         self._server.clean()
 
         # Search o1 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
         # Search o2 on uid (no return fields)
-        res = self._server._search(return_fields=(), kws={u'uid':u'1'})
+        res = self._server.searchQuery(return_fields=(), kws={u'uid':u'1'})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ())
 
@@ -246,31 +246,31 @@ class LuceneServerTestCase(unittest.TestCase):
         uid2 = '/portal/foo/foo'
 
         # Index me
-        self._server._indexob(uid1, self._o1, attributs=('name',))
+        self._server.indexDocument(uid1, self._o1, attributs=('name',))
         self.assertEqual(len(self._server), 1)
 
         # Index me
-        self._server._indexob(uid2, self._o2, attributs=('name',))
+        self._server.indexDocument(uid2, self._o2, attributs=('name',))
         self.assertEqual(len(self._server), 2)
 
         # Search me
-        res = self._server._search(kws={unicode('uid') : uid1})
+        res = self._server.searchQuery(kws={unicode('uid') : uid1})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'/portal/foo/bar'},))
 
-        res = self._server._search(kws={unicode('uid') : uid2})
+        res = self._server.searchQuery(kws={unicode('uid') : uid2})
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'/portal/foo/foo'},))
 
         # reIndex me
-        self._server._reindexob(uid1, self._o1, attributs=('name',))
+        self._server.reindexDocument(uid1, self._o1, attributs=('name',))
         self.assertEqual(len(self._server), 2)
 
         # unindex
-        self._server._unindexob(uid1)
+        self._server.unindexDocument(uid1)
         self.assertEqual(len(self._server), 1)
         
-        self._server._unindexob(uid2)
+        self._server.unindexDocument(uid2)
         self.assertEqual(len(self._server), 0)
 
 class LuceneServerMultiThreadTestCase(unittest.TestCase):
@@ -283,8 +283,8 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
     def _indexObjects(self):
 
-        self._server._indexob(1, P('foo'), attributs=('name',))
-        self._server._indexob(2, P('bar'), attributs=('name',))
+        self._server.indexDocument(1, P('foo'), attributs=('name',))
+        self._server.indexDocument(2, P('bar'), attributs=('name',))
 
         self.lock.acquire()
         self.counter += 1

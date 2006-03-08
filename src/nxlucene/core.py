@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""WebLucene XMLRPC server
+"""NXLucene core server definition.
 
 $Id$
 """
@@ -23,10 +23,8 @@ import os
 import threading
 import logging
 import PyLucene
-import time
 
 import zope.interface
-
 from interfaces import ILuceneServer
 
 from indexer import LuceneIndexer
@@ -35,10 +33,8 @@ from searcher import LuceneSearcher
 
 import rss.resultset
 
-MAX_SEARCH = 100
-
 class LuceneServer(object):
-    """Lucene server
+    """Lucene server.
     """
 
     zope.interface.implements(ILuceneServer)
@@ -46,19 +42,44 @@ class LuceneServer(object):
     def __init__(self, store_dir):
         self.store_dir = store_dir
         self.write_lock = threading.Lock()
-        self.search_sema = threading.BoundedSemaphore(MAX_SEARCH)
         self.log = logging.getLogger("LuceneServer")
 
     def __len__(self):
-        reader = self._getReader()
+        reader = self.getReader()
         if reader is None:
             return 0
         return reader.get().numDocs()
 
-    def _getDocumentByUID(self, uid):
-        # Return a document instance given an UID
+    def getStore(self, creation=False):
+        if not os.path.exists(self.store_dir):
+            creation = True
+        return PyLucene.FSDirectory.getDirectory(self.store_dir, creation)
+
+    def getIndexer(self):
+        creation = False
+        if not os.path.exists(self.store_dir):
+            creation = True
+        analyzer = PyLucene.StandardAnalyzer()
+        return LuceneIndexer(self.store_dir, creation, analyzer)
+
+    def getSearcher(self):
+        if not os.path.exists(self.store_dir):
+            return None
+        return LuceneSearcher(self.store_dir)
+
+    def getReader(self):
+        if not os.path.exists(self.store_dir):
+            return None
+        try:
+            reader = LuceneReader(self.store_dir)
+        except PyLucene.JavaError:
+            # Store is not initialized yet.
+            reader = None
+        return reader
+
+    def getDocumentByUID(self, uid):
         res = None
-        searcher = self._getSearcher()
+        searcher = self.getSearcher()
         if searcher is None:
             return res
         query = PyLucene.TermQuery(PyLucene.Term('uid', unicode(uid)))
@@ -76,15 +97,10 @@ class LuceneServer(object):
         self.log.debug("Optimize indexes store")
         close = False
         if indexer is None:
-            indexer = self._getIndexer().get()
+            indexer = self.getIndexer().get()
             close = True
         self.write_lock.acquire()
         indexer.optimize()
-        # XXX implement this properly.
-        #ticker = Ticker()
-        #threading.Thread(target=ticker.run).start()
-        #writer.optimize()
-        #ticker.tick = False
         if close:
             indexer.close()
         self.write_lock.release()
@@ -102,12 +118,12 @@ class LuceneServer(object):
         self.log.info("Indexes Store has been cleaned up")
         return True
 
-    def _indexob(self, uid, ob, attributs=()):
+    def indexDocument(self, uid, ob, attributs=()):
 
         self.write_lock.acquire()
 
         # Check if we got an existing document given this UID.
-        doc = self._getDocumentByUID(uid)
+        doc = self.getDocumentByUID(uid)
         delete_existing = doc and True or False
 
         # In case we need to update we'll have to take care of the
@@ -144,10 +160,10 @@ class LuceneServer(object):
         # http://wiki.apache.org/jakarta
         # -lucene/LuceneFAQ#head-917dd4fc904aa20a34ebd23eb321125bdca1dea2
         if delete_existing:
-            self._unindexob(uid, lock=False)
+            self.unindexDocument(uid, lock=False)
 
         # Merge indexes
-        indexer = self._getIndexer()
+        indexer = self.getIndexer()
         writer = indexer.get()
         writer.addDocument(doc)
 #        writer.optimize()
@@ -155,9 +171,9 @@ class LuceneServer(object):
 
         self.write_lock.release()
 
-    def _unindexob(self, uid, lock=True):
+    def unindexDocument(self, uid, lock=True):
 
-        reader = self._getReader()
+        reader = self.getReader()
         if reader is None:
             return False
 
@@ -180,10 +196,10 @@ class LuceneServer(object):
         if lock:
             self.write_lock.release()
 
-    def _reindexob(self, uid, ob, attributs=()):
-        self._indexob(uid, ob, attributs)
+    def reindexDocument(self, uid, ob, attributs=()):
+        self.indexDocument(uid, ob, attributs)
 
-    def _search(self, return_fields=(), kws=None):
+    def searchQuery(self, return_fields=(), kws=None):
 
         # XXX make this configurable
         start = 0
@@ -199,7 +215,7 @@ class LuceneServer(object):
             return results.getStream()
 
         # Probably no indexes are created yet.
-        searcher = self._getSearcher()
+        searcher = self.getSearcher()
         if not searcher:
             return results.getStream()
 
@@ -235,40 +251,3 @@ class LuceneServer(object):
                     results.addItem(uid, table)
         searcher.close()
         return results.getStream()
-
-    def _getIndexer(self):
-        creation = False
-        if not os.path.exists(self.store_dir):
-            creation = True
-        analyzer = PyLucene.StandardAnalyzer()
-        return LuceneIndexer(self.store_dir, creation, analyzer)
-
-    def _getSearcher(self):
-        if not os.path.exists(self.store_dir):
-            return None
-        return LuceneSearcher(self.store_dir)
-
-    def _getReader(self):
-        if not os.path.exists(self.store_dir):
-            return None
-        try:
-            reader = LuceneReader(self.store_dir)
-        except PyLucene.JavaError:
-            # Store is not initialized yet.
-            reader = None
-        return reader
-
-    def _getStore(self, creation=False):
-        if not os.path.exists(self.store_dir):
-            creation = True
-        return PyLucene.FSDirectory.getDirectory(self.store_dir, creation)
-
-
-class Ticker(object):
-
-    def __init__(self):
-        self.tick = True
-
-    def run(self):
-        while self.tick:
-            time.sleep(1.0)

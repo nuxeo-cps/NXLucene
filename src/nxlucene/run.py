@@ -27,7 +27,7 @@ from twisted.web import resource
 from twisted.web import server
 from twisted.internet import reactor
 
-from server import LuceneServer
+from core import LuceneServer
 from logger import initLog
 from configuration import WebLuceneConfiguration
 

@@ -108,6 +108,9 @@ class ILuceneServer(zope.interface.Interface):
     """Lucene server interface
 
     This is the core lucene server definition.
+
+    See IXMLRPCLuceneServer for an example of ILuceneServer
+    adaptation.
     """
 
     store_dir = zope.interface.Attribute(
@@ -117,6 +120,12 @@ class ILuceneServer(zope.interface.Interface):
     port = zope.interface.Attribute(
         u"Port on which the server is listening"
         )
+
+    def getStore(creation=False):
+        """Returns a store instance.
+
+        For the moment, it uses a FSDirectory instance only.
+        """
 
     def optimize(indexer=None):
         """Optimze the lucene indexes store
@@ -136,9 +145,66 @@ class ILuceneServer(zope.interface.Interface):
         """
 
     def __len__():
-        """Return the amount of documents within the store.
+        """Return the total amount of documents within the store.
         """
 
+    def getDocumentByUID(uid):
+        """Return a PyLucene.document instance from the lucene store
+        given its UID.
+
+        It will return None of not found.
+        """
+
+    def getIndexer():
+        """Return a nxlucene.LuceneIndexer instance. See ILuceneIndexer.
+        """
+    
+    def getReader():
+        """Return a nxlucene.LuceneReader instance. See ILuceneReader.
+        """
+
+    def getSearcher():
+        """Return a nxlucene.LuceneSearcher instance. See ILuceneSearcher.
+        """
+
+    def indexDocument(uid, ob, attributs=()):
+        """Index a document.
+
+        `uid` : uid to use for this document. Note, here uid has
+        nothing to do with the internal Lucene docid. It uses a Lucene
+        Keyword field.
+
+        `ob` : Python object wrapper. This is a XMLInputSteam instance.
+
+        `attributs` : tuple of wrapper attributs to index.
+        """
+
+    def unindexDocument(uid, lock=True):
+        """Unindex a document.
+
+        `uid` : uid of the target document.
+
+        `lock` : boolean specifying if the store should be locked or
+        not. May be useful if the method from which this is called
+        already locked the store.
+        """
+
+    def reindexDocument(uid, ob, attributs=()):
+        """Reindex a document.
+
+        `uid` : uid to use for this document. Note, here uid has
+        nothing to do with the internal Lucene docid. It uses a Lucene
+        Keyword field.
+
+        `ob` : Python object wrapper. This is a XMLInputSteam instance.
+
+        `attributs` : tuple of wrapper attributs to reindex.
+        """
+
+    def searchQuery(return_fields=(), kws=None):
+        """Search results.
+        """
+        
 class ILuceneIndexer(zope.interface.Interface):
     """Lucene indexer
     """

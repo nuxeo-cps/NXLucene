@@ -34,7 +34,7 @@ from twisted.web import server
 import zope.interface
 
 from nxlucene.xmlrpc import XMLRPCLuceneServer
-from nxlucene.server import LuceneServer
+from nxlucene.core import LuceneServer
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet
 
