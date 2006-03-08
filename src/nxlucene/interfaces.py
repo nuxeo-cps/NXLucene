@@ -73,8 +73,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
 
         <doc>
           <fields>
-            <field id="name" attribute="name" type="text"
-                   fulltext="True">
+            <field id="name" attribute="name" type="text">
               The value of the field to index
             </field>
           </field>
@@ -90,8 +89,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
                      values and types for a given object,
          <doc>
           <fields>
-            <field id="name" attribute="name" type="text"
-                   fulltext="True">
+            <field id="name" attribute="name" type="text">
               The value of the field to index
             </field>
           </fields>

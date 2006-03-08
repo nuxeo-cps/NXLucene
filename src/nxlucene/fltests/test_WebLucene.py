@@ -46,7 +46,7 @@ class WebLucene(FunkLoadTestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name" fulltext="True">
+            <field id="name" attribute="name">
               %s
             </field>
           </fields>

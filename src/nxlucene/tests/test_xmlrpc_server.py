@@ -128,7 +128,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name" fulltext="True">
+            <field id="name" attribute="name">
               foo
             </field>
           </fields>
@@ -145,7 +145,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name" fulltext="True">
+            <field id="name" attribute="name">
               bar
             </field>
           </fields>
@@ -174,7 +174,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name" fulltext="True">
+            <field id="name" attribute="name">
                newfoo
             </field>
           </fields>
@@ -191,7 +191,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name" fulltext="True">
+            <field id="name" attribute="name">
               newbar
             </field>
           </fields>

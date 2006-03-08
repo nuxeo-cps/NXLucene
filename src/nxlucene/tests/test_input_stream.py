@@ -50,8 +50,7 @@ class InputStreamTestCase(unittest.TestCase):
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
                          {u'name':
-                          {'fulltext': '',
-                           'type': '',
+                          {'type': '',
                            'attribute': '',
                            'value':''}})
 
@@ -67,25 +66,24 @@ class InputStreamTestCase(unittest.TestCase):
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
                          {u'name':
-                          {'fulltext': '',
-                           'type': '',
-                           'attribute': u'__name__',
-                           'value':''}})
+                          {
+                          'type': '',
+                          'attribute': u'__name__',
+                          'value':''}})
 
     def test_O4_stream(self):
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id='name' attribute="__name__" fulltext="True"/>
+            <field id='name' attribute="__name__"/>
           </fields>
         </doc>"""
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
                          {u'name':
-                          {'fulltext': u'True',
-                           'type': '',
+                          {'type': '',
                            'attribute': u'__name__',
                            'value':''}})
 
@@ -94,15 +92,14 @@ class InputStreamTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id='name' attribute="__name__" fulltext="True" type="text"/>
+            <field id='name' attribute="__name__" type="text"/>
           </fields>
         </doc>"""
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
                          {u'name':
-                          {'fulltext': u'True',
-                           'type': u'text',
+                          {'type': u'text',
                            'attribute': u'__name__',
                            'value':''}})
 
@@ -111,21 +108,19 @@ class InputStreamTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id='name' attribute="__name__" fulltext="True" type="text"/>
-            <field id='attr' attribute="attr" fulltext="False" type="text"/>
+            <field id='name' attribute="__name__" type="text"/>
+            <field id='attr' attribute="attr" type="text"/>
           </fields>
         </doc>"""
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
                          {u'name':
-                          {'fulltext': u'True',
-                           'type': u'text',
+                          {'type': u'text',
                            'attribute': u'__name__',
                            'value':''},
                           u'attr':
-                          {'fulltext': u'False',
-                           'type': u'text',
+                          {'type': u'text',
                            'attribute': u'attr',
                            'value':''}}
                          )
@@ -138,8 +133,8 @@ class InputStreamTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id='name' attribute="__name__" fulltext="True" type="text"/>
-            <field id='attr' attribute="attr" fulltext="False" type="text"/>
+            <field id='name' attribute="__name__" type="text"/>
+            <field id='attr' attribute="attr" type="text"/>
           </fields>
         </doc>"""
         istream = XMLInputStream(stream)

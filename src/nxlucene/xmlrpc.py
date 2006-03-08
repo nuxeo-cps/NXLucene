@@ -44,9 +44,8 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
 
     # XXX implementation is here only for testing purpose. The stream
     # must be passed as arguments to the internal API so that it can
-    # extract and use the additional information (i.e : field type,
-    # fulltext, ...)
-
+    # extract and use the additional information (i.e : field type,...)
+    
     def xmlrpc_indexob(self, uid, xml_stream=''):
         self._core.log.info("xmlrpc_indexob : requested "
                              "uid=%s, xml_stream=%s" % (uid, xml_stream))

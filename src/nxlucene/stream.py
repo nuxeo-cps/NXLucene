@@ -47,7 +47,6 @@ class XMLInputStream(object):
                     value = field.text.strip()
                 self._fields[id_] = {
                     'attribute' : field.attrib.get('attribute', '').strip(),
-                    'fulltext' : field.attrib.get('fulltext', '').strip(),
                     'type' : field.attrib.get('type', '').strip(),
                     'value': value,
                     }
