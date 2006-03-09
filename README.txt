@@ -13,9 +13,10 @@ What is is ?
   extended to other protocols, such as SOAP, thanks to its modular
   design.
 
-  NXLucene supports the FSDirectory backend for now.
+  Note the FSDirectory backend is the only supported backend by
+  NXLucene for now.
 
-  The search results are returned as RSS stream.
+  The search results are returned as RSS streams.
 
   NXLucene exposes a custom query language for indexing and searching
   operations. Not the Lucene native search query is of course still
@@ -33,7 +34,7 @@ Installation
 
 More information 
 
-  - http://weblucene.nuxeo.org
+  - http://nxlucene.nuxeo.org
 
   - XXX 
   
