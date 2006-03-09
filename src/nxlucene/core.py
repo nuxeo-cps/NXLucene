@@ -1,16 +1,16 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
@@ -118,7 +118,7 @@ class LuceneServer(object):
         self.log.info("Indexes Store has been cleaned up")
         return True
 
-    def indexDocument(self, uid, ob, attributs=()):
+    def indexDocument(self, uid, query_instance):
 
         self.write_lock.acquire()
 
@@ -128,7 +128,7 @@ class LuceneServer(object):
 
         # In case we need to update we'll have to take care of the
         # existing fields.
-        existing_fields = () 
+        existing_fields = ()
 
         if doc is not None:
             self.log.debug("FOUND document with uid=%s to update" % str(uid))
@@ -140,20 +140,45 @@ class LuceneServer(object):
 
         # Create a new document instance.
         doc = PyLucene.Document()
-        doc.add(PyLucene.Field.Keyword('uid', unicode(uid)))            
+        doc.add(PyLucene.Field.Keyword('uid', unicode(uid)))
 
-        for index in attributs:
-            value = getattr(ob, index, '')
+        for field in query_instance.getFields():
+
+            field_id   = field['id']
+            field_value = unicode(field['value'])
+            field_type  = field['type']
+
             self.log.debug(
-                "Adding Field on doc for index %s with value %s "
-                % (index, value))
-            # XXX make this configurable.
-            doc.add(
-                PyLucene.Field(index, unicode(value), True, True, True))
+                "Adding Field on doc with id=%s with value %s of type %s"
+                % (field_id, field_value, field_type))
+
+            if field_type == 'Text':
+                doc.add(PyLucene.Field.Text(field_id, field_value))
+
+            elif field_type == 'UnStored':
+                doc.add(PyLucene.Field.UnStored(field_id, field_value))
+
+            elif field_type == 'UnIndexed':
+                doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
+
+            elif field_type == 'Keyword':
+                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+
+            else:
+                self.log.info(
+                    "Field configuration does not match for "
+                    "id=%s with value %s of type %s "
+                    "Adding a PyLucene.Field unindexed but stored"
+                    % (field_id, field_value, field_type))
+                doc.add(
+                    PyLucene.Field(field_id, field_value, True, False, False)
+                    )
 
         # Update
         for field in existing_fields:
-            if field.name() not in attributs and field.name() != 'uid':
+            if (field.name() not in
+                [x['attribute'] for x in  query_instance.getFields()] and
+                field.name() != 'uid'):
                 doc.add(field)
 
         # We got to remove the document from the index first.
@@ -196,8 +221,8 @@ class LuceneServer(object):
         if lock:
             self.write_lock.release()
 
-    def reindexDocument(self, uid, ob, attributs=()):
-        self.indexDocument(uid, ob, attributs)
+    def reindexDocument(self, uid, query_instance):
+        self.indexDocument(uid, query_instance)
 
     def searchQuery(self, return_fields=(), kws=None):
 

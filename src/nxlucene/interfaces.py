@@ -171,16 +171,14 @@ class ILuceneServer(zope.interface.Interface):
         """Return a nxlucene.LuceneSearcher instance. See ILuceneSearcher.
         """
 
-    def indexDocument(uid, ob, attributs=()):
+    def indexDocument(uid, query_instance):
         """Index a document.
 
         `uid` : uid to use for this document. Note, here uid has
         nothing to do with the internal Lucene docid. It uses a Lucene
         Keyword field.
 
-        `ob` : Python object wrapper. This is a XMLInputSteam instance.
-
-        `attributs` : tuple of wrapper attributs to index.
+        `query_instance` : XML Query Instance
         """
 
     def unindexDocument(uid, lock=True):
@@ -193,16 +191,14 @@ class ILuceneServer(zope.interface.Interface):
         already locked the store.
         """
 
-    def reindexDocument(uid, ob, attributs=()):
+    def reindexDocument(uid, query_instance):
         """Reindex a document.
 
         `uid` : uid to use for this document. Note, here uid has
         nothing to do with the internal Lucene docid. It uses a Lucene
         Keyword field.
 
-        `ob` : Python object wrapper. This is a XMLInputSteam instance.
-
-        `attributs` : tuple of wrapper attributs to reindex.
+        `query_instance` : XML Query Instance
         """
 
     def searchQuery(return_fields=(), kws=None):

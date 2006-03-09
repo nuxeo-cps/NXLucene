@@ -46,23 +46,14 @@ class XMLInputStream(object):
                 if field.text:
                     value = field.text.strip()
                 self._fields[id_] = {
+                    'id' : id_,
                     'attribute' : field.attrib.get('attribute', '').strip(),
                     'type' : field.attrib.get('type', '').strip(),
                     'value': value,
                     }
 
-        for k, v in self._fields.items():
-            setattr(self, k, v['value'])
-
     def getFields(self):
-        return self._fields
-
-    def getAttributNames(self):
-        attributs = []
-        for v in self.getFields().values():
-            if v['attribute']:
-                attributs.append(v['attribute'])
-        return attributs
+        return self._fields.values()
 
 class XMLQueryInputStream(object):
     """XML Stream for search query

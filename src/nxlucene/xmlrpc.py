@@ -48,8 +48,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
                              "uid=%s, xml_query=%s" % (uid, xml_query))
         if xml_query:
             istream = XMLInputStream(xml_query)
-            attributs = istream.getAttributNames()
-            self._core.indexDocument(uid, istream, attributs)
+            self._core.indexDocument(uid, istream)
             return True
         else:
             return False
@@ -57,14 +56,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_reindexDocument(self, uid, xml_query=''):
         self._core.log.info("xmlrpc_reindexob : requested "
                              "uid=%s, xml_query=%s" % (uid, xml_query))
-        if xml_query:
-            # XXX temporarly way of handling this.
-            istream = XMLInputStream(xml_query)
-            attributs = istream.getAttributNames()
-            self._core.reindexDocument(uid, istream, attributs)
-            return True
-        else:
-            return False
+        return self.xmlrpc_indexDocument(uid, xml_query)
 
     def xmlrpc_unindexDocument(self, uid):
         self._core.log.info("xmlrpc_unindexob : requested " "uid=%s" % uid)
