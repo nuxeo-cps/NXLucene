@@ -164,6 +164,31 @@ class LuceneServer(object):
             elif field_type == 'Keyword':
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
+            elif field_type == 'Date':
+                # The Date format must be an ISO one. This is a
+                # requierment right now.  XXX check this is the case ?
+
+                iso = 'yyyy-MM-dd HH:mm:ss'
+
+                try:
+                    date_formated = PyLucene.SimpleDateFormat(iso).parse(field_value)
+                except PyLucene.JavaError:
+                    break
+                    
+                try:
+                    date_field = PyLucene.DateField.dateToString(date_formated)
+                except PyLucene.JavaError:
+                    # java.lang.RuntimeException: time too early
+                    # Shoud be > 1970
+                    date_formated = PyLucene.SimpleDateFormat(iso).parse('1970-01-01 00:00:00')
+                    date_field = PyLucene.DateField.dateToString(date_formated)
+
+                doc.add(PyLucene.Field.Keyword(field_id, date_field))
+
+            elif field_type == 'Path':
+                # XXX implement me.
+                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+
             else:
                 self.log.info(
                     "Field configuration does not match for "
