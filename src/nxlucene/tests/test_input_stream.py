@@ -36,7 +36,7 @@ class InputStreamTestCase(unittest.TestCase):
         </doc>"""
 
         istream = XMLInputStream(stream)
-        self.assertEqual(istream.getFields(), [])
+        self.assertEqual(istream.getFields(), ())
 
     def test_O2_stream(self):
 
@@ -49,7 +49,7 @@ class InputStreamTestCase(unittest.TestCase):
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
-                         [{'attribute': '', 'type': '', 'id': 'name', 'value': ''}]
+                         ({'attribute': '', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O3_stream(self):
@@ -63,7 +63,7 @@ class InputStreamTestCase(unittest.TestCase):
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
-                        [{'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''}] 
+                        ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O4_stream(self):
@@ -77,7 +77,7 @@ class InputStreamTestCase(unittest.TestCase):
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
-                          [{'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''}]
+                          ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O5_stream(self):
@@ -91,7 +91,7 @@ class InputStreamTestCase(unittest.TestCase):
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
-                         [{'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''}]
+                         ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},)
                          )
 
     def test_O6_stream(self):
@@ -106,8 +106,8 @@ class InputStreamTestCase(unittest.TestCase):
 
         istream = XMLInputStream(stream)
         self.assertEqual(istream.getFields(),
-                         [{'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},
-                          {'attribute': 'attr', 'type': 'text', 'id': 'attr', 'value': ''}]
+                         ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},
+                          {'attribute': 'attr', 'type': 'text', 'id': 'attr', 'value': ''},)
                          )
 
     def test_empty_stream(self):

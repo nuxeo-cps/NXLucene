@@ -1,16 +1,16 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
@@ -19,17 +19,18 @@
 $Id$
 """
 
-try:
-    import cElementTree as etree
-except ImportError:
-    import elementtree.ElementTree as etree
+import logging
+
+import cElementTree as etree
+
+logger = logging.getLogger('stream')
 
 class XMLInputStream(object):
 
     def __init__(self, xml_stream=''):
 
         self._xml_stream = xml_stream
-        self._fields = {}
+        self._fields = ()
 
         if not xml_stream:
             return
@@ -37,23 +38,22 @@ class XMLInputStream(object):
         doc = etree.XML(self._xml_stream)
 
         fields = doc.findall('fields/field')
-
         for field in fields:
-            # TODO Exclude id_ from the self namespace
             id_ = field.attrib.get('id', '').strip()
             if id_:
                 value = ''
                 if field.text:
                     value = field.text.strip()
-                self._fields[id_] = {
+                logger.debug('Found id=%s with value=%s' % (id_, value))
+                self._fields += ({
                     'id' : id_,
                     'attribute' : field.attrib.get('attribute', '').strip(),
                     'type' : field.attrib.get('type', '').strip(),
                     'value': value,
-                    }
+                    },)
 
     def getFields(self):
-        return self._fields.values()
+        return self._fields
 
 class XMLQueryInputStream(object):
     """XML Stream for search query
