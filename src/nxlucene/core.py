@@ -171,7 +171,8 @@ class LuceneServer(object):
                 iso = 'yyyy-MM-dd HH:mm:ss'
 
                 try:
-                    date_formated = PyLucene.SimpleDateFormat(iso).parse(field_value)
+                    date_formated = PyLucene.SimpleDateFormat(
+                        iso).parse(field_value)
                 except PyLucene.JavaError:
                     break
                     
@@ -180,7 +181,8 @@ class LuceneServer(object):
                 except PyLucene.JavaError:
                     # java.lang.RuntimeException: time too early
                     # Shoud be > 1970
-                    date_formated = PyLucene.SimpleDateFormat(iso).parse('1970-01-01 00:00:00')
+                    date_formated = PyLucene.SimpleDateFormat(
+                        iso).parse('1970-01-01 00:00:00')
                     date_field = PyLucene.DateField.dateToString(date_formated)
 
                 doc.add(PyLucene.Field.Keyword(field_id, date_field))
@@ -249,6 +251,13 @@ class LuceneServer(object):
     def reindexDocument(self, uid, query_instance):
         self.indexDocument(uid, query_instance)
 
+    #
+    # API : SEARCH
+    #
+
+    def search(self, query_str, **kw):
+        raise NotImplementedError
+
     def searchQuery(self, return_fields=(), kws=None):
 
         # XXX make this configurable
@@ -286,7 +295,7 @@ class LuceneServer(object):
                     PyLucene.Term('uid', unicode(value)))
             else:
                 query = parser.parseQuery(value)
-#            self.log.debug('query %s' %str(query))
+            self.log.debug('query %s' %str(query))
             hits = list(searcher.get().search(query))
             hits = hits[start:stop]
             for i, doc in hits:

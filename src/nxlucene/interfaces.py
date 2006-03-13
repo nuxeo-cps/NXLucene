@@ -92,6 +92,15 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         Cf. weblucene.rss
         """
 
+    def xmlrpc_search(query_str=''):
+        """Searching using Lucene native query.
+
+        `query_str` : Lucene query string.
+
+        For the Lucene query syntax see :
+        http://lucene.apache.org/java/docs/queryparsersyntax.html
+        """
+
     def xmlrpc_getStoreDir():
         """Return the store dir location
         """

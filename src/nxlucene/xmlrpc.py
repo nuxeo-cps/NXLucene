@@ -65,8 +65,19 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core.unindexDocument(uid)
         return True
 
+    def xmlrpc_search(self, query_str=''):
+        self._core.log.info("xmlrpc_search : requested " "query_str=%s" %
+                            query_str)
+
+        if query_str:
+            return self._core.search(query_str)
+        else:
+            # Return an empty resultset
+            self._core.log.info("search results is empty")
+            return rss.resultset.ResultSet().getStream()
+
     def xmlrpc_searchQuery(self, xml_query=''):
-        self._core.log.info("xmlrpc_search : requested " "xml_query=%s" %
+        self._core.log.info("xmlrpc_searchQuery : requested " "xml_query=%s" %
                              xml_query)
         if xml_query:
             istream = XMLQueryInputStream(xml_query)
