@@ -326,6 +326,7 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
         self.assertEqual(self.counter, tmax)
 
         self.counter = 0
+        
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
@@ -334,7 +335,7 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(LuceneServerTestCase))
-#    suite.addTest(unittest.makeSuite(LuceneServerMultiThreadTestCase))
+    suite.addTest(unittest.makeSuite(LuceneServerMultiThreadTestCase))
     return suite
 
 if __name__ == '__main__':
