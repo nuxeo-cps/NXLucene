@@ -19,6 +19,8 @@
 $Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
 """
 
+import base64
+
 from twisted.web import xmlrpc
 
 import zope.interface
@@ -43,20 +45,22 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         assert (core is not None)
         self._core = core
 
-    def xmlrpc_indexDocument(self, uid, xml_query=''):
+    def xmlrpc_indexDocument(self, uid, xml_query='', b64=False):
         self._core.log.info("xmlrpc_indexDocument : requested "
-                             "uid=%s, xml_query=%s" % (uid, xml_query))
+                            "uid=%s, xml_query=%s" % (uid, xml_query))
         if xml_query:
+            if base64 is True:
+                xml_query = base64.b64decode(xml_query)
             istream = XMLInputStream(xml_query)
             self._core.indexDocument(uid, istream)
             return True
         else:
             return False
 
-    def xmlrpc_reindexDocument(self, uid, xml_query=''):
+    def xmlrpc_reindexDocument(self, uid, xml_query='', b64=False):
         self._core.log.info("xmlrpc_reindexob : requested "
                              "uid=%s, xml_query=%s" % (uid, xml_query))
-        return self.xmlrpc_indexDocument(uid, xml_query)
+        return self.xmlrpc_indexDocument(uid, xml_query, b64)
 
     def xmlrpc_unindexDocument(self, uid):
         self._core.log.info("xmlrpc_unindexob : requested " "uid=%s" % uid)
