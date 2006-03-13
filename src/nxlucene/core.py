@@ -295,7 +295,7 @@ class LuceneServer(object):
                     PyLucene.Term('uid', unicode(value)))
             else:
                 query = parser.parseQuery(value)
-            self.log.debug('query %s' %str(query))
+#            self.log.debug('query %s' %str(query))
             hits = list(searcher.get().search(query))
             hits = hits[start:stop]
             for i, doc in hits:
