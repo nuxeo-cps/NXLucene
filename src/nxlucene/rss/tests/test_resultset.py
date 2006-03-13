@@ -51,7 +51,7 @@ class ResultSetTestCase(unittest.TestCase):
     def test_getStream_base(self):
         rs = ResultSet()
         rs.addItem('1', {'name' : 'Anguenot', 'givenName' : 'Julien'})
-        self.assertEqual(rs.getStream(), """<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
+        self.assertEqual(rs.getStream(), """<ns0:rss version="2.0" xmlns:ns0="http://backend.userland.com/rss2"><ns0:item><ns0:guid>1</ns0:guid><ns1:fields xmlns:ns1="http://namespaces.nuxeo.org/nxlucene/"><ns1:field id="givenName">Julien</ns1:field><ns1:field id="name">Anguenot</ns1:field></ns1:fields></ns0:item></ns0:rss>""")
 
     def test_adapter(self):
         rs = ResultSet()
