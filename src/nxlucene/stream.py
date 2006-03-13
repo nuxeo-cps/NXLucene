@@ -19,6 +19,7 @@
 $Id$
 """
 
+import base64
 import logging
 
 import cElementTree as etree
@@ -27,14 +28,16 @@ logger = logging.getLogger('stream')
 
 class XMLInputStream(object):
 
-    def __init__(self, xml_stream=''):
+    def __init__(self, xml_stream='', encoding='ISO-8859-15'):
 
         self._xml_stream = xml_stream
+        self._encoding = encoding
         self._fields = ()
 
         if not xml_stream:
             return
 
+#        logger.debug(xml_stream)
         doc = etree.XML(self._xml_stream)
 
         fields = doc.findall('fields/field')
@@ -43,7 +46,17 @@ class XMLInputStream(object):
             if id_:
                 value = ''
                 if field.text:
-                    value = field.text.strip()
+                    try:
+                        value = base64.b64decode(field.text)
+                    except:
+                        value = field.text.strip()
+
+                # Convert to unicode
+                try:
+                    value = unicode(value)
+                except:
+                    value = unicode(value, self._encoding)
+
                 logger.debug('Found id=%s with value=%s' % (id_, value))
                 self._fields += ({
                     'id' : id_,

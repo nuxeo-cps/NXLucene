@@ -47,7 +47,7 @@ class ResultSet(object):
 
     def getStream(self, pretty=False):
         if not pretty:
-            return etree.tostring(self._doc, encoding='UTF-8')
+            return etree.tostring(self._doc)
         # XXX etree doesn't provide pretty print yet.
         raise NotImplementedError
 
