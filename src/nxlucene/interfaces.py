@@ -27,13 +27,15 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
     This is used as an adapter to ILuceneServer instance.
     """
 
-    def xmlrpc_indexDocument(uid, xml_query=''):
+    def xmlrpc_indexDocument(uid, xml_query='', b64=False):
         """Index a document
 
         `uid` is the key for this document.
 
         `xml_query` is an xml query containing the list of fields,
                     to index the document with and their properties.
+
+        `b64` : xml_query compressed using base64 ?
 
         <doc>
           <fields>
@@ -51,6 +53,8 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
 
         `xml_query` is an xml query containing the list of fields to
         reindex and their properties.
+
+        `b64` : xml_query compressed using base64 ?
 
          <doc>
           <fields>

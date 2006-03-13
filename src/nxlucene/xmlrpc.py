@@ -46,33 +46,25 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core = core
 
     def xmlrpc_indexDocument(self, uid, xml_query='', b64=False):
-        self._core.log.info("xmlrpc_indexDocument : requested "
-                            "uid=%s, xml_query=%s" % (uid, xml_query))
+        self._core.log.info("xmlrpc_indexDocument: uid=%s " % str(uid))
         if xml_query:
             if b64 is True:
                 xml_query = base64.b64decode(xml_query)
             istream = XMLInputStream(xml_query)
-            self._core.indexDocument(uid, istream)
-            return True
+            return self._core.indexDocument(uid, istream)
         else:
             return False
 
     def xmlrpc_reindexDocument(self, uid, xml_query='', b64=False):
-        self._core.log.info("xmlrpc_reindexob : requested "
-                             "uid=%s, xml_query=%s" % (uid, xml_query))
+        self._core.log.info("xmlrpc_reindexob : uid=%s" % str(uid))
         return self.xmlrpc_indexDocument(uid, xml_query, b64)
 
     def xmlrpc_unindexDocument(self, uid):
-        self._core.log.info("xmlrpc_unindexob : requested " "uid=%s" % uid)
-        # XXX handle error message
-        # java.lang.ArrayIndexOutOfBoundsException ?
-        self._core.unindexDocument(uid)
-        return True
+        self._core.log.info("xmlrpc_unindexob : uid=%s" % str(uid))
+        return self._core.unindexDocument(uid)
 
     def xmlrpc_search(self, query_str=''):
-        self._core.log.info("xmlrpc_search : requested " "query_str=%s" %
-                            query_str)
-
+        # XXX not tested yet.
         if query_str:
             return self._core.search(query_str)
         else:

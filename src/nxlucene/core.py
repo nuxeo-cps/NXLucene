@@ -223,7 +223,11 @@ class LuceneServer(object):
 
         self.write_lock.release()
 
+        return True
+
     def unindexDocument(self, uid, lock=True):
+
+        cerror = True
 
         reader = self.getReader()
         if reader is None:
@@ -242,11 +246,14 @@ class LuceneServer(object):
         else:
             self.log.info("CANNOT UNINDEXED document with uid=%s"
                           "NOT FOUND" % str(uid))
+            cerror = False
 
         reader.close()
 
         if lock:
             self.write_lock.release()
+
+        return cerror
 
     def reindexDocument(self, uid, query_instance):
         self.indexDocument(uid, query_instance)
