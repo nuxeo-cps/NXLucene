@@ -49,7 +49,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         self._core.log.info("xmlrpc_indexDocument : requested "
                             "uid=%s, xml_query=%s" % (uid, xml_query))
         if xml_query:
-            if base64 is True:
+            if b64 is True:
                 xml_query = base64.b64decode(xml_query)
             istream = XMLInputStream(xml_query)
             self._core.indexDocument(uid, istream)
