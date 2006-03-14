@@ -73,14 +73,13 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
             return rss.resultset.ResultSet().getStream()
 
     def xmlrpc_searchQuery(self, xml_query=''):
-        self._core.log.info("xmlrpc_searchQuery : requested " "xml_query=%s" %
-                             xml_query)
+        self._core.log.info("xmlrpc_searchQuery")
         if xml_query:
             istream = XMLQueryInputStream(xml_query)
             # XXX istream.getAnalyzer()
             rss = self._core.searchQuery(
                 istream.getReturnFields(), istream.getKwargs())
-            self._core.log.info("search results %s" %rss)
+#            self._core.log.info("search results %s" %rss)
             return rss
         # Return an empty resultset
         self._core.log.info("search results is empty")
