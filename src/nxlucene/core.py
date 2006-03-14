@@ -23,6 +23,7 @@ import os
 import threading
 import logging
 import PyLucene
+import time
 
 import zope.interface
 from interfaces import ILuceneServer
@@ -175,7 +176,7 @@ class LuceneServer(object):
                         iso).parse(field_value)
                 except PyLucene.JavaError:
                     break
-                    
+
                 try:
                     date_field = PyLucene.DateField.dateToString(date_formated)
                 except PyLucene.JavaError:
@@ -285,35 +286,45 @@ class LuceneServer(object):
         if not searcher:
             return results.getStream()
 
-        # TODO : Make this configurable
-        analyzer = PyLucene.StandardAnalyzer()
+        #
+        # Construct the query.
+        #
 
-        # TODO : Optimize me using PhraseQuery
-        uids = []
+        query = PyLucene.BooleanQuery()
+
         for index, value in kws.items():
-            self.log.debug('_search for %s, %s' % (index, value))
-            parser = PyLucene.QueryParser(index, analyzer)
-            # XXX : should be extracted from stream.
-            parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
+            # XXX : check why it can't march the original case..
+            term = PyLucene.Term(index, unicode(value.lower()))
+            query.add(PyLucene.TermQuery(term),
+                      # XXX : won't be always the case.
+                      PyLucene.BooleanClause.Occur.SHOULD)
 
-            # XXX harcoded here. Should be part of a configuration.
-            if index == 'uid':
-                query = PyLucene.TermQuery(
-                    PyLucene.Term('uid', unicode(value)))
-            else:
-                query = parser.parseQuery(value)
-#            self.log.debug('query %s' %str(query))
-            hits = list(searcher.get().search(query))
-            hits = hits[start:stop]
-            for i, doc in hits:
-                table = dict([(field.name(), field.stringValue())
-                              for field in doc
-                              if unicode(field.name()) in return_fields])
-                uid = table['uid']
-                if uid not in uids:
-                    uids.append(uid)
-                    del table['uid']
-                    self.log.debug("match for %s %s" %(uid, str(table)))
-                    results.addItem(uid, table)
+        self.log.debug('query %s' % query.toString())
+
+        tstart = time.time()
+
+        hits = searcher.get().search(query)
+
+        tstop = time.time()
+        self.log.debug("Time to find return results %s" % str(tstop-tstart))
+
+        # XXX Change this it's sucky...
+        tstart = time.time()
+        hits = list(hits)[start:stop]
+        tstop = time.time()
+        self.log.debug("Time to find get results %s" % str(tstop-tstart))
+
+        uids = []
+        for i, doc in hits:
+            table = dict([(field.name(), field.stringValue())
+                          for field in doc
+                          if unicode(field.name()) in return_fields])
+            uid = table['uid']
+            if uid not in uids:
+                uids.append(uid)
+                del table['uid']
+#                self.log.debug("match for %s %s" %(uid, str(table)))
+                results.addItem(uid, table)
+
         searcher.close()
         return results.getStream()
