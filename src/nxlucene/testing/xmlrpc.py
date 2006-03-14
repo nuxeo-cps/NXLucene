@@ -19,8 +19,6 @@
 $Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
 """
 
-import xmlrpclib
-
 import zope.interface
 from nxlucene.interfaces import IXMLRPCLuceneServer
 
@@ -112,9 +110,15 @@ class FakeXMLRPCLuceneServer(object):
     def debug(self, msg):
         return self._core.xmlrpc_debug(msg)
 
+import os
+import xmlrpclib
+import shutil
+
+TMP_STORE_DIR = '/tmp/NXLuceneTesting'
+
 def _getFakeServerProxy(url):
     # XXX Use a RAMDirectory for tests    
-    core = LuceneServer('/tmp/NXLuceneTesting')
+    core = LuceneServer(TMP_STORE_DIR)
     xmlrpc_server = XMLRPCLuceneServer(core)
     fake_server = FakeXMLRPCLuceneServer(xmlrpc_server)
     return fake_server
@@ -125,6 +129,8 @@ def setUp():
 
 def tearDown():
     xmlrpclib.ServerProxy = xmlrpclib._old_ServerProxy
+    if os.path.exists(TMP_STORE_DIR):
+        shutil.rmtree(TMP_STORE_DIR)
 
 
     
