@@ -55,7 +55,7 @@ Testing for developpers
 
 Installation
 
-  Linux is currently the only supported platdform.
+  Linux is currently the only supported platform.
 
   Uncompress the NXLucene archive :
 
@@ -72,5 +72,4 @@ Installation
 
   You can now start the NXLucene server :
 
-   $ cd NXLucene/bin
-   $ ./weblucenectl start
+   $ ./start
