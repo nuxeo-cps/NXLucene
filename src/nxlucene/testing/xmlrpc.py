@@ -120,5 +120,11 @@ def _getFakeServerProxy(url):
     return fake_server
 
 def setUp():
+    xmlrpclib._old_ServerProxy = xmlrpclib.ServerProxy
     xmlrpclib.ServerProxy = _getFakeServerProxy
+
+def tearDown():
+    xmlrpclib.ServerProxy = xmlrpclib._old_ServerProxy
+
+
     
