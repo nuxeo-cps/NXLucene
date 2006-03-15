@@ -1,71 +1,31 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""XML-RPC Lucene Server adapter
+"""Fake XML-RPC Lucene Server adapter
 
 $Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
 """
 
 import zope.interface
+
 from nxlucene.interfaces import IXMLRPCLuceneServer
+from nxlucene.testing.interfaces import IFakeXMLRPCLuceneServer
 
 from nxlucene.xmlrpc import XMLRPCLuceneServer
 from nxlucene.core import LuceneServer
-
-class IFakeXMLRPCLuceneServer(zope.interface.Interface):
-
-    def indexDocument(uid, xml_query='', b64=False):
-        """
-        """
-
-    def reindexDocument(uid, xml_query='', b64=False):
-        """
-        """
-
-    def unindexDocument(uid):
-        """
-        """
-
-    def searchQuery(xml_query=''):
-        """
-        """
-
-    def hasUID(uid):
-        """
-        """
-
-    def clean():
-        """
-        """
-
-    def getStoreDir():
-        """
-        """
-
-    def optimize():
-        """
-        """
-
-    def getNumberOfDocuments():
-        """
-        """
-
-    def debug(msg):
-        """
-        """
 
 class FakeXMLRPCLuceneServer(object):
     """Fake XMLRPC server
@@ -117,7 +77,7 @@ import shutil
 TMP_STORE_DIR = '/tmp/NXLuceneTesting'
 
 def _getFakeServerProxy(url):
-    # XXX Use a RAMDirectory for tests    
+    # XXX Use a RAMDirectory for tests
     core = LuceneServer(TMP_STORE_DIR)
     xmlrpc_server = XMLRPCLuceneServer(core)
     fake_server = FakeXMLRPCLuceneServer(xmlrpc_server)
@@ -133,4 +93,4 @@ def tearDown():
         shutil.rmtree(TMP_STORE_DIR)
 
 
-    
+
