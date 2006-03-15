@@ -14,15 +14,13 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Lucene XML-RPC server tests
+"""XMLRPC Lucene server test case.
 
 $Id$
 """
 
 import unittest
 import xmlrpclib
-
-import zope.interface
 
 import nxlucene.testing.xmlrpc
 
@@ -32,17 +30,11 @@ from nxlucene.core import LuceneServer
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet
 
-class P(object):
-    zope.interface.implements(zope.interface.Interface)
-    def __init__(self, name):
-        self.name = name
-
-class LuceneXMLRPCServerTestCase(unittest.TestCase):
+class XMLRPCLuceneServerTestCase(unittest.TestCase):
 
     def setUp(self):
         nxlucene.testing.xmlrpc.setUp()
         self._xmlrpc_client = xmlrpclib.ServerProxy('http://foo/bar')
-        self._store_dir = '/tmp/lucene'
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
@@ -50,7 +42,7 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
         self.assert_(verifyClass(IXMLRPCLuceneServer, XMLRPCLuceneServer))
 
     def test_adapter(self):
-        core = LuceneServer(self._store_dir)
+        core = LuceneServer('fake')
         xmlrpc = XMLRPCLuceneServer(core)
         self.assertEqual(core, xmlrpc._core)
 
@@ -191,8 +183,5 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(LuceneXMLRPCServerTestCase))
+    suite.addTest(unittest.makeSuite(XMLRPCLuceneServerTestCase))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
