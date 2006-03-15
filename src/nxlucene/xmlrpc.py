@@ -27,8 +27,8 @@ import zope.interface
 from interfaces import IXMLRPCLuceneServer
 from interfaces import ILuceneServer
 
-from xmlquery import XMLInputStream
-from xmlquery import XMLQueryInputStream
+from xmlquery import XMLQuery
+from xmlquery import XMLSearchQuery
 
 class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     """Lucene XML-RPC server
@@ -50,7 +50,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         if xml_query:
             if b64 is True:
                 xml_query = base64.b64decode(xml_query)
-            istream = XMLInputStream(xml_query)
+            istream = XMLQuery(xml_query)
             return self._core.indexDocument(uid, istream)
         else:
             return False
@@ -75,7 +75,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_searchQuery(self, xml_query=''):
         self._core.log.info("xmlrpc_searchQuery")
         if xml_query:
-            istream = XMLQueryInputStream(xml_query)
+            istream = XMLSearchQuery(xml_query)
             # XXX istream.getAnalyzer()
             rss = self._core.searchQuery(
                 istream.getReturnFields(), istream.getKwargs())

@@ -21,10 +21,10 @@ $Id$
 
 import unittest
 
-from nxlucene.xmlquery import XMLInputStream
-from nxlucene.xmlquery import XMLQueryInputStream
+from nxlucene.xmlquery import XMLQuery
+from nxlucene.xmlquery import XMLSearchQuery
 
-class InputStreamTestCase(unittest.TestCase):
+class XMLQueryTestCase(unittest.TestCase):
 
     def test_O1_stream(self):
 
@@ -35,7 +35,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(), ())
 
     def test_O2_stream(self):
@@ -47,7 +47,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
                          ({'attribute': '', 'type': '', 'id': 'name', 'value': ''},)
                          )
@@ -61,7 +61,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
                         ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
@@ -75,7 +75,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
                           ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
@@ -89,7 +89,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
                          ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},)
                          )
@@ -104,7 +104,7 @@ class InputStreamTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
                          ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},
                           {'attribute': 'attr', 'type': 'text', 'id': 'attr', 'value': ''},)
@@ -112,13 +112,13 @@ class InputStreamTestCase(unittest.TestCase):
 
     def test_empty_stream(self):
         stream = ''
-        istream = XMLInputStream(stream)
+        istream = XMLQuery(stream)
 
-class QueryStreamTestCase(unittest.TestCase):
+class XMLSearchQueryTestCase(unittest.TestCase):
 
     def test_empty_stream(self):
         stream = ''
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -127,7 +127,7 @@ class QueryStreamTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -137,7 +137,7 @@ class QueryStreamTestCase(unittest.TestCase):
         <search>
           <analyzer>myanalyzer</analyzer>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'myanalyzer')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -148,7 +148,7 @@ class QueryStreamTestCase(unittest.TestCase):
           <analyzer>   myanalyzer
           </analyzer>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'myanalyzer')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -158,7 +158,7 @@ class QueryStreamTestCase(unittest.TestCase):
         <search>
           <return_fields/>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -170,7 +170,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field></field>
           </return_fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -184,7 +184,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field>attr2</field>
           </return_fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ('name', 'attr1', 'attr2'))
         self.assertEqual(istream.getKwargs(), {})
@@ -199,7 +199,7 @@ class QueryStreamTestCase(unittest.TestCase):
             attr2   </field>
           </return_fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ('name', 'attr1', 'attr2'))
         self.assertEqual(istream.getKwargs(), {})
@@ -209,7 +209,7 @@ class QueryStreamTestCase(unittest.TestCase):
         <search>
           <fields/>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -221,7 +221,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -232,7 +232,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field id='name'/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -243,7 +243,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field value='foo'/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {})
@@ -255,7 +255,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field id='name' value='foo'/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
@@ -267,7 +267,7 @@ class QueryStreamTestCase(unittest.TestCase):
             <field id=' name  ' value='  foo  '/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
@@ -280,15 +280,15 @@ class QueryStreamTestCase(unittest.TestCase):
               value='  foo  '/>
           </fields>
         </search>"""
-        istream = XMLQueryInputStream(stream)
+        istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(InputStreamTestCase))
-    suite.addTest(unittest.makeSuite(QueryStreamTestCase))
+    suite.addTest(unittest.makeSuite(XMLQueryTestCase))
+    suite.addTest(unittest.makeSuite(XMLSearchQueryTestCase))
     return suite
 
 if __name__ == '__main__':

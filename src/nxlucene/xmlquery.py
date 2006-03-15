@@ -24,9 +24,9 @@ import logging
 
 import cElementTree as etree
 
-logger = logging.getLogger('stream')
+logger = logging.getLogger('nxlucene.xmlquery')
 
-class XMLInputStream(object):
+class XMLQuery(object):
 
     def __init__(self, xml_stream='', encoding='ISO-8859-15'):
 
@@ -68,7 +68,7 @@ class XMLInputStream(object):
     def getFields(self):
         return self._fields
 
-class XMLQueryInputStream(object):
+class XMLSearchQuery(object):
     """XML Stream for search query
     """
 
