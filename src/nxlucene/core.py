@@ -35,6 +35,7 @@ from searcher import LuceneSearcher
 import rss.resultset
 
 import nxlucene.query
+import nxlucene.analyzer
 
 class LuceneServer(object):
     """Lucene server.
@@ -165,7 +166,17 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
 
             elif field_type == 'Keyword':
-                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+                default_separator = '#'
+
+                if '#' in field_value:
+                    values = field_value.split('#')
+                else:
+                    values = field_value.split()
+
+                for value in values:
+                    if len(value.split(':')) > 1:
+                       value =  '_'.join(value.split(':'))
+                    doc.add(PyLucene.Field.Keyword(field_id, value))
 
             elif field_type == 'Date':
                 # The Date format must be an ISO one. This is a
@@ -297,28 +308,60 @@ class LuceneServer(object):
 
             index = field['id']
             value = field['value']
+            type =  field.get('type', '')
             condition = field.get('condition', 'OR')
 
-            term = PyLucene.Term(index, unicode(value.lower()))
-
-            # XXX make the following tests configurable with fiel
-            # types.
-
-            if index == 'path':
-                subquery = PyLucene.PrefixQuery(term)
-            else:
-                subquery = PyLucene.TermQuery(term)
+            # XXX make the following tests configurable with field
+            # types. Implementation for testing purpose
 
             default_clause = PyLucene.BooleanClause.Occur.MUST
-            query.add(
-                subquery,
-                nxlucene.query.boolean_clauses_map.get(
-                condition, default_clause))
-                
+
+            if type.lower() == 'path':
+                term = PyLucene.Term(index, unicode(value.lower()))
+                subquery = PyLucene.PrefixQuery(term)
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get(
+                    condition, default_clause))
+
+            elif type.lower() == 'keyword':
+
+                # XXX this is a mess. refactoring needed.
+
+                subquery = PyLucene.BooleanQuery()
+
+                parser = PyLucene.QueryParser(
+                    index, PyLucene.KeywordAnalyzer())
+                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
+
+                if '#' in value:
+                    values = value.split('#')
+                else:
+                    values = value.split()
+
+
+                for each in values:
+                    each = each.replace(':', '_')
+                    subquery.add(
+                        parser.parseQuery(each),
+                        nxlucene.query.boolean_clauses_map.get('OR'))
+
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get('AND'))
+
+            else:
+                term = PyLucene.Term(index, unicode(value.lower()))
+                subquery = PyLucene.TermQuery(term)
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get(
+                    condition, default_clause))
+
         self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
-        
+
         hits = searcher.get().search(query)
 
         tstop = time.time()

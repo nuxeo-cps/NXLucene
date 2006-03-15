@@ -76,7 +76,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             ()
 ,            search_fields=({'id' : u'fulltext',
-                            'value': u'ab'},))))
+                             'value': u'ab'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
         res = PythonResultSet(
@@ -105,6 +105,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'path',
+                            'type' : 'path',
                             'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'3'},))
 
@@ -112,6 +113,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'path',
+                            'type' : 'path',
                             'value': u'/a'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'3'},))
 
@@ -120,6 +122,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'path',
+                            'type' : 'path',
                             'value': u'/b'},))))
         self.assertEqual(res.getResults(), ())
 
@@ -137,6 +140,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'Member',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'4'},))
@@ -145,6 +149,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'Manager',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'4'},))
@@ -153,6 +158,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'Manager xxxxxx Member',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'4'},))
@@ -161,6 +167,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'xxxxxx',
                             },))))
         self.assertEqual(res.getResults(), ())
@@ -179,6 +186,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'xx:yy',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'5'},))
@@ -195,6 +203,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'MMM',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'6'},))
@@ -203,6 +212,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
+                            'type' : 'Keyword',
                             'value': u'xx:zz MMM',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'6'},))
