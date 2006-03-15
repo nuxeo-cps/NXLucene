@@ -259,7 +259,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'id': u'name', 'value': u'foo', 'condition':''},))
+                         ({'type': u'', 'condition': u'', 'id': u'name', 'value': u'foo'},))
 
     def test_with_fields_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
