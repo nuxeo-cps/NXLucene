@@ -121,7 +121,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_empty_doc_stream(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -130,7 +130,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_analyzer(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -140,7 +140,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'myanalyzer')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_analyzer_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -151,7 +151,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'myanalyzer')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_empty_return_fields(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -161,7 +161,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_return_fields_invalid(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -173,7 +173,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_return_fields_valid(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -187,7 +187,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ('name', 'attr1', 'attr2'))
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_return_fields_valid_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -202,7 +202,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ('name', 'attr1', 'attr2'))
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_fields_empty(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -212,7 +212,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_fields_invalid(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -224,7 +224,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -235,7 +235,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -246,7 +246,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {})
+        self.assertEqual(istream.getSearchFields(), ())
 
     def test_with_fields_(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -258,7 +258,8 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
+        self.assertEqual(istream.getSearchFields(),
+                         ({'id': u'name', 'value': u'foo', 'condition':''},))
 
     def test_with_fields_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -270,7 +271,8 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
+        self.assertEqual(istream.getSearchFields(),
+                         ({'id': u'name', 'value': u'foo', 'condition':''},))
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -283,7 +285,8 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         istream = XMLSearchQuery(stream)
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
-        self.assertEqual(istream.getKwargs(), {u'name': u'foo'})
+        self.assertEqual(istream.getSearchFields(),
+                         ({'id': u'name', 'value': u'foo', 'condition':''},))
 
 def test_suite():
     suite = unittest.TestSuite()

@@ -58,11 +58,13 @@ class LuceneSeachTestCase(unittest.TestCase):
         ob = Foo(name = 'Foo')
         query = FakeXMLInputStream(ob, attributs=(('name', 'Text'),))
         self._server.indexDocument('1', query)
-
-        res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'name': 'Foo'})))
-        self.assertEqual(res.getResults(), ({u'uid': u'1'},))
         
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': u'Foo'},))))
+        self.assertEqual(res.getResults(), ({u'uid': u'1'},))
+                      
     def xtest_fulltext(self):
 
         # Indes a new document.
@@ -71,19 +73,32 @@ class LuceneSeachTestCase(unittest.TestCase):
         self._server.indexDocument('2', query)
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'fulltext': 'a'})))
+            ResultSet(self._server.searchQuery(
+            ()
+,            search_fields=({'id' : u'fulltext',
+                            'value': u'a'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'fulltext': 'b'})))
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'fulltext',
+                            'value': u'b'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'fulltext': 'c'})))
+            ResultSet(self._server.searchQuery(
+                (),
+            search_fields=({'id' : u'fulltext',
+                            'value': u'c'},))))
+
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'fulltext': 'd'})))
+            ResultSet(self._server.searchQuery(
+                (),
+            search_fields=({'id' : u'fulltext',
+                            'value': u'd'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
 
@@ -95,16 +110,25 @@ class LuceneSeachTestCase(unittest.TestCase):
         self._server.indexDocument('3', query)
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'path': '/a/b/c'})))
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'3'},))
 
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'path': '/a'})))
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'value': u'/a'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'3'},))
 
         # Not good.
         res = PythonResultSet(
-            ResultSet(self._server.searchQuery((), kws={'path': '/b'})))
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'value': u'/b'},))))
         self.assertEqual(res.getResults(), ())
 
     def tearDown(self):

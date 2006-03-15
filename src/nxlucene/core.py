@@ -266,7 +266,7 @@ class LuceneServer(object):
     def search(self, query_str, **kw):
         raise NotImplementedError
 
-    def searchQuery(self, return_fields=(), kws=None):
+    def searchQuery(self, return_fields=(), search_fields=()):
 
         # XXX make this configurable
         start = 0
@@ -278,7 +278,7 @@ class LuceneServer(object):
         results = rss.resultset.ResultSet()
 
         # This behavior is not allowed.
-        if kws is None:
+        if not search_fields:
             return results.getStream()
 
         # Probably no indexes are created yet.
@@ -291,7 +291,12 @@ class LuceneServer(object):
         #
 
         query = PyLucene.BooleanQuery()
-        for index, value in kws.items():
+        for field in search_fields:
+
+            index = field['id']
+            value = field['value']
+            condition = field.get('condition', 'AND')
+
             term = PyLucene.Term(index, unicode(value.lower()))
 
             # XXX make the following tests configurable with fiel

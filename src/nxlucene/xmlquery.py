@@ -76,7 +76,7 @@ class XMLSearchQuery(object):
 
         self.xml_stream = xml_stream
         self._return_fields = []
-        self._kwargs = {}
+        self._search_fields = []
         self._analyzer = ''
 
         if not xml_stream:
@@ -99,9 +99,10 @@ class XMLSearchQuery(object):
         fields = doc.findall('fields/field')
         for field in fields:
             if field.attrib.get('id') and field.attrib.get('value'):
-                self._kwargs[
-                    unicode(field.attrib['id'].strip())
-                    ] = unicode(field.attrib['value'].strip())
+                self._search_fields.append(
+                    {'id' : unicode(field.attrib['id'].strip()),
+                     'value' : unicode(field.attrib['value'].strip()),
+                     'condition' : unicode(field.attrib.get('condition', '').strip())})
 
     def getAnalyzerType(self):
         if self._analyzer:
@@ -111,5 +112,5 @@ class XMLSearchQuery(object):
     def getReturnFields(self):
         return tuple(self._return_fields)
 
-    def getKwargs(self):
-        return self._kwargs
+    def getSearchFields(self):
+        return tuple(self._search_fields)
