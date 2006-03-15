@@ -309,7 +309,7 @@ class LuceneServer(object):
         self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
-
+        
         hits = searcher.get().search(query)
 
         tstop = time.time()

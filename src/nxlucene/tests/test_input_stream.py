@@ -21,8 +21,8 @@ $Id$
 
 import unittest
 
-from nxlucene.stream import XMLInputStream
-from nxlucene.stream import XMLQueryInputStream
+from nxlucene.xmlquery import XMLInputStream
+from nxlucene.xmlquery import XMLQueryInputStream
 
 class InputStreamTestCase(unittest.TestCase):
 

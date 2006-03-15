@@ -27,8 +27,8 @@ import zope.interface
 from interfaces import IXMLRPCLuceneServer
 from interfaces import ILuceneServer
 
-from stream import XMLInputStream
-from stream import XMLQueryInputStream
+from xmlquery import XMLInputStream
+from xmlquery import XMLQueryInputStream
 
 class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     """Lucene XML-RPC server
