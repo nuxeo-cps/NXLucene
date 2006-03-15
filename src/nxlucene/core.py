@@ -34,6 +34,8 @@ from searcher import LuceneSearcher
 
 import rss.resultset
 
+import nxlucene.query
+
 class LuceneServer(object):
     """Lucene server.
     """
@@ -295,7 +297,7 @@ class LuceneServer(object):
 
             index = field['id']
             value = field['value']
-            condition = field.get('condition', 'AND')
+            condition = field.get('condition', 'OR')
 
             term = PyLucene.Term(index, unicode(value.lower()))
 
@@ -307,9 +309,11 @@ class LuceneServer(object):
             else:
                 subquery = PyLucene.TermQuery(term)
 
-            query.add(subquery,
-                      # XXX : won't be always the case.
-                      PyLucene.BooleanClause.Occur.MUST)
+            default_clause = PyLucene.BooleanClause.Occur.MUST
+            query.add(
+                subquery,
+                nxlucene.query.boolean_clauses_map.get(
+                condition, default_clause))
                 
         self.log.debug('query %s' % query.toString())
 
