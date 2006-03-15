@@ -185,3 +185,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(XMLRPCLuceneServerTestCase))
     return suite
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')
