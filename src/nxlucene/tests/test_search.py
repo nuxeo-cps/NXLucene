@@ -92,7 +92,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                 (),
             search_fields=({'id' : u'fulltext',
                             'value': "ab cd"},))))
-#        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+##        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
     def test_path(self):
 
@@ -122,6 +122,91 @@ class LuceneSeachTestCase(unittest.TestCase):
             search_fields=({'id' : u'path',
                             'value': u'/b'},))))
         self.assertEqual(res.getResults(), ())
+
+    def test_keyword_search(self):
+        # Indes a new document.
+
+        ob = Foo(allowedRolesAndUsers="Manager Member")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+        self._server.indexDocument('4', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'Member',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'Manager',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'Manager xxxxxx Member',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'xxxxxx',
+                            },))))
+        self.assertEqual(res.getResults(), ())
+
+    def test_keyword_search_02(self):
+        # Indes a new document.
+
+        ob = Foo(allowedRolesAndUsers="xx:yy")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+        self._server.indexDocument('5', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'xx:yy',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'5'},))
+
+
+        ob = Foo(allowedRolesAndUsers="MMM xx:zz")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+        self._server.indexDocument('6', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'MMM',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'allowedRolesAndUsers',
+                            'value': u'xx:zz MMM',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+        
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
