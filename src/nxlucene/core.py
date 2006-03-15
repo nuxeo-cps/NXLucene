@@ -291,14 +291,21 @@ class LuceneServer(object):
         #
 
         query = PyLucene.BooleanQuery()
-
         for index, value in kws.items():
-            # XXX : check why it can't march the original case..
             term = PyLucene.Term(index, unicode(value.lower()))
-            query.add(PyLucene.TermQuery(term),
-                      # XXX : won't be always the case.
-                      PyLucene.BooleanClause.Occur.SHOULD)
 
+            # XXX make the following tests configurable with fiel
+            # types.
+
+            if index == 'path':
+                subquery = PyLucene.PrefixQuery(term)
+            else:
+                subquery = PyLucene.TermQuery(term)
+
+            query.add(subquery,
+                      # XXX : won't be always the case.
+                      PyLucene.BooleanClause.Occur.MUST)
+                
         self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
