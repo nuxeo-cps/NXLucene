@@ -57,17 +57,17 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         # nxlucene.testing has its own tmp store dir
         self.assert_(isinstance(self._xmlrpc_client.getStoreDir(), str))
 
-    def _indexObjects(self):
+    def _indexObjects(self, type_=''):
 
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name">
+            <field id="name" attribute="name" type="%s">
               foo
             </field>
           </fields>
-        </doc>"""
+        </doc>""" % type_
 
         res = self._xmlrpc_client.indexDocument('1', stream)
         self.assert_(res)
@@ -75,11 +75,11 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
-            <field id="name" attribute="name">
+            <field id="name" attribute="name" type="%s">
               bar
             </field>
           </fields>
-        </doc>"""
+        </doc>""" % type_
 
         res = self._xmlrpc_client.indexDocument('2', stream)
         self.assert_(res)
@@ -140,7 +140,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
 
         self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
 
-    def test_searching_on_uid(self):
+    def test_searching_on_keyword(self):
 
         self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
 
@@ -189,6 +189,110 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
         self.assertEqual(res, ({u'uid': u'2', u'name': u'bar'},))
+
+    def test_searching_on_text(self):
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
+
+        self._indexObjects(type_='Text')
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <analyzer>standard</analyzer>
+          <return_fields>
+            <field>uid</field>
+            <field>name</field>
+          </return_fields>
+          <fields>
+            <field
+              id="name"
+              value="foo"/>
+          </fields>
+        </search>"""
+
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
+
+        self.assertNotEqual(res, {})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res, ({u'uid': u'1', u'name': u'foo'},))
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <analyzer>standard</analyzer>
+          <return_fields>
+            <field>uid</field>
+            <field>name</field>
+          </return_fields>
+          <fields>
+            <field
+              id="name"
+              value="bar"/>
+          </fields>
+        </search>"""
+
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
+
+        self.assertNotEqual(res, {})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res, ({u'uid': u'2', u'name': u'bar'},))
+
+    def test_searching_on_uid_and_text(self):
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
+
+        self._indexObjects(type_='Text')
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <analyzer>standard</analyzer>
+          <return_fields>
+            <field>uid</field>
+            <field>name</field>
+          </return_fields>
+          <fields>
+            <field
+              id="name"
+              value="foo"/>
+             <field
+              id="uid"
+              value="1"/>
+          </fields>
+        </search>"""
+
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
+
+        self.assertNotEqual(res, {})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res, ({u'uid': u'1', u'name': u'foo'},))
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <analyzer>standard</analyzer>
+          <return_fields>
+            <field>uid</field>
+            <field>name</field>
+          </return_fields>
+          <fields>
+            <field
+              id="name"
+              value="bar"/>
+             <field
+              id="uid"
+              value="1"/>
+          </fields>
+        </search>"""
+
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
+
+        self.assertEqual(res, ())
 
     def tearDown(self):
         nxlucene.testing.xmlrpc.tearDown()
