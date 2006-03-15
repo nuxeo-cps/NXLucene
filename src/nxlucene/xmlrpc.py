@@ -50,8 +50,8 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         if xml_query:
             if b64 is True:
                 xml_query = base64.b64decode(xml_query)
-            istream = XMLQuery(xml_query)
-            return self._core.indexDocument(uid, istream)
+            iquery = XMLQuery(xml_query)
+            return self._core.indexDocument(uid, iquery)
         else:
             return False
 
@@ -75,10 +75,10 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_searchQuery(self, xml_query=''):
         self._core.log.info("xmlrpc_searchQuery")
         if xml_query:
-            istream = XMLSearchQuery(xml_query)
+            iquery = XMLSearchQuery(xml_query)
             # XXX istream.getAnalyzer()
-            rss = self._core.searchQuery(istream.getReturnFields(),
-                                         istream.getSearchFields())
+            rss = self._core.searchQuery(iquery.getReturnFields(),
+                                         iquery.getSearchFields())
 #            self._core.log.info("search results %s" %rss)
             return rss
         # Return an empty resultset
