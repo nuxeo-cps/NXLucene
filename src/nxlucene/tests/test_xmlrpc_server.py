@@ -19,22 +19,16 @@
 $Id$
 """
 
-import os
-import shutil
 import unittest
-import threading
-import PyLucene
 import xmlrpclib
-
-from twisted.internet import reactor
-from twisted.web import resource
-from twisted.web import xmlrpc
-from twisted.web import server
 
 import zope.interface
 
+import nxlucene.testing.xmlrpc
+
 from nxlucene.xmlrpc import XMLRPCLuceneServer
 from nxlucene.core import LuceneServer
+
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet
 
@@ -45,89 +39,36 @@ class P(object):
 
 class LuceneXMLRPCServerTestCase(unittest.TestCase):
 
-    logs = []
-    errors = []
-
-    _server = None
-    _client = None
-
     def setUp(self):
-
+        nxlucene.testing.xmlrpc.setUp()
+        self._xmlrpc_client = xmlrpclib.ServerProxy('http://foo/bar')
         self._store_dir = '/tmp/lucene'
-        self._port = 9280
 
-        self.logs = []
-        self.errors = []
-
-    def _callback(self, value):
-        self.logs.append(value)
-
-    def _errback(self, value):
-        self.errors.append('error:'+repr(value))
-
-    def xtest_implementation(self):
+    def test_implementation(self):
         from zope.interface.verify import verifyClass
         from nxlucene.interfaces import IXMLRPCLuceneServer
         self.assert_(verifyClass(IXMLRPCLuceneServer, XMLRPCLuceneServer))
 
-    def xtest_adapter(self):
+    def test_adapter(self):
         core = LuceneServer(self._store_dir)
         xmlrpc = XMLRPCLuceneServer(core)
         self.assertEqual(core, xmlrpc._core)
 
-    def test_01_alive(self):
+    def test_rdv(self):
 
-        # Let's launch it here !
+        sms = 'Hi there. Can we meet this evening ?'
+        self.assertEqual(self._xmlrpc_client.debug(sms), sms)
 
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
+    def test_optimize(self):
+        self.assertEqual(self._xmlrpc_client.optimize(), True)
+        
 
-        self._server = reactor.listenTCP(
-            self._port,
-            server.Site(XMLRPCLuceneServer(LuceneServer(self._store_dir))))
-
-        defer = self._client.callRemote('debug', 'test')
-        defer.addCallbacks(self._callback, self._errback)
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-        self.assertEqual(''.join(self.logs), 'test')
-
-    def xtest_optimize(self):
-
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
-
-        defer = self._client.callRemote('optimize')
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        self.assertEqual(self.logs, [True])
-
-        self.logs = []
-
-#        self._server.stopListening()
-
-##    def test_store_dir(self):
-##        self._client = None
-##        self._client = xmlrpclib.Server('http://127.0.0.1:%s'%9180)
-##        self.assertEqual(self._store_dir, self._client.getStoreDir())
-##        self.logs = []
+    def test_store_dir(self):
+        # nxlucene.testing has its own tmp store dir
+        self.assert_(isinstance(self._xmlrpc_client.getStoreDir(), str))
 
     def _indexObjects(self):
 
-##        if not self._server:
-##            self._server = reactor.listenTCP(
-##                self._port,
-##                server.Site(LuceneServer(self._store_dir)))
-
-        import xmlrpclib
-
-        self._client = None
-#        self._client = xmlrpc.Proxy()
-
-        self._client = xmlrpclib.ServerProxy('http://127.0.0.1:%s'%self._port)
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
@@ -138,7 +79,8 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        defer = self._client.indexDocument('1', stream)
+        res = self._xmlrpc_client.indexDocument('1', stream)
+        self.assert_(res)
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
@@ -149,25 +91,18 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-#        defer = self._client.callRemote('indexDocument', '2', stream)
-#        defer.addCallbacks(self._callback, self._errback)
-#
-#        reactor.callLater(0.1, reactor.crash)
-#        reactor.run(installSignalHandlers=0)
-#
-#        self.assertEqual(self.logs, [True, True])
+        res = self._xmlrpc_client.indexDocument('2', stream)
+        self.assert_(res)
 
-    def xtest_indexing(self):
+    def test_indexing(self):
         # See test_searching
         self._indexObjects()
 
-    def xtest_reindexing(self):
+    def test_reindexing(self):
+
         self._indexObjects()
 
-        self.logs = []
-
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
+        # XXX serch back to check.
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
@@ -178,13 +113,8 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        defer = self._client.callRemote('reindexDocument', '1', stream)
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        self.assertEqual(self.logs, [True])
+        res = self._xmlrpc_client.reindexDocument('1', stream)
+        self.assert_(res)
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
@@ -195,42 +125,22 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
           </fields>
         </doc>"""
 
-        defer = self._client.callRemote('reindexDocument', '2', stream)
-        defer.addCallbacks(self._callback, self._errback)
+        res = self._xmlrpc_client.reindexDocument('2', stream)
+        self.assert_(res)
 
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        self.assertEqual(self.logs, [True, True])
-
-    def xtest_unindexing(self):
+    def test_unindexing(self):
 
         # XXX use searches
 
         self._indexObjects()
 
-        self.logs = []
+        res = self._xmlrpc_client.unindexDocument('1')
+        self.assert_(res)
 
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
+        res = self._xmlrpc_client.unindexDocument('2')
+        self.assert_(res)
 
-        defer = self._client.callRemote('unindexDocument', '1')
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        self.assertEqual(self.logs, [True])
-
-        defer = self._client.callRemote('unindexDocument', '2')
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        self.assertEqual(self.logs, [True, True])
-
-    def xtest_searching(self):
+    def test_searching(self):
 
         self._indexObjects()
 
@@ -245,28 +155,15 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
             <field
               id="uid"
               value="1"/>
-            <field
-              id="name"
-              value="foo"/>
           </fields>
         </search>"""
 
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
 
-        self.logs = []
-
-        defer = self._client.callRemote('searchQuery', stream)
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        if self.logs:
-            res = PythonResultSet(ResultSet(self.logs[0])).getResults()
-            self.assertNotEqual(res, {})
-            self.assertEqual(len(res), 1)
-            self.assertEqual(res, ({u'uid': u'1', u'name': u'foo'},))
+        self.assertNotEqual(res, {})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res, ({u'uid': u'1', u'name': u'foo'},))
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -279,32 +176,18 @@ class LuceneXMLRPCServerTestCase(unittest.TestCase):
             <field
               id="uid"
               value="2"/>
-            <field
-              id="name"
-              value="bar"/>
           </fields>
         </search>"""
 
-        self._client = None
-        self._client = xmlrpc.Proxy('http://127.0.0.1:%s'%self._port)
+        rss = self._xmlrpc_client.searchQuery(stream)
+        res = PythonResultSet(ResultSet(rss)).getResults()
 
-        self.logs = []
-
-        defer = self._client.callRemote('searchQuery', stream)
-        defer.addCallbacks(self._callback, self._errback)
-
-        reactor.callLater(1, reactor.crash)
-        reactor.run(installSignalHandlers=0)
-
-        if self.logs:
-            res = PythonResultSet(ResultSet(self.logs[0])).getResults()
-            self.assertNotEqual(res, {})
-            self.assertEqual(len(res), 1)
-            self.assertEqual(res, ({u'uid': u'2', u'name': u'bar'},))
+        self.assertNotEqual(res, {})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res, ({u'uid': u'2', u'name': u'bar'},))
 
     def tearDown(self):
-        if os.path.exists(self._store_dir):
-            shutil.rmtree(self._store_dir)
+        nxlucene.testing.xmlrpc.tearDown()
 
 def test_suite():
     suite = unittest.TestSuite()
