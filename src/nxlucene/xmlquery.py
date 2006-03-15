@@ -102,7 +102,11 @@ class XMLSearchQuery(object):
                 self._search_fields.append(
                     {'id' : unicode(field.attrib['id'].strip()),
                      'value' : unicode(field.attrib['value'].strip()),
-                     'condition' : unicode(field.attrib.get('condition', '').strip())})
+                     'condition' : unicode(field.attrib.get('condition', '').strip()),
+                     'type' : unicode(field.attrib.get('type', '').strip()),
+                     },
+                    )
+
 
     def getAnalyzerType(self):
         if self._analyzer:
