@@ -47,14 +47,12 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         self.assertEqual(core, xmlrpc._core)
 
     def test_rdv(self):
-
         sms = 'Hi there. Can we meet this evening ?'
         self.assertEqual(self._xmlrpc_client.debug(sms), sms)
 
     def test_optimize(self):
         self.assertEqual(self._xmlrpc_client.optimize(), True)
         
-
     def test_store_dir(self):
         # nxlucene.testing has its own tmp store dir
         self.assert_(isinstance(self._xmlrpc_client.getStoreDir(), str))
@@ -92,7 +90,9 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
 
     def test_reindexing(self):
 
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
         self._indexObjects()
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
 
         # XXX serch back to check.
 
@@ -108,6 +108,8 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         res = self._xmlrpc_client.reindexDocument('1', stream)
         self.assert_(res)
 
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
+
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <doc>
           <fields>
@@ -120,21 +122,31 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         res = self._xmlrpc_client.reindexDocument('2', stream)
         self.assert_(res)
 
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
+
     def test_unindexing(self):
 
-        # XXX use searches
-
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
         self._indexObjects()
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
 
         res = self._xmlrpc_client.unindexDocument('1')
         self.assert_(res)
 
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 1)
+
         res = self._xmlrpc_client.unindexDocument('2')
         self.assert_(res)
 
-    def test_searching(self):
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
+
+    def test_searching_on_uid(self):
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 0)
 
         self._indexObjects()
+
+        self.assertEqual(self._xmlrpc_client.getNumberOfDocuments(), 2)
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
