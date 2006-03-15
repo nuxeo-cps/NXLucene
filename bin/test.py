@@ -21,7 +21,7 @@ zope.testing.testrunner.
 import sys
 
 path = "src"
-pylucene_path = "src/weblucene/PyLucene/python"
+pylucene_path = "src/PyLucene/python"
 print "Running tests from", path
 
 # Insert the WebLucene src dir first in the sys.path to avoid a name conflict
