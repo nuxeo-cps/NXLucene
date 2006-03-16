@@ -350,9 +350,6 @@ def find_modules(dirname):
     # Don't include duplicates (like foo.py and foo.pyc), and give
     # precedance to the .py files.
     for file in os.listdir(dirname):
-        # Exclude tests / fltests
-        if file.startswith('tests') or file.startswith('fltests'):
-            continue
         filepath = os.path.join(dirname, file)
         if os.path.isdir(filepath): dirs.append(filepath)
         elif not re.match(r'\w+.py.?', file):
@@ -371,7 +368,10 @@ def find_modules(dirname):
 
     # Recurse to the child directories.
     # **twisted** here's the change: commented next line out
-    #for d in dirs: modules += find_modules(d)
+    for d in dirs:
+        if 'tests' in d or 'fltests' in d:
+            continue
+        modules += find_modules(d)
     return modules
 
 
