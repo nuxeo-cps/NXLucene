@@ -37,36 +37,44 @@ class XMLQuery(object):
         if not xml_stream:
             return
 
-#        logger.debug(xml_stream)
         doc = etree.XML(self._xml_stream)
 
         fields = doc.findall('fields/field')
         for field in fields:
-            id_ = field.attrib.get('id', '').strip()
-            if id_:
-                value = ''
-                if field.text:
-                    try:
-                        value = base64.b64decode(field.text)
-                    except:
-                        value = field.text.strip()
 
-                # Convert to unicode
+            id_ = field.attrib.get('id', '').strip()
+            if not id_:
+                continue
+
+            value = ''
+
+            if field.text:
+
+                # Deal with base64 if encoded
+                try:
+                    value = base64.b64decode(field.text)
+                except:
+                    value = field.text.strip()
+
+                # Convert to unicode.
                 try:
                     value = unicode(value)
                 except:
                     value = unicode(value, self._encoding)
 
-                logger.debug('Found id=%s with value=%s' % (id_, value))
-                self._fields += ({
-                    'id' : id_,
-                    'attribute' : field.attrib.get('attribute', '').strip(),
-                    'type' : field.attrib.get('type', '').strip(),
-                    'value': value,
-                    },)
+            logger.debug('Found id=%s with value=%s' % (id_, value))
+            self._fields += ({
+                'id' : id_,
+                'attribute' : field.attrib.get('attribute', '').strip(),
+                'type' : field.attrib.get('type', '').strip(),
+                'value': value,
+                },)
 
     def getFields(self):
         return self._fields
+
+    def getFieldNames(self):
+        return tuple([x['id'] for x in self._fields])
 
 class XMLSearchQuery(object):
     """XML Stream for search query

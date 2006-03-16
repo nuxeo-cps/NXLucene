@@ -157,7 +157,8 @@ class LuceneServer(object):
                 % (field_id, field_value, field_type))
 
             if field_type == 'Text':
-                doc.add(PyLucene.Field.Text(field_id, field_value))
+                doc.add(
+                    PyLucene.Field(field_id, field_value, True, True, True))
 
             elif field_type == 'UnStored':
                 doc.add(PyLucene.Field.UnStored(field_id, field_value))
@@ -188,7 +189,7 @@ class LuceneServer(object):
                     date_formated = PyLucene.SimpleDateFormat(
                         iso).parse(field_value)
                 except PyLucene.JavaError:
-                    break
+                    pass
 
                 try:
                     date_field = PyLucene.DateField.dateToString(date_formated)
@@ -355,7 +356,7 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get('AND'))
 
             else:
-                term = PyLucene.Term(index, unicode(value.lower()))
+                term = PyLucene.Term(index, value.lower())
                 subquery = PyLucene.TermQuery(term)
                 query.add(
                     subquery,

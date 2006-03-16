@@ -216,7 +216,48 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'xx:zz MMM',
                             },))))
         self.assertEqual(res.getResults(), ({u'uid': u'6'},))
-        
+
+    def test_textindex(self):
+        ob = Foo(portal_type="Section")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('portal_type', 'Keyword'),))
+        self._server.indexDocument('6', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': u'Section',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+
+        ob = Foo(portal_type="CPS Type")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('portal_type', 'Keyword'),))
+        self._server.indexDocument('7', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': u'CPS Type',
+                            },))))
+        self.assertEqual(res.getResults(), ({u'uid': u'7'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': u'CPS',
+                            },))))
+        self.assertEqual(res.getResults(), ())
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
