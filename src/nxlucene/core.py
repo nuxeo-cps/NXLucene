@@ -203,6 +203,10 @@ class LuceneServer(object):
 
             elif field_type == 'Path':
                 # XXX implement me.
+                if '/' not in field_value:
+                    field_value  = '/'.join(field_value.split())
+                if not field_value.startswith('/'):
+                    field_value = '/' + field_value
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             else:
@@ -309,7 +313,7 @@ class LuceneServer(object):
             index = field['id']
             value = field['value']
             type =  field.get('type', '')
-            condition = field.get('condition', 'OR')
+            condition = field.get('condition', 'AND')
 
             # XXX make the following tests configurable with field
             # types. Implementation for testing purpose
@@ -317,7 +321,7 @@ class LuceneServer(object):
             default_clause = PyLucene.BooleanClause.Occur.MUST
 
             if type.lower() == 'path':
-                term = PyLucene.Term(index, unicode(value.lower()))
+                term = PyLucene.Term(index, unicode(value))
                 subquery = PyLucene.PrefixQuery(term)
                 query.add(
                     subquery,
@@ -357,6 +361,8 @@ class LuceneServer(object):
                     subquery,
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
+
+#        print query.toString()
 
         self.log.debug('query %s' % query.toString())
 
