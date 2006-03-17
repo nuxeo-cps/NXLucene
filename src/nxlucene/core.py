@@ -189,7 +189,7 @@ class LuceneServer(object):
                     date_formated = PyLucene.SimpleDateFormat(
                         iso).parse(field_value)
                 except PyLucene.JavaError:
-                    pass
+                    continue
 
                 try:
                     date_field = PyLucene.DateField.dateToString(date_formated)
