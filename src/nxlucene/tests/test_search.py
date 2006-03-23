@@ -86,12 +86,32 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'cd'},))))
         self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
-        # Use whitespece analyzer
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
                 (),
             search_fields=({'id' : u'fulltext',
-                            'value': "ab cd"},))))
+                            'value': "ab OR cd"},))))
+        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+                (),
+            search_fields=({'id' : u'fulltext',
+                            'value': "ab AND cd"},))))
+        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+                (),
+            search_fields=({'id' : u'fulltext',
+                            'value': "'ab cd'"},))))
+        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+
+##        res = PythonResultSet(
+##            ResultSet(self._server.searchQuery(
+##                (),
+##            search_fields=({'id' : u'fulltext',
+##                            'value': "a*"},))))
 ##        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
 
     def test_path(self):

@@ -83,10 +83,16 @@ class XMLSearchQuery(object):
     def __init__(self, xml_stream=''):
 
         self.xml_stream = xml_stream
-        self._return_fields = []
-        self._search_fields = []
         self._analyzer = ''
 
+        self._return_fields = []
+        self._search_fields = []
+        self._sort = {}
+        self._operator = 'AND'
+
+        self._start = 0
+        self._results = 10
+        
         if not xml_stream:
             return
 
@@ -115,6 +121,10 @@ class XMLSearchQuery(object):
                      },
                     )
 
+#        # sorting
+#        fields =  doc.findall('sort')
+#        for each in sort:
+#            self._sort[each.tag] = each.text
 
     def getAnalyzerType(self):
         if self._analyzer:

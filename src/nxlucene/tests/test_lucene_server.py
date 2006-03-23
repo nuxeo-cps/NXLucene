@@ -344,12 +344,14 @@ class LuceneServerTestCase(unittest.TestCase):
 
         # Search me
         res = self._server.searchQuery(search_fields=({'id' : u'uid',
-                                                       'value': uid1},))
+                                                       'value': uid1,
+                                                       'type' : 'Path',},))
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'/portal/foo/bar'},))
 
         res = self._server.searchQuery(search_fields=({'id' : u'uid',
-                                                       'value': uid2},))
+                                                       'value': uid2,
+                                                       'type' : 'Path',},))
         res = PythonResultSet(ResultSet(res)).getResults()
         self.assertEqual(res, ({u'uid': u'/portal/foo/foo'},))
 
