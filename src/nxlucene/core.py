@@ -284,11 +284,11 @@ class LuceneServer(object):
     def search(self, query_str, **kw):
         raise NotImplementedError
 
-    def searchQuery(self, return_fields=(), search_fields=()):
+    def searchQuery(self, return_fields=(), search_fields=(), **kw):
 
         # XXX make this configurable
         start = 0
-        stop = 10
+        stop = 100
 
         # uid will be returned automatically
         return_fields = ('uid',) + return_fields
@@ -356,10 +356,15 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get('AND'))
 
             else:
-                term = PyLucene.Term(index, value.lower())
-                subquery = PyLucene.TermQuery(term)
+                parser = PyLucene.QueryParser(
+                    index, PyLucene.StandardAnalyzer())
+                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
+
+                subquery = PyLucene.PhraseQuery()
+                subquery.add(PyLucene.Term(index, value))
+                
                 query.add(
-                    subquery,
+                    parser.parseQuery(subquery.toString()),
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
@@ -369,28 +374,42 @@ class LuceneServer(object):
 
         tstart = time.time()
 
-        hits = searcher.get().search(query)
+        # XXX work on query sorting and batch
+        hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
 
+        self.log.debug("Number of results %s" % str(hits.length()))
+        
         tstop = time.time()
         self.log.debug("Time to find return results %s" % str(tstop-tstart))
 
-        # XXX Change this it's sucky...
-        tstart = time.time()
-        hits = list(hits)[start:stop]
-        tstop = time.time()
-        self.log.debug("Time to find get results %s" % str(tstop-tstart))
 
-        uids = []
+        # Use bits iterator here for performance reasons.  Don't ever
+        # think about building a list and use offset for the batch the
+        # performances would be really bad.
+        # Consider the code below optimized and well tested with a
+        # huge amount of records.
+
+        tstart = time.time()
+
+        i = -1
         for i, doc in hits:
+
+            i += 1
+
+            if i < start:
+                continue
+
+            if i > stop:
+                break
+
             table = dict([(field.name(), field.stringValue())
                           for field in doc
                           if unicode(field.name()) in return_fields])
-            uid = table['uid']
-            if uid not in uids:
-                uids.append(uid)
-                del table['uid']
-#                self.log.debug("match for %s %s" %(uid, str(table)))
-                results.addItem(uid, table)
+            results.addItem(table['uid'], table)
+
+        tstop = time.time()
+        self.log.debug(
+            "Time to construct the RSS query %s" % str(tstop-tstart))
 
         searcher.close()
         return results.getStream()
