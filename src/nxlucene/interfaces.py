@@ -91,13 +91,12 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
             <field id="uid" value="1"/>
           </fields>
           <sort>          
-            <sort-on field="modified" type="Date"/>
+            <sort-on>modified</sort-on>
             <sort-limit>100</sort-limit>
             <sort-order>reversed</sort-order>
           </sort>
           <operator>AND</operator>
-          <batch start=0>
-          <results>10</results>
+          <batch start="0", size="10">
         </search>
 
         This will return a RSS document as a resultset.
