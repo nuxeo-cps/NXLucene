@@ -287,3 +287,21 @@ class IXMLSearchQuery(zope.interface.Interface):
 
         XXX explicit
         """
+
+class IXMLQuery(zope.interface.Interface):
+    """XML Query.
+
+    XML Custom query used for indexing.
+    """
+
+    
+    def getFields():
+        """Returns a tuple of dictionnaries containing the fields to
+        index and how to index them.
+
+        XXX : explicit the dicts.
+        """
+
+    def getFieldNames():
+        """Returns the field names to index. (tuple of string)
+        """
