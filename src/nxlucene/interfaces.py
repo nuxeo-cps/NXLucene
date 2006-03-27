@@ -221,7 +221,7 @@ class ILuceneServer(zope.interface.Interface):
         `query_instance` : XML Query Instance
         """
 
-    def searchQuery(return_fields=(), kws=None):
+    def searchQuery(return_fields=(), search_fields=(), search_options={}):
         """Search results.
         """
         
@@ -257,4 +257,33 @@ class ILuceneSearcher(zope.interface.Interface):
 
     def get():
         """Return an IndexSearcher instance
+        """
+
+class IXMLSearchQuery(zope.interface.Interface):
+    """XML Search Query
+
+    XML Custom query supported by NXLucene
+    """
+
+    def getReturnFields():
+        """Get field names that should come with the results.
+
+        Filter out stored values from Lucene record.
+
+        Returns a tuple of strings representing the field names that
+        are supposed to be returned.
+        """
+
+    def getSearchFields():
+        """Search fields configuration.
+
+        Returns a tuple of dictionnaries.
+
+        XXX explicit about tne dict format.
+        """
+
+    def getSearchOptions():
+        """Search options.
+
+        XXX explicit
         """
