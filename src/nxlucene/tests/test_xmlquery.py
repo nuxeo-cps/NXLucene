@@ -21,10 +21,18 @@ $Id$
 
 import unittest
 
+from zope.interface.verify import verifyClass
+
+from nxlucene.interfaces import IXMLQuery
+from nxlucene.interfaces import IXMLSearchQuery
+
 from nxlucene.xmlquery import XMLQuery
 from nxlucene.xmlquery import XMLSearchQuery
 
 class XMLQueryTestCase(unittest.TestCase):
+
+    def test_implementation(self):
+        verifyClass(IXMLQuery, XMLQuery)
 
     def test_O1_stream(self):
 
@@ -115,6 +123,9 @@ class XMLQueryTestCase(unittest.TestCase):
         istream = XMLQuery(stream)
 
 class XMLSearchQueryTestCase(unittest.TestCase):
+
+    def test_implementation(self):
+        verifyClass(IXMLSearchQuery, XMLSearchQuery)
 
     def test_empty_stream(self):
         stream = ''

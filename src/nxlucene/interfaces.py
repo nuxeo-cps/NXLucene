@@ -288,6 +288,10 @@ class IXMLSearchQuery(zope.interface.Interface):
         XXX explicit
         """
 
+    def getAnalyzerType():
+        """Get the analyzer to use for this query.
+        """
+
 class IXMLQuery(zope.interface.Interface):
     """XML Query.
 

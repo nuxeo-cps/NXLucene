@@ -284,7 +284,8 @@ class LuceneServer(object):
     def search(self, query_str, **kw):
         raise NotImplementedError
 
-    def searchQuery(self, return_fields=(), search_fields=(), **kw):
+    def searchQuery(self, return_fields=(), search_fields=(),
+                    search_options={}):
 
         # XXX make this configurable
         start = 0

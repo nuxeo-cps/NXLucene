@@ -24,9 +24,16 @@ import logging
 
 import cElementTree as etree
 
+import zope.interface
+
+from interfaces import IXMLQuery
+from interfaces import IXMLSearchQuery
+
 logger = logging.getLogger('nxlucene.xmlquery')
 
 class XMLQuery(object):
+
+    zope.interface.implements(IXMLQuery)
 
     def __init__(self, xml_stream='', encoding='ISO-8859-15'):
 
@@ -76,18 +83,21 @@ class XMLQuery(object):
     def getFieldNames(self):
         return tuple([x['id'] for x in self._fields])
 
+
 class XMLSearchQuery(object):
-    """XML Stream for search query
-    """
+
+    zope.interface.implements(IXMLSearchQuery)
 
     def __init__(self, xml_stream=''):
 
         self.xml_stream = xml_stream
-        self._analyzer = ''
+
+        self._analyzer = 'standard'
 
         self._return_fields = []
         self._search_fields = []
-        self._sort = {}
+        self._search_options = []
+        
         self._operator = 'AND'
 
         self._start = 0
@@ -126,13 +136,14 @@ class XMLSearchQuery(object):
 #        for each in sort:
 #            self._sort[each.tag] = each.text
 
-    def getAnalyzerType(self):
-        if self._analyzer:
-            return self._analyzer
-        return 'standard'
-
     def getReturnFields(self):
         return tuple(self._return_fields)
 
     def getSearchFields(self):
         return tuple(self._search_fields)
+
+    def getSearchOptions(self):
+        return tuple(self._search_options)
+
+    def getAnalyzerType(self):
+        return self._analyzer
