@@ -400,7 +400,8 @@ class LuceneServer(object):
 
         sort_on = search_options.get('sort-on', '')
         if sort_on:
-            hits = searcher.get().search(query, PyLucene.Sort(sort_on))
+            hits = searcher.get().search(
+                query, PyLucene.Sort(sort_on, sort_order))
         else:
             hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
 
