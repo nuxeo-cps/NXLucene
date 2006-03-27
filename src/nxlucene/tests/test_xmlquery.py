@@ -299,6 +299,62 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getSearchFields(),
                          ({'type': u'', 'condition': u'', 'id': u'name', 'value': u'foo'},))
 
+
+    def test_query_with_sort_options(self):
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <return_fields/>
+          <fields/>
+          <sort>
+            <sort-on>Title</sort-on>
+            <sort-order>reverse</sort-order>
+            <sort-limit>100</sort-limit>
+          </sort>
+        </search>"""
+
+        query = XMLSearchQuery(stream)
+        options = query.getSearchOptions()
+
+        self.assertEqual(options, {'sort-limit': '100',
+                                   'sort-on': 'Title',
+                                   'sort-order': 'reverse'}
+                         )
+
+    def test_query_with_batch_options(self):
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <return_fields/>
+          <fields/>
+          <batch start="10"  size="100"/>
+        </search>"""
+
+        query = XMLSearchQuery(stream)
+        options = query.getSearchOptions()
+
+        self.assertEqual(options, {'start' : '10',
+                                   'size'  : '100',
+                                   }
+                         )
+
+    def test_query_with_operator_options(self):
+
+        stream = """<?xml version="1.0" encoding="UTF-8"?>
+        <search>
+          <return_fields/>
+          <fields/>
+          <operator>OR</operator>
+        </search>"""
+
+        query = XMLSearchQuery(stream)
+        options = query.getSearchOptions()
+
+        self.assertEqual(options, {'operator' : 'OR',
+                                   }
+                         )
+    
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(XMLQueryTestCase))

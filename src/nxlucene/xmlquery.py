@@ -96,30 +96,40 @@ class XMLSearchQuery(object):
 
         self._return_fields = []
         self._search_fields = []
-        self._search_options = []
-        
+        self._search_options = {}
+
         self._operator = 'AND'
 
         self._start = 0
         self._results = 10
-        
+
         if not xml_stream:
             return
 
         doc = etree.XML(xml_stream)
 
+
+        #
         # Analyzer
+        #
+
         analyzers = doc.findall('analyzer')
         if analyzers:
             self._analyzer = unicode(analyzers[0].text.strip())
 
+        #
         # return fields
+        #
+
         return_fields = doc.findall('return_fields/field')
         for return_field in return_fields:
             if return_field.text:
                 self._return_fields.append(unicode(return_field.text.strip()))
 
+        #
         # fields
+        #
+
         fields = doc.findall('fields/field')
         for field in fields:
             if field.attrib.get('id') and field.attrib.get('value'):
@@ -131,11 +141,34 @@ class XMLSearchQuery(object):
                      },
                     )
 
-#        # sorting
-#        fields =  doc.findall('sort')
-#        for each in sort:
-#            self._sort[each.tag] = each.text
+        #
+        # Batching
+        #
 
+        batch = doc.find('batch')
+        if batch is not None:
+            for attr in ('start', 'size'):
+                self._search_options[attr] = batch.attrib.get(attr)
+
+        #
+        # sort options
+        #
+
+        sort = doc.find('sort')
+        if sort is not None:
+            for tagname in ('sort-on', 'sort-limit', 'sort-order'):
+                elt = sort.find(tagname)
+                if elt is not None:
+                    self._search_options[tagname] = elt.text
+
+        #
+        # Query operator
+        #
+
+        elt = doc.find('operator')
+        if elt is not None:
+            self._search_options['operator'] = elt.text
+        
     def getReturnFields(self):
         return tuple(self._return_fields)
 
@@ -143,7 +176,7 @@ class XMLSearchQuery(object):
         return tuple(self._search_fields)
 
     def getSearchOptions(self):
-        return tuple(self._search_options)
+        return self._search_options
 
     def getAnalyzerType(self):
         return self._analyzer
