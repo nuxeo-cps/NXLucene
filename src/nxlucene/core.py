@@ -369,16 +369,20 @@ class LuceneServer(object):
                     subquery,
                     nxlucene.query.boolean_clauses_map.get('AND'))
 
+            elif type.lower() == 'date':
+                print index
+
             else:
-                parser = PyLucene.QueryParser(
-                    index, PyLucene.StandardAnalyzer())
+
+                analyzer = PyLucene.StandardAnalyzer()
+                
+                parser = PyLucene.QueryParser(index, analyzer)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
 
-                subquery = PyLucene.PhraseQuery()
-                subquery.add(PyLucene.Term(index, value))
-                
+                subquery = parser.parseQuery(value)
+
                 query.add(
-                    parser.parseQuery(subquery.toString()),
+                    subquery,
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
