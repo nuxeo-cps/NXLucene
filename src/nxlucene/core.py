@@ -35,7 +35,6 @@ from searcher import LuceneSearcher
 import rss.resultset
 
 import nxlucene.query
-import nxlucene.analyzer
 
 class LuceneServer(object):
     """Lucene server.
@@ -287,13 +286,32 @@ class LuceneServer(object):
     def searchQuery(self, return_fields=(), search_fields=(),
                     search_options={}):
 
-        # XXX make this configurable
-        start = 0
-        stop = 100
+        # Get batching information from search_options.
+        start = search_options.get('start', 0)
+        try:
+            start = int(start)
+        except TypeError:
+            self.log.debug('Invalid batch start value %s' % repr(start)) 
+            start = 0
+
+        size = search_options.get('size', 100)
+        try:
+            size = int(size)
+        except TypeError:
+            self.log.debug('Invalid batch size value %s' % repr(size)) 
+            size = 100
+
+        # Get global request operator and get the clause we will use
+        # for the boolean query below.
+        default_query_operator = search_options.get('operator', 'AND').upper()
+        default_clause = nxlucene.query.boolean_clauses_map.get(
+            default_query_operator, 'AND',
+            )
 
         # uid will be returned automatically
         return_fields = ('uid',) + return_fields
 
+        # Create a RSS ResultSet instance to stack result items.
         results = rss.resultset.ResultSet()
 
         # This behavior is not allowed.
@@ -316,11 +334,6 @@ class LuceneServer(object):
             value = field['value']
             type =  field.get('type', '')
             condition = field.get('condition', 'AND')
-
-            # XXX make the following tests configurable with field
-            # types. Implementation for testing purpose
-
-            default_clause = PyLucene.BooleanClause.Occur.MUST
 
             if type.lower() == 'path':
                 term = PyLucene.Term(index, unicode(value))
@@ -375,14 +388,26 @@ class LuceneServer(object):
 
         tstart = time.time()
 
-        # XXX work on query sorting and batch
-        hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
+        #
+        # Extract sorting information from search options.
+        #
+
+        sort_order = search_options.get('sort-order')
+        if not sort_order:
+            sort_order = True
+        else:
+            sort_order = False
+
+        sort_on = search_options.get('sort-on', '')
+        if sort_on:
+            hits = searcher.get().search(query, PyLucene.Sort(sort_on))
+        else:
+            hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
 
         self.log.debug("Number of results %s" % str(hits.length()))
         
         tstop = time.time()
         self.log.debug("Time to find return results %s" % str(tstop-tstart))
-
 
         # Use bits iterator here for performance reasons.  Don't ever
         # think about building a list and use offset for the batch the
@@ -400,7 +425,7 @@ class LuceneServer(object):
             if i < start:
                 continue
 
-            if i > stop:
+            if i > (start + size):
                 break
 
             table = dict([(field.name(), field.stringValue())

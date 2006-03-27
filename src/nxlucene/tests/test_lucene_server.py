@@ -367,6 +367,52 @@ class LuceneServerTestCase(unittest.TestCase):
         self._server.unindexDocument(uid2)
         self.assertEqual(len(self._server), 0)
 
+    def test_batched_search(self):
+
+        self.assertEqual(len(self._server), 0)
+
+        uid1 = '/portal/foo/bar'
+        uid2 = '/portal/foo/foo'
+        uid3 = '/portal/foo/foo/bar'
+
+        o1 = P('bob')
+        o2 = P('Jack')
+        o3 = P('bob')
+
+        self._server.indexDocument(
+            uid1, FakeXMLInputStream(o1, attributs=('name',)))
+        self.assertEqual(len(self._server), 1)
+
+        self._server.indexDocument(
+            uid2, FakeXMLInputStream(o2, attributs=('name',)))
+        self.assertEqual(len(self._server), 2)
+
+        self._server.indexDocument(
+            uid3, FakeXMLInputStream(o3, attributs=('name',)))
+        self.assertEqual(len(self._server), 3)
+
+        # We find two documents matching here.
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'bob',
+                            'type' : 'Text',},))
+
+        res = PythonResultSet(ResultSet(res)).getResults()
+
+        self.assertEqual(len(res), 2)
+
+        # Let's ask for a one document batch and check if it works.
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'bob',
+                            'type' : 'Text',},),
+            search_options={'start': 0, 'size':1,},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()
+
+        self.assertEqual(len(res), 1)
+
 class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
     def setUp(self):

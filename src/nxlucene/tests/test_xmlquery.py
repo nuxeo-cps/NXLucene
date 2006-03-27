@@ -353,7 +353,6 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(options, {'operator' : 'OR',
                                    }
                          )
-    
 
 def test_suite():
     suite = unittest.TestSuite()
