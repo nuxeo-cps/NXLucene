@@ -48,11 +48,20 @@ class PythonResultSet(object):
             for field in self._getFieldsFor(item):
                 res[unicode(field.attrib['id'])] = unicode(field.text)
             self._results += (res,)
-        return self._results
+        return (self._results, self._getNbItems())
 
     def _getItems(self):
         return tuple(
             self._elt.getiterator("{http://backend.userland.com/rss2}item"))
+
+    def _getNbItems(self):
+        e = self._elt.find("{http://namespaces.nuxeo.org/nxlucene/}nbitems")
+        if e is not None:
+            try:
+                nb_items = int(e.text)
+            except TypeError:
+                nb_items = 0
+        return nb_items            
 
     def _getFieldsFor(self, fields_node):
         return fields_node.getiterator(
