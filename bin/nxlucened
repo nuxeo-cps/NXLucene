@@ -15,6 +15,10 @@ LOGFILE='../log/nxlucene.log'
 
 function start() {
     echo "Starting NXLucene:"
+    
+    export PYTHONPATH='../src/PyLucene/python'
+    export LD_LIBRARY_PATH='../src/PyLucene/gcj/'
+    
     exec $PWD/runnxlucene
 }
 
