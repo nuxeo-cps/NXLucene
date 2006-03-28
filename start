@@ -1,9 +1,0 @@
-#!/bin/env bash
-
-# See http://hathawaymix.org/Weblog/2004-12-30
-# Changing the LD_LIBRARY_PATH once Python is loaded is ignored
-export PYTHONPATH='src/PyLucene/python'
-export LD_LIBRARY_PATH='src/PyLucene/gcj/'
-
-exec ./bin/runnxlucene "$*"
-
