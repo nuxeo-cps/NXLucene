@@ -7,6 +7,8 @@
 all: epydoc
 
 epydoc:
+	export LD_LIBRARY_PATH='../src/PyLucene/gcj'
+	export PYTHONPATH='../src/PyLucene/python'
 	python build_doc --html -o api -n NXLucene -u http://nxlucene.nuxeo.org ../src/nxlucene/ 
 
 clean:
