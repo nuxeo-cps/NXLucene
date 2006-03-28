@@ -71,8 +71,9 @@ Installation
   party apps.
 
   You can now start the NXLucene server :
-
-   $ ./start
+ 
+   $ cd ./bin
+   $ ./nxlucened start
 
 Advanced note for administrators
 
