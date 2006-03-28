@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# NXLucene:  Start/stop/restart/status service
+#
+# chkconfig:    2345 25 90
+# description:  NXLucene
+#
+# $Id: $
+
+RETVAL=0
+PWD=`pwd`
+NAME='nxlucened'
+PIDDIR='../var/'
+LOGFILE='../log/nxlucene.log'
+
+function start() {
+    echo "Starting NXLucene:"
+    exec $PWD/runnxlucene
+}
+
+function stop() {
+    ps ax |grep twistd |grep $NAME &>/dev/null
+    if [ "$?" -eq 0 ]; then
+	kill -9 `cat $PIDDIR/$NAME.pid`
+	rm -f $PIDDIR/$NAME.pid
+    else
+	echo
+	echo -n "($NAME is not running)"
+	rm -f $PIDDIR/$NAME.pid
+    fi
+}
+
+function status() {
+    ps ax |grep twistd | grep $NAME &>/dev/null
+    if [ "$?" -eq 0 ] ; then
+	echo "NXLucene running..."
+    else
+	echo "NXLucene not running..."
+    fi
+}
+
+function logtail() {
+    tail -f $LOGFILE
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+	status
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    logtail)
+	logtail
+	;;
+    *)
+        echo $"Usage: $0 {start|stop|restart|status|logtail}"
+        RETVAL=1
+esac
+
+exit $RETVAL
