@@ -23,6 +23,10 @@ Requierements
 
   - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
 
+  - TwistedWeb >= 0.5 : 
+    http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
+    (twisted.web is not package as a separted component)
+
   - elementtree and cElementTree >= 1.2.6-20050316
 
 Note, PyLucene is coming with the NXLucene distribution.
