@@ -133,13 +133,21 @@ class XMLSearchQuery(object):
         fields = doc.findall('fields/field')
         for field in fields:
             if field.attrib.get('id') and field.attrib.get('value'):
-                self._search_fields.append(
-                    {'id' : unicode(field.attrib['id'].strip()),
-                     'value' : unicode(field.attrib['value'].strip()),
-                     'condition' : unicode(field.attrib.get('condition', '').strip()),
-                     'type' : unicode(field.attrib.get('type', '').strip()),
-                     },
-                    )
+                mapping = {
+                    'id' : unicode(field.attrib['id'].strip()),
+                    'value' : unicode(field.attrib['value'].strip()),
+                    'type' : unicode(field.attrib.get('type', '').strip()),
+                    }
+                
+
+                condition = field.attrib.get('condition')
+                if condition is not None:
+                    mapping['condition'] = unicode(condition.strip())
+
+                usage = field.attrib.get('usage')
+                if usage is not None:
+                    mapping['usage'] = usage.strip()
+                self._search_fields.append(mapping)
 
         #
         # Batching
