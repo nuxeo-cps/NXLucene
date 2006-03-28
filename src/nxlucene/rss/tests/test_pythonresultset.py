@@ -40,8 +40,8 @@ class PythonResultSetTestCase(unittest.TestCase):
     def test_getResults(self):
         results = self._pyrs.getResults()
         self.assert_(isinstance(results, tuple))
-        self.assertEqual(len(results), 2)
-        self.assertEqual(results, ({u'givenName': 'Julien', u'uid': '1', u'name': 'Anguenot'}, {u'givenName': u'\xc9ric', u'uid': '2', u'name': 'Barroca'}))
+        self.assertEqual(len(results[0]), 2)
+        self.assertEqual(results[0], ({u'givenName': 'Julien', u'uid': '1', u'name': 'Anguenot'}, {u'givenName': u'\xc9ric', u'uid': '2', u'name': 'Barroca'}))
 
 def test_suite():
     suite = unittest.TestSuite()

@@ -163,7 +163,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
@@ -184,7 +184,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
@@ -213,7 +213,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
@@ -234,7 +234,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
@@ -266,7 +266,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertNotEqual(res, {})
         self.assertEqual(len(res), 1)
@@ -290,7 +290,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
         </search>"""
 
         rss = self._xmlrpc_client.searchQuery(stream)
-        res = PythonResultSet(ResultSet(rss)).getResults()
+        res = PythonResultSet(ResultSet(rss)).getResults()[0]
 
         self.assertEqual(res, ())
 

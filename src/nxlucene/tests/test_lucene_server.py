@@ -102,21 +102,21 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on uid (with return fields)
         res = self._server.searchQuery(return_fields=('name',),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1', u'name':u'foo'},))
 
         # Search o1 on name (no return fields)
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'name',
                                                        'value': u'foo'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on name (with return fields)
@@ -124,7 +124,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'foo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1', u'name':u'foo'},))
 
         # Search o2 on uid (no return fields)
@@ -132,7 +132,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Search o2 on uid (with return fields)
@@ -140,7 +140,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2', u'name':u'bar'},))
 
         # Search o2 on name (no return fields)
@@ -148,14 +148,14 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'bar'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Search o2 on name (with return fields)
         res = self._server.searchQuery(return_fields=('name',),
                                        search_fields=({'id' : u'name',
                                                        'value': u'bar'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2', u'name':u'bar'},))
 
     def test_unindexing(self):
@@ -166,14 +166,14 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o1 on uid (no return fields)
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Unindex o1
@@ -182,7 +182,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
@@ -190,7 +190,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Unindex o1
@@ -199,7 +199,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
     def test_reindexing(self):
@@ -211,7 +211,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'foo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
@@ -219,7 +219,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'bar'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Reindex o1 with a new name
@@ -232,7 +232,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'foo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
@@ -240,7 +240,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'newfoo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
@@ -248,7 +248,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'bar'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         # Reindex o2 with a new name
@@ -261,7 +261,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'foo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
         # Search o1 on uid (no return fields)
@@ -269,7 +269,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'newfoo'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
@@ -277,7 +277,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'bar'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
         # Search o2 on uid (no return fields)
@@ -285,7 +285,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'name',
                                                        'value': u'newbar'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
     def test_clearing(self):
@@ -296,14 +296,14 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'1'},))
 
         # Search o2 on uid (no return fields)
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
         self._server.clean()
@@ -313,7 +313,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
         
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
         # Search o2 on uid (no return fields)
@@ -321,7 +321,7 @@ class LuceneServerTestCase(unittest.TestCase):
                                        search_fields=({'id' : u'uid',
                                                        'value': u'2'},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
     def test_withpathasindex(self):
@@ -346,13 +346,13 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(search_fields=({'id' : u'uid',
                                                        'value': uid1,
                                                        'type' : 'Path',},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'/portal/foo/bar'},))
 
         res = self._server.searchQuery(search_fields=({'id' : u'uid',
                                                        'value': uid2,
                                                        'type' : 'Path',},))
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'/portal/foo/foo'},))
 
         # reIndex me
@@ -397,7 +397,7 @@ class LuceneServerTestCase(unittest.TestCase):
                             'value': 'bob',
                             'type' : 'Text',},))
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
 
         self.assertEqual(len(res), 2)
 
@@ -409,7 +409,7 @@ class LuceneServerTestCase(unittest.TestCase):
             search_options={'start': 0, 'size':1,},
             )
 
-        res = PythonResultSet(ResultSet(res)).getResults()
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
 
         self.assertEqual(len(res), 1)
 

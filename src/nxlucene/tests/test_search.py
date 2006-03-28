@@ -63,7 +63,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             search_fields=({'id' : u'name',
                             'value': u'Foo'},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'1'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
                       
     def test_fulltext(self):
 
@@ -77,42 +77,42 @@ class LuceneSeachTestCase(unittest.TestCase):
             ()
 ,            search_fields=({'id' : u'fulltext',
                              'value': u'ab'},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
                 (),
             search_fields=({'id' : u'fulltext',
                             'value': u'cd'},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
                 (),
             search_fields=({'id' : u'fulltext',
                             'value': "ab OR cd"},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
                 (),
             search_fields=({'id' : u'fulltext',
                             'value': "ab AND cd"},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
                 (),
             search_fields=({'id' : u'fulltext',
                             'value': "'ab cd'"},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
 ##        res = PythonResultSet(
 ##            ResultSet(self._server.searchQuery(
 ##                (),
 ##            search_fields=({'id' : u'fulltext',
 ##                            'value': "a*"},))))
-##        self.assertEqual(res.getResults(), ({u'uid': u'2'},))
+##        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
     def test_path(self):
 
@@ -127,7 +127,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             search_fields=({'id' : u'path',
                             'type' : 'path',
                             'value': u'/a/b/c'},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'3'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -135,7 +135,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             search_fields=({'id' : u'path',
                             'type' : 'path',
                             'value': u'/a'},))))
-        self.assertEqual(res.getResults(), ({u'uid': u'3'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
         # Not good.
         res = PythonResultSet(
@@ -144,7 +144,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             search_fields=({'id' : u'path',
                             'type' : 'path',
                             'value': u'/b'},))))
-        self.assertEqual(res.getResults(), ())
+        self.assertEqual(res.getResults()[0], ())
 
     def test_keyword_search(self):
         # Indes a new document.
@@ -163,7 +163,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'Member',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -172,7 +172,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'Manager',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -181,7 +181,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'Manager xxxxxx Member',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'4'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -190,7 +190,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'xxxxxx',
                             },))))
-        self.assertEqual(res.getResults(), ())
+        self.assertEqual(res.getResults()[0], ())
 
     def test_keyword_search_02(self):
         # Indes a new document.
@@ -209,7 +209,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'xx:yy',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'5'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'5'},))
 
 
         ob = Foo(allowedRolesAndUsers="MMM xx:zz")
@@ -226,7 +226,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'MMM',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -235,7 +235,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'xx:zz MMM',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
     def test_textindex(self):
         ob = Foo(portal_type="Section")
@@ -252,7 +252,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'Section',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'6'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
         ob = Foo(portal_type="CPS Type")
 
@@ -268,7 +268,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'CPS Type',
                             },))))
-        self.assertEqual(res.getResults(), ({u'uid': u'7'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'7'},))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -277,7 +277,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': u'CPS',
                             },))))
-        self.assertEqual(res.getResults(), ())
+        self.assertEqual(res.getResults()[0], ())
 
     def test_datesearch(self):
 
@@ -303,7 +303,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'2006-01-01 00:00:00',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'9'},))
 
         # Exact date match
         res = PythonResultSet(
@@ -314,7 +314,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'2005-01-01 00:00:00',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'10'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'10'},))
 
         # Use range:min now.
         res = PythonResultSet(
@@ -326,7 +326,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'usage' : 'range:min',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'9'},))
 
         # Use range:min now.
         res = PythonResultSet(
@@ -338,7 +338,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'usage' : 'range:min',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},{u'uid': u'10'}))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'9'},{u'uid': u'10'}))
 
         # Use range:max now.
         res = PythonResultSet(
@@ -350,7 +350,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'usage' : 'range:max',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'10'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'10'},))
 
         # Use range:max now.
         res = PythonResultSet(
@@ -362,7 +362,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'usage' : 'range:max',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},{u'uid': u'10'}))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'9'},{u'uid': u'10'}))
         
     def tearDown(self):
         if os.path.exists(self._store_dir):
