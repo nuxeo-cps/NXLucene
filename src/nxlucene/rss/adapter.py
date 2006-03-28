@@ -55,12 +55,13 @@ class PythonResultSet(object):
             self._elt.getiterator("{http://backend.userland.com/rss2}item"))
 
     def _getNbItems(self):
+        nb_items = 0
         e = self._elt.find("{http://namespaces.nuxeo.org/nxlucene/}nbitems")
         if e is not None:
             try:
                 nb_items = int(e.text)
             except TypeError:
-                nb_items = 0
+                pass
         return nb_items            
 
     def _getFieldsFor(self, fields_node):
