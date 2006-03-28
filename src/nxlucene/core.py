@@ -415,7 +415,11 @@ class LuceneServer(object):
                 parser = PyLucene.QueryParser(index, analyzer)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
 
-                subquery = parser.parseQuery(value)
+                try:
+                    subquery = parser.parseQuery(value)
+                except PyLucene.JavaError:
+                    self.log.error("Invalid Query %s" % repr(value))
+                    return results.getStream()
 
                 query.add(
                     subquery,
