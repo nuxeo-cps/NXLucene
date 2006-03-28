@@ -39,7 +39,7 @@ import zpkgsetup.package
 import zpkgsetup.publication
 import zpkgsetup.setup
 
-VERSION = "0.0.1"
+VERSION = "0.1.0"
 
 context = zpkgsetup.setup.SetupContext(
     "NXLucene", VERSION, __file__)
