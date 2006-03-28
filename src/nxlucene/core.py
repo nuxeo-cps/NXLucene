@@ -370,7 +370,7 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get('AND'))
 
             elif type.lower() == 'date':
-                print index
+                print index, value
 
             else:
 
@@ -409,7 +409,9 @@ class LuceneServer(object):
         else:
             hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
 
-        self.log.debug("Number of results %s" % str(hits.length()))
+        nb_results = hits.length()
+        results.addNumberOfResults(nb_results)
+        self.log.debug("Number of results %s" % str(nb_results))
         
         tstop = time.time()
         self.log.debug("Time to find return results %s" % str(tstop-tstart))

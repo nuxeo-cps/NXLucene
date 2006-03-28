@@ -29,6 +29,7 @@ except ImportError:
 import zope.interface
 
 from nxlucene.rss import RSSElement
+from nxlucene.rss import NXLuceneElement
 
 from nxlucene.rss.interfaces import IResultSet
 from nxlucene.rss.resultitem import ResultItem
@@ -54,6 +55,11 @@ class ResultSet(object):
     def addItem(self, uid, fields_map={}):
         item = ResultItem().getElement(uid, fields_map)
         self._doc.append(item)
+
+    def addNumberOfResults(self, nb_items=0):
+        elt = NXLuceneElement('nbitems')
+        elt.text = str(nb_items)
+        self._doc.append(elt)
 
     def _getElementSkel(self):
         elt = RSSElement('rss')
