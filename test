@@ -1,3 +1,4 @@
 #! /bin/env bash
+export PYTHONPATH='src/PyLucene/python'
 export export LD_LIBRARY_PATH='src/PyLucene/gcj/'
 exec ./bin/test.py $*
