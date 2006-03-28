@@ -18,5 +18,5 @@ os.environ['CONFIG_FILE'] = CONFIG_FILE
 
 tac_file = INSTANCE_HOME + '/etc/service.tac'
 log_file = INSTANCE_HOME + '/log/nxlucened.log'
-pid_file = INSTANCE_HOME + '/var/nxlucene.pid'
+pid_file = INSTANCE_HOME + '/var/nxlucened.pid'
 os.system("twistd -y %s --pidfile=%s -l %s " % (tac_file, pid_file, log_file))
