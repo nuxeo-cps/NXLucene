@@ -99,8 +99,12 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
           <batch start="0", size="10">
         </search>
 
-        This will return a RSS document as a resultset.
-        Cf. weblucene.rss
+        This will return a tuple containing the RSS document as a
+        resultset with the number of results.
+
+        -> (<rss_stream>, <nb_items>)
+        
+        Cf. nxlucene.rss
         """
 
     def xmlrpc_search(query_str=''):
