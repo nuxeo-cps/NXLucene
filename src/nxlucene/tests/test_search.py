@@ -281,13 +281,29 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_datesearch(self):
 
-        ob = Foo(modified="2006-03-27 03:41:00")
+        ob1 = Foo(modified="2006-01-01 00:00:00")
+        ob2 = Foo(modified="2005-01-01 00:00:00")
 
         query = FakeXMLInputStream(
-            ob,
+            ob1,
             attributs=(('modified', 'Date'),))
         self._server.indexDocument('9', query)
 
+        query = FakeXMLInputStream(
+            ob2,
+            attributs=(('modified', 'Date'),))
+        self._server.indexDocument('10', query)
+        
+        # Exact date match
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': u'2006-01-01 00:00:00',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
 
         # Exact date match
         res = PythonResultSet(
@@ -295,10 +311,10 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'modified',
                             'type' : 'Date',
-                            'value': u'2006-03-27 03:41:00',
+                            'value': u'2005-01-01 00:00:00',
                             },))))
 
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+        self.assertEqual(res.getResults(), ({u'uid': u'10'},))
 
         # Use range:min now.
         res = PythonResultSet(
@@ -306,23 +322,47 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'modified',
                             'type' : 'Date',
-                            'value': '2006-03-28 04:00:00',
-                            'usage' : 'range:max',
-                            },))))
-
-        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
-
-        # Use range:min now.
-        res = PythonResultSet(
-            ResultSet(self._server.searchQuery(
-            (),
-            search_fields=({'id' : u'modified',
-                            'type' : 'Date',
-                            'value': '2006-02-27 00:00:00',
+                            'value': '2006-01-01 00:00:00',
                             'usage' : 'range:min',
                             },))))
 
         self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+
+        # Use range:min now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2005-01-01 00:00:00',
+                            'usage' : 'range:min',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},{u'uid': u'10'}))
+
+        # Use range:max now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2005-01-01 00:00:00',
+                            'usage' : 'range:max',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'10'},))
+
+        # Use range:max now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2006-01-01 00:00:00',
+                            'usage' : 'range:max',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},{u'uid': u'10'}))
         
     def tearDown(self):
         if os.path.exists(self._store_dir):
