@@ -21,7 +21,6 @@ Requierements
   you have ZopeX3 (at least version 3.0.0c1) installed that should
   work too.
 
-  
   - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
 
   - elementtree and cElementTree >= 1.2.6-20050316
