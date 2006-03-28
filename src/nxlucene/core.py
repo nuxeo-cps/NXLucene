@@ -380,45 +380,29 @@ class LuceneServer(object):
                 # XXX Deal with old dates.
                 date_formated = PyLucene.SimpleDateFormat(
                     iso_format).parse(date_iso)
+
                 date_field = PyLucene.DateField.dateToString(date_formated)
 
+                start_range = None
+                end_range = None
                 if usage and usage != 'range:min:max':
+
                     if usage == 'range:min':
-
-                        start = PyLucene.Term(index, date_field)
-
-                        date_end = '2500-01-01 00:00:00'
-                        date_end_formated = PyLucene.SimpleDateFormat(
-                            iso_format).parse(date_end)
-                        date_end_field = PyLucene.DateField.dateToString(
-                            date_end_formated) 
-                        end = PyLucene.Term(index, date_end_field)
+                        start_range = PyLucene.Term(index, date_field)
 
                     elif usage == 'range:max':
-
-                        end = PyLucene.Term(index, date_field)
-
-                        date_start = '1970-01-01 00:00:00'
-                        date_start_formated = PyLucene.SimpleDateFormat(
-                            iso_format).parse(date_start)
-                        date_start_field = PyLucene.DateField.dateToString(
-                            date_start_formated) 
-
-                        start = PyLucene.Term(index, date_start_field)
+                        end_range = PyLucene.Term(index, date_field)
 
                     else:
                         self.log.error("Usage not supported %s" % str(usage))
 
-                    # Construct a constraint query based on the usage
-                    # information.
-#                    date_filter = PyLucene.DateFilter(index, start, end)
-                    subquery = PyLucene.RangeQuery(start, end, True)
-
+                    subquery = PyLucene.RangeQuery(
+                        start_range, end_range, True)
+                    
                 else:
                     term = PyLucene.Term(index, date_field)
                     subquery = PyLucene.TermQuery(term)
 
-                print subquery.toString()
                 query.add(
                     subquery,
                     nxlucene.query.boolean_clauses_map.get(
@@ -440,7 +424,7 @@ class LuceneServer(object):
 
         self.log.debug('query %s' % query.toString())
 
-        print query.toString()
+#        print query.toString()
 
         tstart = time.time()
 
