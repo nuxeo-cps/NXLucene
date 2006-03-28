@@ -14,8 +14,9 @@ os.environ['INSTANCE_HOME'] = INSTANCE_HOME
 os.environ['SOFTWARE_HOME'] = SOFTWARE_HOME
 
 CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "nxlucene.conf")
+os.environ['CONFIG_FILE'] = CONFIG_FILE
 
-sys.argv[1:1] = ["-C", CONFIG_FILE]
-
-from nxlucene.run import main
-main()
+tac_file = INSTANCE_HOME + '/etc/service.tac'
+log_file = INSTANCE_HOME + '/log/nxlucened.log'
+pid_file = INSTANCE_HOME + '/var/nxlucene.pid'
+os.system("twistd -y %s --pidfile=%s -l %s " % (tac_file, pid_file, log_file))
