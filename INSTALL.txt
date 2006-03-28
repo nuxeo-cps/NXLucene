@@ -7,7 +7,10 @@ Requierements
 
   - Linux
 
-  - gcc 3.3.x on Linux installations appears to ship with gcj. If your
+  - Building NXLucene requires GNU's compiler for Java, GCJ as
+    PyLucene requires it.
+
+    gcc 3.3.x on Linux installations appears to ship with gcj. If your
   gcc installation does not include gcj, you need to upgrade it.  The
   version of gcc currently recommended is gcc 3.4.4. See below for
   instructions on how to build it.
@@ -21,11 +24,9 @@ Requierements
   
   - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
 
-  - PyLucene >= 1.9rc1 : http://pylucene.osafoundation.org/ You don't
-    need to install it yourself. NXLucene will take care of this
-    deps.
-
   - elementtree and cElementTree >= 1.2.6-20050316
+
+Note, PyLucene is coming with the NXLucene distribution.
 
 Testing for developpers
 
@@ -51,11 +52,11 @@ Testing for developpers
       Running:
         ..................................................
         .
-      Ran 51 tests with 0 failures and 0 errors in 14.796 seconds.
+      Ran 67 tests with 0 failures and 0 errors in 14.796 seconds.
 
 Installation
 
-  Linux is currently the only supported platform.
+  Linux is currently the only supported and tested platform.
 
   Uncompress the NXLucene archive :
 
@@ -73,3 +74,10 @@ Installation
   You can now start the NXLucene server :
 
    $ ./start
+
+Advanced note for administrators
+
+  The `start` script is adding PyLucene libraries to the
+  LD_LIBRARY_PATH to avoid you having to link PyLucene on your system.
+  
+  See src/PyLucene/gcj/
