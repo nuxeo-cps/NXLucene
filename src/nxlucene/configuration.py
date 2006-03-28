@@ -31,9 +31,8 @@ class WebLuceneConfiguration(object):
     """WebLucene configuration
     """
 
-    def __init__(self, args=()):
-        self.args = args
-        conf = open(self.args[2], 'r').read()
+    def __init__(self, config_file):
+        conf = open(config_file, 'r').read()
         self._conf = etree.XML(conf)
 
     def getPort(self):
