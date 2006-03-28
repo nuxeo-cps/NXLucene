@@ -386,8 +386,6 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
-#        print query.toString()
-
         self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
@@ -398,12 +396,14 @@ class LuceneServer(object):
 
         sort_order = search_options.get('sort-order')
         if not sort_order:
-            sort_order = True
-        else:
             sort_order = False
+        else:
+            sort_order = True
 
         sort_on = search_options.get('sort-on', '')
         if sort_on:
+            self.log.debug("Sorting on %s with order=%s" %
+                           (str(sort_on), str(sort_order)))
             hits = searcher.get().search(
                 query, PyLucene.Sort(sort_on, sort_order))
         else:
