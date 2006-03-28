@@ -291,14 +291,14 @@ class LuceneServer(object):
         try:
             start = int(start)
         except TypeError:
-            self.log.debug('Invalid batch start value %s' % repr(start)) 
+            self.log.debug('Invalid batch start value %s' % repr(start))
             start = 0
 
         size = search_options.get('size', 100)
         try:
             size = int(size)
         except TypeError:
-            self.log.debug('Invalid batch size value %s' % repr(size)) 
+            self.log.debug('Invalid batch size value %s' % repr(size))
             size = 100
 
         # Get global request operator and get the clause we will use
@@ -328,12 +328,15 @@ class LuceneServer(object):
         #
 
         query = PyLucene.BooleanQuery()
+        date_filter = None
+
         for field in search_fields:
 
             index = field['id']
             value = field['value']
             type =  field.get('type', '')
             condition = field.get('condition', 'AND')
+            usage = field.get('usage', '')
 
             if type.lower() == 'path':
                 term = PyLucene.Term(index, unicode(value))
@@ -370,12 +373,61 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get('AND'))
 
             elif type.lower() == 'date':
-                print index, value
+
+                iso_format = 'yyyy-MM-dd HH:mm:ss'
+                date_iso = value
+
+                # XXX Deal with old dates.
+                date_formated = PyLucene.SimpleDateFormat(
+                    iso_format).parse(date_iso)
+                date_field = PyLucene.DateField.dateToString(date_formated)
+
+                if usage and usage != 'range:min:max':
+                    if usage == 'range:min':
+
+                        start = PyLucene.Term(index, date_field)
+
+                        date_end = '2500-01-01 00:00:00'
+                        date_end_formated = PyLucene.SimpleDateFormat(
+                            iso_format).parse(date_end)
+                        date_end_field = PyLucene.DateField.dateToString(
+                            date_end_formated) 
+                        end = PyLucene.Term(index, date_end_field)
+
+                    elif usage == 'range:max':
+
+                        end = PyLucene.Term(index, date_field)
+
+                        date_start = '1970-01-01 00:00:00'
+                        date_start_formated = PyLucene.SimpleDateFormat(
+                            iso_format).parse(date_start)
+                        date_start_field = PyLucene.DateField.dateToString(
+                            date_start_formated) 
+
+                        start = PyLucene.Term(index, date_start_field)
+
+                    else:
+                        self.log.error("Usage not supported %s" % str(usage))
+
+                    # Construct a constraint query based on the usage
+                    # information.
+#                    date_filter = PyLucene.DateFilter(index, start, end)
+                    subquery = PyLucene.RangeQuery(start, end, True)
+
+                else:
+                    term = PyLucene.Term(index, date_field)
+                    subquery = PyLucene.TermQuery(term)
+
+                print subquery.toString()
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get(
+                    condition, default_clause))
 
             else:
 
                 analyzer = PyLucene.StandardAnalyzer()
-                
+
                 parser = PyLucene.QueryParser(index, analyzer)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
 
@@ -387,6 +439,8 @@ class LuceneServer(object):
                     condition, default_clause))
 
         self.log.debug('query %s' % query.toString())
+
+        print query.toString()
 
         tstart = time.time()
 
@@ -412,7 +466,7 @@ class LuceneServer(object):
         nb_results = hits.length()
         results.addNumberOfResults(nb_results)
         self.log.debug("Number of results %s" % str(nb_results))
-        
+
         tstop = time.time()
         self.log.debug("Time to find return results %s" % str(tstop-tstart))
 

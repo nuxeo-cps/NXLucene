@@ -279,6 +279,51 @@ class LuceneSeachTestCase(unittest.TestCase):
                             },))))
         self.assertEqual(res.getResults(), ())
 
+    def test_datesearch(self):
+
+        ob = Foo(modified="2006-03-27 03:41:00")
+
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('modified', 'Date'),))
+        self._server.indexDocument('9', query)
+
+
+        # Exact date match
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': u'2006-03-27 03:41:00',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+
+        # Use range:min now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2006-03-28 04:00:00',
+                            'usage' : 'range:max',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+
+        # Use range:min now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2006-02-27 00:00:00',
+                            'usage' : 'range:min',
+                            },))))
+
+        self.assertEqual(res.getResults(), ({u'uid': u'9'},))
+        
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)

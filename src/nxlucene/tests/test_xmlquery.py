@@ -270,7 +270,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'condition': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
 
     def test_with_fields_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -283,7 +283,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'condition': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -297,7 +297,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'condition': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
 
 
     def test_query_with_sort_options(self):
