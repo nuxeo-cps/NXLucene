@@ -10,19 +10,26 @@
 RETVAL=0
 PWD=`pwd`
 NAME='nxlucened'
-PIDDIR='../var/'
-LOGFILE='../log/nxlucene.log'
+
+# Change me.
+NXLUCENE_HOME='..'
+
+PIDDIR=$NXLUCENE_HOME'/var'
+LOGFILE=$NXLUCENE_HOME'/log/nxlucene.log'
 
 function start() {
     echo "Starting NXLucene:"
     
-    export PYTHONPATH='../src/PyLucene/python'
-    export LD_LIBRARY_PATH='../src/PyLucene/gcj/'
+    export PYTHONPATH=$PYTHONPATH:$NXLUCENE_HOME'/src/PyLucene/python'
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NXLUCENE_HOME'/src/PyLucene/gcj'
     
-    exec $PWD/runnxlucene
+    exec $NXLUCENE_HOME'/bin/runnxlucene'
 }
 
 function stop() {
+
+    echo "Stoping NXLucene:"
+
     ps ax |grep twistd |grep $NAME &>/dev/null
     if [ "$?" -eq 0 ]; then
 	kill -9 `cat $PIDDIR/$NAME.pid`
