@@ -128,7 +128,8 @@ Installation
 
   Uncompress the NXLucene archive :
 
-    $ tar -xzf NXLucene-x.x-x.tgz
+    $ cd /usr/local/
+    $ tar -xzf /tmp/NXLucene-x.x-x.tgz
  
   In the resulting folder 
 
@@ -144,13 +145,32 @@ Installation
    $ cd ./bin
    $ ./nxlucened start
 
-Advanced note for administrators
-================================
+For administrators
+==================
 
-  The `start` script is adding PyLucene libraries to the
-  LD_LIBRARY_PATH to avoid you having to link PyLucene on your system.
-  
-  See src/PyLucene/gcj/
+   Below are the needed steps to add NXLucene within your startup tables.
+
+   I assume an installation within /usr/local/NXLucene for instance.
+
+   As root :
+
+   Create a link on the startup script within the /etc/init.d
+
+   $ cd /etc/init.d/
+   $ ln -s /usr/local/NXLucene/bin/nxlucened .
+
+   Edit nxlucend and change the NXLUCENE_HOME value reflecting your
+   installation. In our case, NXLUCENE_HOME=/usr/local/NXLucene.
+
+   Add nxlucened within the system startup table.
+
+   $ /sbin/chkconfig --level 2345 nxlucened on
+
+   Server runs on port 9180 by default. You may change this within
+   etc/nxlucene.conf
+
+If you need support check the cps-devel list at
+http//lists.nuxeo.com/cps-devel/
 
 .. Emacs
 .. Local Variables:
