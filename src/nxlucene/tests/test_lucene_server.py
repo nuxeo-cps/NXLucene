@@ -378,18 +378,18 @@ class LuceneServerTestCase(unittest.TestCase):
         o1 = P('bob')
         o2 = P('Jack')
         o3 = P('bob')
+        o4 = P('Jack')
+        o5 = P('Jack')
+        o6 = P('Jack')
+        o7 = P('Jack')
 
-        self._server.indexDocument(
-            uid1, FakeXMLInputStream(o1, attributs=('name',)))
-        self.assertEqual(len(self._server), 1)
+        uid = 0
+        for ob in (o1, o2, o3, o4, o5, o6, o7):
+            self._server.indexDocument(
+                uid, FakeXMLInputStream(ob, attributs=('name',)))
+            uid += 1
 
-        self._server.indexDocument(
-            uid2, FakeXMLInputStream(o2, attributs=('name',)))
-        self.assertEqual(len(self._server), 2)
-
-        self._server.indexDocument(
-            uid3, FakeXMLInputStream(o3, attributs=('name',)))
-        self.assertEqual(len(self._server), 3)
+        self.assertEqual(len(self._server), 7)
 
         # We find two documents matching here.
         res = self._server.searchQuery(
@@ -411,6 +411,61 @@ class LuceneServerTestCase(unittest.TestCase):
 
         res = PythonResultSet(ResultSet(res)).getResults()[0]
 
+        self.assertEqual(len(res), 1)
+
+        # All results matching Jack
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'jack',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 5)
+
+        # All results matching Jack with a border < total results
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'jack',
+                            'type' : 'Text',},),
+            search_options={'start': 0, 'size':10,},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 5)
+
+        # Let's check batch window. 0->2
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'jack',
+                            'type' : 'Text',},),
+            search_options={'start': 0, 'size':2,},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 2)
+
+        # Let's check batch window. 2->4
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'jack',
+                            'type' : 'Text',},),
+            search_options={'start': 2, 'size':2,},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 2)
+
+        # Let's check batch window. 4->5
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'jack',
+                            'type' : 'Text',},),
+            search_options={'start': 4, 'size':2,},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(len(res), 1)
 
 class LuceneServerMultiThreadTestCase(unittest.TestCase):

@@ -466,15 +466,15 @@ class LuceneServer(object):
 
         tstart = time.time()
 
-        i = -1
+        j = -1
         for i, doc in hits:
 
-            i += 1
+            j += 1
 
-            if i < start:
+            if j < start:
                 continue
 
-            if i > (start + size):
+            if j >= (start + size):
                 break
 
             table = dict([(field.name(), field.stringValue())
