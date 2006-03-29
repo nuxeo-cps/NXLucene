@@ -1,4 +1,13 @@
 #! /usr/bin/env sh
-export PYTHONPATH='src/PyLucene/python'
-export export LD_LIBRARY_PATH='src/PyLucene/gcj/'
-exec ./bin/test.py $*
+
+PYTHON=`which python`
+PWD=`pwd`
+
+# Append the PyLucene in case of PyLucene is not installed on the
+# system. If it is, it will use the system one.
+export PYTHONPATH=$PYTHONPATH:${PWD}/'src/PyLucene/python'
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PWD}/'src/PyLucene/gcj/'
+
+PY_TEST_SCRIPT="./bin/test.py"
+
+exec "$PYTHON" "$PY_TEST_SCRIPT" $*
