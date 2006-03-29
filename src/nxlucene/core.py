@@ -461,8 +461,15 @@ class LuceneServer(object):
         if sort_on:
             self.log.debug("Sorting on %s with order=%s" %
                            (str(sort_on), str(sort_order)))
-            hits = searcher.get().search(
-                query, PyLucene.Sort(sort_on, sort_order))
+            try:
+                hits = searcher.get().search(
+                    query, PyLucene.Sort(sort_on, sort_order))
+            except PyLucene.JavaError:
+                self.log.debug("Trying to sort on %s which is a "
+                               "tokenized field. "
+                               "Use another field instead since it's not "
+                               "possible" % str(sort_on))
+                hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
         else:
             hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
 

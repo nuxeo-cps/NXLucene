@@ -9,6 +9,7 @@ Bug fixes:
 - Fix search batch windows
 - Fix the store dir path conf within nxlucene.conf
 - Fix asc/desc sort
+- Fix sorting on tokenized fields not possible.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
