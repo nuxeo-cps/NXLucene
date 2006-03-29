@@ -155,17 +155,17 @@ class LuceneServer(object):
                 "Adding Field on doc with id=%s with value %s of type %s"
                 % (field_id, field_value, field_type))
 
-            if field_type == 'Text':
+            if field_type.lower() == 'text':
                 doc.add(
                     PyLucene.Field(field_id, field_value, True, True, True))
 
-            elif field_type == 'UnStored':
+            elif field_type.lower() == 'unstored':
                 doc.add(PyLucene.Field.UnStored(field_id, field_value))
 
-            elif field_type == 'UnIndexed':
+            elif field_type.lower() == 'unindexed':
                 doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
 
-            elif field_type == 'Keyword':
+            elif field_type.lower() == 'multikeyword':
                 default_separator = '#'
 
                 if '#' in field_value:
@@ -178,7 +178,10 @@ class LuceneServer(object):
                        value =  '_'.join(value.split(':'))
                     doc.add(PyLucene.Field.Keyword(field_id, value))
 
-            elif field_type == 'Date':
+            elif field_type.lower() == 'keyword':
+                doc.add(PyLucene.Field.Keyword(field_id, unicode(field_value)))
+
+            elif field_type.lower() == 'date':
                 # The Date format must be an ISO one. This is a
                 # requierment right now.  XXX check this is the case ?
 
@@ -201,7 +204,7 @@ class LuceneServer(object):
 
                 doc.add(PyLucene.Field.Keyword(field_id, date_field))
 
-            elif field_type == 'Path':
+            elif field_type.lower() == 'path':
                 # XXX implement me.
                 if '/' not in field_value:
                     field_value  = '/'.join(field_value.split())
@@ -346,7 +349,7 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
-            elif type.lower() == 'keyword':
+            elif type.lower() == 'multikeyword':
 
                 # XXX this is a mess. refactoring needed.
 
@@ -405,6 +408,13 @@ class LuceneServer(object):
 
                 query.add(
                     subquery,
+                    nxlucene.query.boolean_clauses_map.get(
+                    condition, default_clause))
+
+            elif type.lower() == 'keyword':
+
+                query.add(
+                    PyLucene.TermQuery(PyLucene.Term(index, value)),
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 

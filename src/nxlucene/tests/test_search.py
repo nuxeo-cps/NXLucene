@@ -153,14 +153,14 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         query = FakeXMLInputStream(
             ob,
-            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+            attributs=(('allowedRolesAndUsers', 'MultiKeyword'),))
         self._server.indexDocument('4', query)
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'Member',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
@@ -169,7 +169,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'Manager',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
@@ -178,7 +178,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'Manager xxxxxx Member',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
@@ -187,7 +187,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'xxxxxx',
                             },))))
         self.assertEqual(res.getResults()[0], ())
@@ -199,14 +199,14 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         query = FakeXMLInputStream(
             ob,
-            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+            attributs=(('allowedRolesAndUsers', 'MultiKeyword'),))
         self._server.indexDocument('5', query)
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'xx:yy',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'5'},))
@@ -216,14 +216,14 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         query = FakeXMLInputStream(
             ob,
-            attributs=(('allowedRolesAndUsers', 'Keyword'),))
+            attributs=(('allowedRolesAndUsers', 'MultiKeyword'),))
         self._server.indexDocument('6', query)
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'MMM',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
@@ -232,12 +232,12 @@ class LuceneSeachTestCase(unittest.TestCase):
             ResultSet(self._server.searchQuery(
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
-                            'type' : 'Keyword',
+                            'type' : 'MultiKeyword',
                             'value': u'xx:zz MMM',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
-    def test_textindex(self):
+    def test_text_more_keyword(self):
         ob = Foo(portal_type="Section")
 
         query = FakeXMLInputStream(
@@ -250,7 +250,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'portal_type',
                             'type' : 'Keyword',
-                            'value': u'Section',
+                            'value': 'Section',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
