@@ -1,9 +1,15 @@
-$Id: $
-
+=======================
 NXLucene Installation 
 =======================
 
+:Author: Julien Anguenot
+:Revision: $Id: $
+
+.. sectnum::    :depth: 6
+.. contents::   :depth: 1
+
 Requierements 
+=============
 
   - Linux
 
@@ -32,6 +38,7 @@ Requierements
 Note, PyLucene is coming with the NXLucene distribution.
 
 Testing for developpers
+=======================
 
   When working from a NXLucene checkout, do an in-place build instead::
 
@@ -57,7 +64,62 @@ Testing for developpers
         .
       Ran 67 tests with 0 failures and 0 errors in 14.796 seconds.
 
+Troubleshooting at this stage
+=============================
+
+Python and unicode problem
+--------------------------
+
+Some distributions, actually Debian based..., raise the error below
+while launching the tests above :
+
+  Traceback (most recent call last):
+    File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
+      import nxlucene.testing.xmlrpc
+    File "src/nxlucene/testing/xmlrpc.py", line 28, in ?
+      from nxlucene.core import LuceneServer
+    File "src/nxlucene/core.py", line 25, in ?
+      import PyLucene  
+  File "/home/janguenot/NXLucene/src/PyLucene/python/PyLucene.py",
+      line 4, in ?  import _PyLucene
+  ImportError:
+  /home/janguenot/NXLucene/src/PyLucene/python/_PyLucene.so: undefined
+  symbol: PyUnicodeUCS2_FromUnicode
+
+In this case you have 2 options :
+
+ - Recompile a PyLucene version from source your system can support.
+
+     You will need to replace the src/PyLucene directory within NXLucene
+     with the one you will compile.
+
+ - Install a second Python for your own programs and leave the system
+   Python alone.
+
+     You will certainly have to change the specified nxlucened Python
+     interpretor in this case.
+
+ - Use a "serious" Linux distribution such as Fedora core or RHE next
+   time you will have to pick up a distro :)
+
+TwistedWeb missing dependencies
+-------------------------------
+
+If you get the error below while launching the tests it means your
+twisted installtion is incomplete. Your Python installation is missing
+TwistedWeb. (See the dependencies on top of this file)
+
+Traceback (most recent call last):
+  File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
+    import nxlucene.testing.xmlrpc
+  File "src/nxlucene/testing/xmlrpc.py", line 27, in ?
+    from nxlucene.xmlrpc import XMLRPCLuceneServer
+  File "src/nxlucene/xmlrpc.py", line 24, in ?
+    from twisted.web import xmlrpc
+ImportError: No module named web
+
 Installation
+============
 
   Linux is currently the only supported and tested platform.
 
@@ -80,8 +142,16 @@ Installation
    $ ./nxlucened start
 
 Advanced note for administrators
+================================
 
   The `start` script is adding PyLucene libraries to the
   LD_LIBRARY_PATH to avoid you having to link PyLucene on your system.
   
   See src/PyLucene/gcj/
+
+.. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
