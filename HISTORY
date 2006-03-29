@@ -1,4 +1,23 @@
 *******************************************
+** NXLucene V0.3.0 [R1 build 2006/03/29-02:50 by anguenot]
+** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 31893
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Update to PyLucene 1.9.1
+- Update twistd scripts
+- Update INSTALL instructions
+- Extend configuration options.
+
+*******************************************
 ** NXLucene V0.2.0 [R1 build 2006/03/28-17:32 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 31860
 
