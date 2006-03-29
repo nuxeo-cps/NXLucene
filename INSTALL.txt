@@ -22,7 +22,10 @@ Requierements
   instructions on how to build it.
 
   - Python-2.4 or later
-  
+
+  - PyLucene >= 1.9 rc1.
+    http://downloads.osafoundation.org/PyLucene/linux/PyLucene-1.9.1.tar.gz
+   
   - Zope Interfaces >= 3.0.1 (http://zope.org/Products/ZopeInterface) - if
   you have ZopeX3 (at least version 3.0.0c1) installed that should
   work too.
