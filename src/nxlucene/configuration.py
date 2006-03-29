@@ -27,29 +27,50 @@ except ImportError:
 
 NS = 'http://namespaces.nuxeo.org/nxlucene'
 
-class WebLuceneConfiguration(object):
-    """WebLucene configuration
+class NXLuceneConfiguration(object):
+    """NXLucene configuration
     """
 
     def __init__(self, config_file):
         conf = open(config_file, 'r').read()
         self._conf = etree.XML(conf)
+        self._nxlucened = self._conf.find('{%s}nxlucened' % NS)
 
     def getPort(self):
-        port = self._conf.find('{%s}port' % NS)
+        port = self._nxlucened.find('{%s}port' % NS)
         return int(port.text.strip())
 
     def getStoreDirPath(self):
         store_dir_path = self._conf.find(
             '{%s}store_dir' % NS).text.strip()
         if not store_dir_path.startswith('/'):
-            return os.environ.get('INSTANCE_HOME') + '/var/' + store_dir_path
+            return os.environ.get('INSTANCE_HOME') + '/' + store_dir_path
         return store_dir_path
 
-    def getThreadsNumber(self):
-        threads = self._conf.find(
-            '{%s}threads' % NS)
+    def getThreadsNumber(self):        
+        threads = self._nxlucened.find('{%s}threads' % NS)
         return int(threads.text.strip())
+
+    def getPIDFilePath(self):
+        pidpath = self._nxlucened.find('{%s}pidfile' % NS)
+        pidpath = pidpath.text.strip()
+        if not pidpath.startswith('/'):
+            return os.environ.get('INSTANCE_HOME') + '/' + pidpath
+        return pidpath
+
+    def getTwistdLogFile(self):
+        logfile = self._nxlucened.find('{%s}twistdlog' % NS)
+        logfile = logfile.text.strip()
+        if not logfile.startswith('/'):
+            return os.environ.get('INSTANCE_HOME') + '/' + logfile
+        return logfile
+
+    def getTwistdServiceTac(self):
+        tac = self._nxlucened.find('{%s}service' % NS)
+        tac = tac.text.strip()
+        if not tac.startswith('/'):
+            return os.environ.get('INSTANCE_HOME') + '/' + tac
+        return tac
 
     def getLogLevel(self):
         logs = self._conf.find(
@@ -65,4 +86,4 @@ class WebLuceneConfiguration(object):
             '{%s}file' % NS)
         logfilepath = logfile.text.strip()
         if not logfilepath.startswith('/'):
-            return os.environ.get('INSTANCE_HOME') + '/log/' + logfilepath
+            return os.environ.get('INSTANCE_HOME') + '/' + logfilepath

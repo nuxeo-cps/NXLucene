@@ -31,7 +31,7 @@ from twisted.application import internet
 
 from nxlucene.core import LuceneServer
 from nxlucene.logger import initLog
-from nxlucene.configuration import WebLuceneConfiguration
+from nxlucene.configuration import NXLuceneConfiguration
 
 from nxlucene.xmlrpc import XMLRPCLuceneServer
 
@@ -44,7 +44,7 @@ class NXLuceneController(object):
         self.log = logging.getLogger('WebLucene')
 
         config_file = os.environ['CONFIG_FILE']
-        self._conf = WebLuceneConfiguration(config_file)
+        self._conf = NXLuceneConfiguration(config_file)
         initLog(self._conf.getLogLevel(), self._conf.getLogFile())
 
         self._root = resource.Resource()

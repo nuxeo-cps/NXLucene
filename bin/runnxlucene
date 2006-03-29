@@ -16,7 +16,11 @@ os.environ['SOFTWARE_HOME'] = SOFTWARE_HOME
 CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "nxlucene.conf")
 os.environ['CONFIG_FILE'] = CONFIG_FILE
 
-tac_file = INSTANCE_HOME + '/etc/service.tac'
-log_file = INSTANCE_HOME + '/log/nxlucened.log'
-pid_file = INSTANCE_HOME + '/var/nxlucened.pid'
+from nxlucene.configuration import NXLuceneConfiguration
+conf = NXLuceneConfiguration(CONFIG_FILE)
+
+tac_file = conf.getTwistdServiceTac()
+log_file = conf.getTwistdLogFile()
+pid_file = conf.getPIDFilePath()
+
 os.system("twistd -y %s --pidfile=%s -l %s " % (tac_file, pid_file, log_file))
