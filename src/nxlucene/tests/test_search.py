@@ -421,7 +421,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': 'contact',},),
             search_options={
                             'sort-on' : 'name',
-                            'sort-order' : 'desc',
+                            'sort-order' : 'reverse',
                             },)))
 
         self.assertEqual(res.getResults()[0],
@@ -435,7 +435,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': 'contact',},),
             search_options={
                             'sort-on' : 'name',
-                            'sort-order' : 'asc',
+                            'sort-order' : '',
                             },)))
 
         self.assertEqual(res.getResults()[0],

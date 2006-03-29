@@ -448,10 +448,11 @@ class LuceneServer(object):
 
         # desc / asc
         sort_order = search_options.get('sort-order')
+        self.log.debug("Request sort-order is %s" % str(sort_order))
         if not sort_order:
             sort_order = False
         else:
-            if sort_order == 'desc':
+            if sort_order == 'reverse':
                 sort_order = True
             else:
                 sort_order = False
