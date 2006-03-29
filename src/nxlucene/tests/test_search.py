@@ -363,6 +363,83 @@ class LuceneSeachTestCase(unittest.TestCase):
                             },))))
 
         self.assertEqual(res.getResults()[0], ({u'uid': u'9'},{u'uid': u'10'}))
+
+
+    def test_sorting(self):
+
+        ob1 = Foo(type="contact", name="Bob")
+        ob2 = Foo(type="contact", name="Jack")
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('name', 'Text'), ('type', 'Keyword')))
+        self._server.indexDocument('bob', query)
+
+        query = FakeXMLInputStream(
+            ob2,
+            attributs=(('name', 'Text'), ('type', 'Keyword')))
+        self._server.indexDocument('jack', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'name',
+                            'type' : 'Text',
+                            'value': 'Jack',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ({u'uid': u'jack'},))
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'name',
+                            'type' : 'Text',
+                            'value': 'Bob',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ({u'uid': u'bob'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'type',
+                            'type' : 'Keyword',
+                            'value': 'contact',
+                            },))))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'bob'}, {u'uid': u'jack'}))
+
+        # Let's sort now.
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'type',
+                            'type' : 'Keyword',
+                            'value': 'contact',},),
+            search_options={
+                            'sort-on' : 'name',
+                            'sort-order' : 'desc',
+                            },)))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'jack'}, {u'uid': u'bob'}))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'type',
+                            'type' : 'Keyword',
+                            'value': 'contact',},),
+            search_options={
+                            'sort-on' : 'name',
+                            'sort-order' : 'asc',
+                            },)))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'bob'}, {u'uid': u'jack'}))
         
     def tearDown(self):
         if os.path.exists(self._store_dir):

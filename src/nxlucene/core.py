@@ -446,11 +446,15 @@ class LuceneServer(object):
         # Extract sorting information from search options.
         #
 
+        # desc / asc
         sort_order = search_options.get('sort-order')
         if not sort_order:
             sort_order = False
         else:
-            sort_order = True
+            if sort_order == 'desc':
+                sort_order = True
+            else:
+                sort_order = False
 
         sort_on = search_options.get('sort-on', '')
         if sort_on:
