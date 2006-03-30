@@ -1,6 +1,6 @@
-=======================
-NXLucene Installation 
-=======================
+=====================
+NXLucene Installation
+=====================
 
 :Author: Julien Anguenot
 :Revision: $Id: $
@@ -8,8 +8,9 @@ NXLucene Installation
 .. sectnum::    :depth: 6
 .. contents::   :depth: 1
 
-Requierements 
-=============
+
+Requirements
+============
 
   - Linux
 
@@ -25,14 +26,14 @@ Requierements
 
   - PyLucene >= 1.9 rc1.
     http://downloads.osafoundation.org/PyLucene/linux/PyLucene-1.9.1.tar.gz
-   
+
   - Zope Interfaces >= 3.0.1 (http://zope.org/Products/ZopeInterface) - if
   you have ZopeX3 (at least version 3.0.0c1) installed that should
   work too.
 
   - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
 
-  - TwistedWeb >= 0.5 : 
+  - TwistedWeb >= 0.5 :
     http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
     (twisted.web is not package as a separted component)
 
@@ -40,86 +41,6 @@ Requierements
 
 Note, PyLucene is coming with the NXLucene distribution.
 
-Testing for developpers
-=======================
-
-  When working from a NXLucene checkout, do an in-place build instead::
-
-    $ python setup.py build_ext -i
-
-  followed by::
-
-    $ ./test -vk -s weblucene
-
-  The test runner is a zope.testing runner. Use --help for all
-  available options.
-
-  This command will run all the tests, printing a single dot for each
-  test.  When it finishes, it will print a test summary.  The exact
-  number of tests can vary depending on platform and available
-  third-party libraries.::
-
-    Running tests from src
-    Running tests at level 1
-    Running unit tests:
-      Running:
-        ..................................................
-        .
-      Ran 67 tests with 0 failures and 0 errors in 14.796 seconds.
-
-Troubleshooting at this stage
-=============================
-
-Python and unicode problem
---------------------------
-
-Some distributions, actually Debian based..., raise the error below
-while launching the tests above :
-
-  Traceback (most recent call last):
-    File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
-      import nxlucene.testing.xmlrpc
-    File "src/nxlucene/testing/xmlrpc.py", line 28, in ?
-      from nxlucene.core import LuceneServer
-    File "src/nxlucene/core.py", line 25, in ?
-      import PyLucene  
-  File "/home/janguenot/NXLucene/src/PyLucene/python/PyLucene.py",
-      line 4, in ?  import _PyLucene
-  ImportError:
-  /home/janguenot/NXLucene/src/PyLucene/python/_PyLucene.so: undefined
-  symbol: PyUnicodeUCS2_FromUnicode
-
-In this case you have 2 options :
-
- - Recompile a PyLucene version from source your system can support.
-
-     You will need to replace the src/PyLucene directory within NXLucene
-     with the one you will compile.
-
- - Install a second Python for your own programs and leave the system
-   Python alone.
-
-     You will certainly have to change the specified nxlucened Python
-     interpretor in this case.
-
- - Use a "serious" Linux distribution such as Fedora core or RHE next
-   time you will have to pick up a distro :)
-
-TwistedWeb missing dependencies
--------------------------------
-
-If you get the error below while launching the tests it means your
-twisted installtion is incomplete. Your Python installation is missing
-TwistedWeb. (See the dependencies on top of this file)
-
-Traceback (most recent call last):
-  File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
-    import nxlucene.testing.xmlrpc
-  File "src/nxlucene/testing/xmlrpc.py", line 27, in ?
-    from nxlucene.xmlrpc import XMLRPCLuceneServer
-  File "src/nxlucene/xmlrpc.py", line 24, in ?
-    from twisted.web import xmlrpc
-ImportError: No module named web
 
 Installation
 ============
@@ -130,8 +51,8 @@ Installation
 
     $ cd /usr/local/
     $ tar -xzf /tmp/NXLucene-x.x-x.tgz
- 
-  In the resulting folder 
+
+  In the resulting folder
 
    $ python setup.py build
    $ sudo python setup.py install
@@ -141,9 +62,10 @@ Installation
   party apps.
 
   You can now start the NXLucene server :
- 
+
    $ cd ./bin
    $ ./nxlucened start
+
 
 For administrators
 ==================
@@ -169,8 +91,94 @@ For administrators
    Server runs on port 9180 by default. You may change this within
    etc/nxlucene.conf
 
+
+Testing for developpers
+=======================
+
+  When working from a NXLucene checkout, do an in-place build instead::
+
+    $ python setup.py build_ext -i
+
+  followed by::
+
+    $ ./test -vk -s nxlucene
+
+  The test runner is a zope.testing runner. Use --help for all
+  available options.
+
+  This command will run all the tests, printing a single dot for each
+  test.  When it finishes, it will print a test summary.  The exact
+  number of tests can vary depending on platform and available
+  third-party libraries.::
+
+    Running tests from src
+    Running tests at level 1
+    Running unit tests:
+      Running:
+        ..................................................
+        .
+      Ran 67 tests with 0 failures and 0 errors in 14.796 seconds.
+
+
+Troubleshooting
+===============
+
 If you need support check the cps-devel list at
 http//lists.nuxeo.com/cps-devel/
+
+
+Python and unicode problem
+--------------------------
+
+Some distributions, actually Debian based..., raise the error below
+while launching the tests above :
+
+  Traceback (most recent call last):
+    File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
+      import nxlucene.testing.xmlrpc
+    File "src/nxlucene/testing/xmlrpc.py", line 28, in ?
+      from nxlucene.core import LuceneServer
+    File "src/nxlucene/core.py", line 25, in ?
+      import PyLucene
+  File "/home/janguenot/NXLucene/src/PyLucene/python/PyLucene.py",
+      line 4, in ?  import _PyLucene
+  ImportError:
+  /home/janguenot/NXLucene/src/PyLucene/python/_PyLucene.so: undefined
+  symbol: PyUnicodeUCS2_FromUnicode
+
+In this case you have 2 options :
+
+ - Recompile a PyLucene version from source your system can support.
+
+     You will need to replace the src/PyLucene directory within NXLucene
+     with the one you will compile.
+
+ - Install a second Python for your own programs and leave the system
+   Python alone.
+
+     You will certainly have to change the specified nxlucened Python
+     interpretor in this case.
+
+ - Use a "serious" Linux distribution such as Fedora core or RHE next
+   time you will have to pick up a distro :)
+
+
+TwistedWeb missing dependencies
+-------------------------------
+
+If you get the error below while launching the tests it means your
+twisted installtion is incomplete. Your Python installation is missing
+TwistedWeb. (See the dependencies on top of this file)
+
+Traceback (most recent call last):
+  File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
+    import nxlucene.testing.xmlrpc
+  File "src/nxlucene/testing/xmlrpc.py", line 27, in ?
+    from nxlucene.xmlrpc import XMLRPCLuceneServer
+  File "src/nxlucene/xmlrpc.py", line 24, in ?
+    from twisted.web import xmlrpc
+ImportError: No module named web
+
 
 .. Emacs
 .. Local Variables:

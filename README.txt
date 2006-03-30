@@ -1,10 +1,11 @@
 $Id: $
 
-=========
+========
 NXLucene
-=========
+========
 
-What is is ?
+What is it ?
+------------
 
   NXLucene is a standalone multi threads remote server handling a
   Lucene index store. It is based on the PyLucene Python bindings and
@@ -28,7 +29,9 @@ What is is ?
   programs. For instance, the query lib might be useful to help you
   format your nxlucene queries.
 
+
 Motivation
+----------
 
   This product has been implemented in CPS project scope. CPS is based
   on Zope and the standard cataloging solution of Zope is the ZCatalog
@@ -54,13 +57,18 @@ Motivation
 
      CPSLuceneCatalog (http://svn.nuxeo.org)
 
+
 Documentation
+-------------
 
   See the doc sub-folder of this archive and check the NXLucene website.
 
+
 Installation
+------------
 
   See INSTALL.txt
+
 
 More information
 
@@ -70,17 +78,31 @@ More information
 
   - http://www.nuxeo.com/en/
 
-Get support :
+
+Get support
+-----------
 
   - http://lists.nuxeo.com/cps-devel
 
-Looking for commercial support ? :
+
+Looking for commercial support ?
+--------------------------------
 
   - http://www.nuxeo.com/en/
 
-License :
+
+License
+-------
 
   This Software is governed by the LGPL License. See LICENSE.txt or
   http://www.gnu.org/copyleft/lesser.html
 
   This software includes as well softwares under the MIT and the ZPL.
+
+
+.. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
