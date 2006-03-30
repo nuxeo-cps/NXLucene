@@ -1,4 +1,23 @@
 *******************************************
+** NXLucene V0.4.0 [R1 build 2006/03/30-02:32 by anguenot]
+** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32047
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- New MultiKeyword field support.
+Bug fixes:
+~~~~~~~~~~
+- Fix search batch windows
+- Fix the store dir path conf within nxlucene.conf
+- Fix asc/desc sort
+- Fix sorting on tokenized fields not possible.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** NXLucene V0.3.0 [R1 build 2006/03/29-02:50 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 31893
 Requires:
