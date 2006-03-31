@@ -3,7 +3,7 @@ NXLucene Installation
 =====================
 
 :Author: Julien Anguenot
-:Revision: $Id: $
+:Revision: $Id$
 
 .. sectnum::    :depth: 6
 .. contents::   :depth: 1
