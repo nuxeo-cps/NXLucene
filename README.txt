@@ -99,7 +99,7 @@ Need support
 Looking for commercial support ?
 ================================
 
-You can contact Nuxeo_
+  You can contact Nuxeo_
 
   - http://www.nuxeo.com/en/
 
