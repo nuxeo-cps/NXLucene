@@ -1,0 +1,29 @@
+========================
+Lucene third party tools
+========================
+
+:Author: Julien Anguenot
+:Revision: $Id: INSTALL.txt 32177 2006-03-31 14:45:36Z janguenot $
+
+.. sectnum::    :depth: 1
+.. contents::   :depth: 1
+
+Store management tool
+=====================
+
+Luke_ is a handy development and diagnostic tool, which accesses
+already existing Lucene indexes and allows you to display and modify
+their contents in several ways:
+
+It works pretty well. You can either install Luke on your Java
+installation or use the available jnlp.
+
+.. _Luke: http://www.getopt.org/luke/
+
+.. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
+
