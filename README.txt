@@ -65,7 +65,7 @@ Motivation
 
   - CPS_ integration
 
-     CPSLuceneCatalog_
+    CPSLuceneCatalog_
 
 .. _CPS: http://www.cps-project.org/
 .. _Zope: http://www.zope.org/
