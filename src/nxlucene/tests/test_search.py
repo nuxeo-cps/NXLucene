@@ -238,6 +238,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
     def test_text_more_keyword(self):
+
         ob = Foo(portal_type="Section")
 
         query = FakeXMLInputStream(
@@ -440,6 +441,91 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(res.getResults()[0],
                          ({u'uid': u'bob'}, {u'uid': u'jack'}))
+
+    def test_kewyord_search_with_spaces(self):
+
+        o1 = Foo(portal_type='CPS Type1')
+        o2 = Foo(portal_type='CPS Type2')
+
+        query = FakeXMLInputStream(
+            o1,
+            attributs=(('portal_type', 'Keyword'),))
+        self._server.indexDocument('o1', query)
+
+        query = FakeXMLInputStream(
+            o2,
+            attributs=(('portal_type', 'Keyword'),))
+        self._server.indexDocument('o2', query)
+
+        # Lookup for o1
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': 'CPS Type1',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ({u'uid': u'o1'},))
+
+        # Lookup for o1
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': 'CPS Type2',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ({u'uid': u'o2'},))
+
+        # Verify nothing's return if we only request for half of the
+        # keyword element.
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': 'CPS ',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ())
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'portal_type',
+                            'type' : 'Keyword',
+                            'value': 'Type1',
+                            },))))
+
+        self.assertEqual(res.getResults()[0], ())
+
+
+        # Lookup for o1 and o2
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'portal_type',
+             'type' : 'Keyword',
+             'value': 'CPS Type2',
+             'condition' : 'OR'
+            },
+
+            {'id' : u'portal_type',
+             'type' : 'Keyword',
+             'value': 'CPS Type1',
+             'condition': 'OR'
+            },
+            
+            ))))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'o1'}, {u'uid': u'o2'},))
+
         
     def tearDown(self):
         if os.path.exists(self._store_dir):
