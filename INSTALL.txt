@@ -8,85 +8,95 @@ NXLucene Installation
 .. sectnum::    :depth: 6
 .. contents::   :depth: 1
 
-
 Requirements
 ============
 
-  - Linux
+  - *Linux* based operating system. NXLucene_ is using PyLucene_ and
+    PyLucene_ is reported to work on windows and macos. It means
+    running NXLucene_ on those platformes should be possible
+    though. This is just not supported right now. You're welcome
+    contributing installers for those platforms.
 
-  - Building NXLucene requires GNU's compiler for Java, GCJ as
-    PyLucene requires it.
+  - Building NXLucene_ requires GNU's compiler for Java, GCJ as
+    PyLucene_ requires it. gcc 3.3.x on Linux installations appears to
+    ship with GCJ. If your gcc installation does not include GCJ, you
+    need to upgrade it.  The version of GCC currently recommended is
+    GCC 3.4.4.
 
-    gcc 3.3.x on Linux installations appears to ship with gcj. If your
-  gcc installation does not include gcj, you need to upgrade it.  The
-  version of gcc currently recommended is gcc 3.4.4. See below for
-  instructions on how to build it.
+  - Python-2.4.x_ installed.
 
-  - Python-2.4 or later
+  - PyLucene_ >= 1.9.x_
 
-  - PyLucene >= 1.9 rc1.
-    http://downloads.osafoundation.org/PyLucene/linux/PyLucene-1.9.1.tar.gz
+  - ZopeInterface_ >= 3.0.1. This depends of the Twisted_ requirements.
 
-  - Zope Interfaces >= 3.0.1 (http://zope.org/Products/ZopeInterface) - if
-  you have ZopeX3 (at least version 3.0.0c1) installed that should
-  work too.
+  - Twisted_ >= 2.2.0_
 
-  - Twisted >= 2.2.0 : http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
+  - TwistedWeb_ >= 0.5 : twisted.web is now package as a separted
+    component by the twisted guys.
 
-  - TwistedWeb >= 0.5 :
-    http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
-    (twisted.web is not package as a separted component)
+  - ElemenTtree_ and cElementTree_ >= 1.2.6-20050316
 
-  - elementtree and cElementTree >= 1.2.6-20050316
+Note, PyLucene_ is coming with the NXLucene_ distribution as a
+binary. You do not necesarly need to install it to make NXLucene_
+work. See the troubleshooting section if you are having errors at
+startup or while launching tests.
 
-Note, PyLucene is coming with the NXLucene distribution.
-
+.. _Python-2.4.x: http://www.python.org/download/releases/2.4.3/
+.. _NXLucene: http://www.cps-project.org/sections/nxlucene/
+.. _PyLucene: http://pylucene.osafoundation.org/
+.. _1.9.x: http://downloads.osafoundation.org/PyLucene/linux/PyLucene-1.9.1.tar.gz
+.. _ZopeInterface: http://zope.org/Products/ZopeInterface
+.. _Twisted: http://twistedmatrix.com/projects/core/
+.. _2.2.0: http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
+.. _TwistedWeb: http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
+.. _ElementTree: http://effbot.org/zone/element-index.htm
+.. _cElementTree: http://effbot.org/zone/celementtree.htm
 
 Installation
 ============
 
-  Linux is currently the only supported and tested platform.
+  Linux is currently the only supported and tested platform. See the
+  requirements section above for more information.
 
-  Uncompress the NXLucene archive :
+  Uncompress the NXLucene_ archive ::
 
     $ cd /usr/local/
     $ tar -xzf /tmp/NXLucene-x.x-x.tgz
 
-  In the resulting folder
+  In the resulting folder ::
 
-   $ python setup.py build
-   $ sudo python setup.py install
+    $ python setup.py build
+    $ sudo python setup.py install
 
-  This will install the core NXLucene libs within the site-packages
+  This will install the core NXLucene_ libs within the site-packages
   of the Python interpertor. They might be useful for Python third
-  party apps.
+  party apps. Especially, the nxlucene.rss sub-module.
 
-  You can now start the NXLucene server :
+  You can now start the NXLucene_ server ::
 
-   $ cd ./bin
-   $ ./nxlucened start
-
+    $ cd ./bin
+    $ ./nxlucened start
 
 For administrators
 ==================
 
-   Below are the needed steps to add NXLucene within your startup tables.
+   Below are the needed steps to add NXLucene_ within your startup tables.
 
    I assume an installation within /usr/local/NXLucene for instance.
 
-   As root :
+   As *root* :
 
-   Create a link on the startup script within the /etc/init.d
+   Create a link on the startup script within the /etc/init.d ::
 
-   $ cd /etc/init.d/
-   $ ln -s /usr/local/NXLucene/bin/nxlucened .
+     $ cd /etc/init.d/
+     $ ln -s /usr/local/NXLucene/bin/nxlucened .
 
    Edit nxlucend and change the NXLUCENE_HOME value reflecting your
    installation. In our case, NXLUCENE_HOME=/usr/local/NXLucene.
 
-   Add nxlucened within the system startup table.
+   Add nxlucened within the system startup table ::
 
-   $ /sbin/chkconfig --level 2345 nxlucened on
+     $ /sbin/chkconfig --level 2345 nxlucened on
 
    Server runs on port 9180 by default. You may change this within
    etc/nxlucene.conf
@@ -95,7 +105,7 @@ For administrators
 Testing for developpers
 =======================
 
-  When working from a NXLucene checkout, do an in-place build instead::
+  When working from a NXLucene_ checkout_, do an in-place build instead::
 
     $ python setup.py build_ext -i
 
@@ -117,21 +127,22 @@ Testing for developpers
       Running:
         ..................................................
         .
-      Ran 67 tests with 0 failures and 0 errors in 14.796 seconds.
+      Ran XX tests with 0 failures and 0 errors in 14.796 seconds.
 
+.. _checkout: http://svn.nuxeo.org/pub/NXLucene/
 
 Troubleshooting
 ===============
 
-If you need support check the cps-devel list at
-http//lists.nuxeo.com/cps-devel/
+If you need support check the cps-devel_ list
 
+.. _cps-devel: http//lists.nuxeo.com/cps-devel/
 
 Python and unicode problem
 --------------------------
 
-Some distributions, actually Debian based..., raise the error below
-while launching the tests above :
+Some distributions raise the error below while launching the tests
+above ::
 
   Traceback (most recent call last):
     File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
@@ -146,11 +157,14 @@ while launching the tests above :
   /home/janguenot/NXLucene/src/PyLucene/python/_PyLucene.so: undefined
   symbol: PyUnicodeUCS2_FromUnicode
 
+The reason is that the binaries are commpiled with UCS2 support. If
+your system has en ICS4 support then this error will occur.
+
 In this case you have 2 options :
 
- - Recompile a PyLucene version from source your system can support.
-
-     You will need to replace the src/PyLucene directory within NXLucene
+ - Recompile a PyLucene_ version from source your system can support. 
+ 
+     You will need to replace the src/PyLucene directory within NXLucene_
      with the one you will compile.
 
  - Install a second Python for your own programs and leave the system
@@ -159,26 +173,21 @@ In this case you have 2 options :
      You will certainly have to change the specified nxlucened Python
      interpretor in this case.
 
- - Use a "serious" Linux distribution such as Fedora core or RHE next
-   time you will have to pick up a distro :)
-
-
 TwistedWeb missing dependencies
 -------------------------------
 
 If you get the error below while launching the tests it means your
-twisted installtion is incomplete. Your Python installation is missing
-TwistedWeb. (See the dependencies on top of this file)
+twisted installation is incomplete. Your Python installation is missing
+TwistedWeb. (See the dependencies on top of this file)::
 
-Traceback (most recent call last):
-  File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
-    import nxlucene.testing.xmlrpc
-  File "src/nxlucene/testing/xmlrpc.py", line 27, in ?
-    from nxlucene.xmlrpc import XMLRPCLuceneServer
-  File "src/nxlucene/xmlrpc.py", line 24, in ?
-    from twisted.web import xmlrpc
-ImportError: No module named web
-
+  Traceback (most recent call last):
+    File "src/nxlucene/tests/test_xmlrpc_server.py", line 25, in ?
+      import nxlucene.testing.xmlrpc
+    File "src/nxlucene/testing/xmlrpc.py", line 27, in ?
+      from nxlucene.xmlrpc import XMLRPCLuceneServer
+    File "src/nxlucene/xmlrpc.py", line 24, in ?
+      from twisted.web import xmlrpc
+  ImportError: No module named web
 
 .. Emacs
 .. Local Variables:
