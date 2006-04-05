@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Don't deaminize twistd as it fucks up the mermory
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
