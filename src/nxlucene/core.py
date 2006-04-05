@@ -373,7 +373,7 @@ class LuceneServer(object):
 
                 query.add(
                     subquery,
-                    nxlucene.query.boolean_clauses_map.get(condition, 'AND'))
+                    nxlucene.query.boolean_clauses_map.get('AND'))
 
             elif type.lower() == 'date':
 
