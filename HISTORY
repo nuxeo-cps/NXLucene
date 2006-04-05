@@ -1,4 +1,21 @@
 *******************************************
+** NXLucene V0.4.1 [R1 build 2006/04/05-19:05 by anguenot]
+** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32358
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Don't deaminize twistd as it fucks up the mermory
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Documentation updated
+- More tests
+
+*******************************************
 ** NXLucene V0.4.0 [R1 build 2006/03/30-02:32 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32047
 Requires:
