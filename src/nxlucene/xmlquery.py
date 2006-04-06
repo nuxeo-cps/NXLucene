@@ -75,6 +75,7 @@ class XMLQuery(object):
                 'attribute' : field.attrib.get('attribute', '').strip(),
                 'type' : field.attrib.get('type', '').strip(),
                 'value': value,
+                'analyzer' : field.attrib.get('analyzer', 'standard').strip()
                 },)
 
     def getFields(self):
@@ -137,6 +138,8 @@ class XMLSearchQuery(object):
                     'id' : unicode(field.attrib['id'].strip()),
                     'value' : unicode(field.attrib['value'].strip()),
                     'type' : unicode(field.attrib.get('type', '').strip()),
+                    'analyzer' : unicode(field.attrib.get('analyzer',
+                                                          'standard')).strip()
                     }
                 
 

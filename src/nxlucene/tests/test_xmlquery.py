@@ -57,7 +57,7 @@ class XMLQueryTestCase(unittest.TestCase):
 
         istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
-                         ({'attribute': '', 'type': '', 'id': 'name', 'value': ''},)
+                         ({'analyzer': 'standard', 'attribute': '', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O3_stream(self):
@@ -71,7 +71,7 @@ class XMLQueryTestCase(unittest.TestCase):
 
         istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
-                        ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
+                        ({'analyzer': 'standard', 'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O4_stream(self):
@@ -85,7 +85,7 @@ class XMLQueryTestCase(unittest.TestCase):
 
         istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
-                          ({'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
+                          ({'analyzer': 'standard', 'attribute': '__name__', 'type': '', 'id': 'name', 'value': ''},)
                          )
 
     def test_O5_stream(self):
@@ -99,7 +99,7 @@ class XMLQueryTestCase(unittest.TestCase):
 
         istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
-                         ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},)
+                         ({'analyzer': 'standard', 'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},)
                          )
 
     def test_O6_stream(self):
@@ -114,8 +114,8 @@ class XMLQueryTestCase(unittest.TestCase):
 
         istream = XMLQuery(stream)
         self.assertEqual(istream.getFields(),
-                         ({'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},
-                          {'attribute': 'attr', 'type': 'text', 'id': 'attr', 'value': ''},)
+                         ({'analyzer' : 'standard', 'attribute': '__name__', 'type': 'text', 'id': 'name', 'value': ''},
+                          {'analyzer' : 'standard', 'attribute': 'attr', 'type': 'text', 'id': 'attr', 'value': ''},)
                          )
 
     def test_empty_stream(self):
@@ -270,7 +270,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'analyzer': 'standard', 'type': u'', 'id': u'name', 'value': u'foo'},))
 
     def test_with_fields_strip(self):
         stream = """<?xml version="1.0" encoding="UTF-8"?>
@@ -283,7 +283,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'analyzer': 'standard', 'type': u'', 'id': u'name', 'value': u'foo'},))
 
         stream = """<?xml version="1.0" encoding="UTF-8"?>
         <search>
@@ -297,7 +297,7 @@ class XMLSearchQueryTestCase(unittest.TestCase):
         self.assertEqual(istream.getAnalyzerType(), 'standard')
         self.assertEqual(istream.getReturnFields(), ())
         self.assertEqual(istream.getSearchFields(),
-                         ({'type': u'', 'id': u'name', 'value': u'foo'},))
+                         ({'analyzer': 'standard', 'type': u'', 'id': u'name', 'value': u'foo'},))
 
 
     def test_query_with_sort_options(self):
