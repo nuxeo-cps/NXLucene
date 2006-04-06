@@ -359,12 +359,13 @@ class LuceneServer(object):
                     index, PyLucene.KeywordAnalyzer())
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
 
+                # FIXME use tokenizer... this sucks... 
                 if '#' in value:
                     values = value.split('#')
                 else:
                     values = value.split()
 
-
+                # FIXME use tokenizer... this sucks... 
                 for each in values:
                     each = each.replace(':', '_')
                     subquery.add(
@@ -413,8 +414,23 @@ class LuceneServer(object):
 
             elif type.lower() == 'keyword':
 
+                subquery = PyLucene.BooleanQuery()
+
+                # FIXME use tokenizer... this sucks... 
+                if '#' in value:
+                    values = value.split('#')
+                else:
+                    values = [value]
+
+                # FIXME use tokenizer... this sucks... 
+                for each in values:
+                    each = each.replace(':', '_')
+                    subquery.add(
+                        PyLucene.TermQuery(PyLucene.Term(index, each)),
+                        nxlucene.query.boolean_clauses_map.get('OR'))
+
                 query.add(
-                    PyLucene.TermQuery(PyLucene.Term(index, value)),
+                    subquery,
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
