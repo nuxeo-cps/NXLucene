@@ -35,6 +35,7 @@ from searcher import LuceneSearcher
 import rss.resultset
 
 import nxlucene.query
+import nxlucene.analyzer
 
 class LuceneServer(object):
     """Lucene server.
@@ -150,6 +151,7 @@ class LuceneServer(object):
             field_id   = field['id']
             field_value = unicode(field['value'])
             field_type  = field['type']
+            field_analyzer = field.get('analyzer', 'standard')
 
             self.log.debug(
                 "Adding Field on doc with id=%s with value %s of type %s"
@@ -340,6 +342,7 @@ class LuceneServer(object):
             type =  field.get('type', '')
             condition = field.get('condition', 'AND')
             usage = field.get('usage', '')
+            analyzer = field.get('analyzer', 'standard')
 
             if type.lower() == 'path':
                 term = PyLucene.Term(index, unicode(value))
@@ -437,8 +440,9 @@ class LuceneServer(object):
             else:
 
                 analyzer = PyLucene.StandardAnalyzer()
+#                analyz = nxlucene.analyzer.getAnalyzerById(analyzer)
 
-                parser = PyLucene.QueryParser(index, analyzer)
+                parser = PyLucene.QueryParser(index, analyz)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
 
                 try:
