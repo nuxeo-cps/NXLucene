@@ -526,6 +526,114 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(res.getResults()[0],
                          ({u'uid': u'o1'}, {u'uid': u'o2'},))
 
+
+    def test_french_no_analyzer(self):
+
+        ob1 = Foo(content="l'homme chante")
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'Text'),))
+        self._server.indexDocument('x', query)
+
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "chante",
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "l'homme",
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        # Not found here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "homme",
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 0)
+
+    def xtest_french_analyzer(self):
+
+        ob1 = Foo(content="l'homme chante")
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'Text'),))
+        self._server.indexDocument('x', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "chante",
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "l'homme",
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        # Not found here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "homme",
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
         
     def tearDown(self):
         if os.path.exists(self._store_dir):
