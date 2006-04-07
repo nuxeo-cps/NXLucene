@@ -519,6 +519,13 @@ class LuceneServer(object):
             if j >= (start + size):
                 break
 
+            # XXX Here the returned fields for dates are Java Date str.
+            # I'd like to check this 2 options :
+            #  - Identify the date field and return an UTC timestamp
+            #  - Apply a post match processing that converts the date
+            #    to timestemp.
+            # This way is annoying since the client has to deal with
+            # Java Date and this sucks.
             table = dict([(field.name(), field.stringValue())
                           for field in doc
                           if unicode(field.name()) in return_fields])
