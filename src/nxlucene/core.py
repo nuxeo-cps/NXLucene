@@ -539,16 +539,24 @@ class LuceneServer(object):
             if j >= (start + size):
                 break
 
-            # XXX Here the returned fields for dates are Java Date str.
-            # I'd like to check this 2 options :
-            #  - Identify the date field and return an UTC timestamp
-            #  - Apply a post match processing that converts the date
-            #    to timestemp.
-            # This way is annoying since the client has to deal with
-            # Java Date and this sucks.
-            table = dict([(field.name(), field.stringValue())
-                          for field in doc
-                          if unicode(field.name()) in return_fields])
+            table = {}
+            for field in doc:
+                name = field.name()
+                if not unicode(field.name()) in return_fields:
+                    continue
+
+                value = field.stringValue()
+
+                # XXX Here the returned fields for dates are Java Date str.
+                # I'd like to check this 2 options :
+                #  - Identify the date field and return an UTC timestamp
+                #  - Apply a post match processing that converts the date
+                #    to timestemp.
+                # This way is annoying since the client has to deal with
+                # Java Date and this sucks.
+
+                table[name] = value
+                          
             results.addItem(table['uid'], table)
 
         tstop = time.time()
