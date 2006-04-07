@@ -20,6 +20,7 @@
 import os
 import shutil
 import unittest
+import PyLucene
 
 from nxlucene.core import LuceneServer
 
@@ -390,8 +391,14 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         record = res.getResults()[0][0]
         self.assertEqual(record['uid'], 'd1')
-        self.assertEqual(record['modified'], '2006-01-01 00:00:00')
 
+        from nxlucene.date import getPythonDateTimeFromJavaStr
+
+        # XXX UTC +1
+        self.assertEqual(
+            str(getPythonDateTimeFromJavaStr(record['modified'])),
+            '2006-01-01 01:00:00')
+        
     def test_sorting(self):
 
         ob1 = Foo(type="contact", name="Bob")
