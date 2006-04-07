@@ -366,6 +366,32 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(res.getResults()[0], ({u'uid': u'9'},{u'uid': u'10'}))
 
 
+    def test_date_returned(self):
+
+        ob1 = Foo(modified="2006-01-01 00:00:00")
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('modified', 'Date'),))
+        self._server.indexDocument('d1', query)
+
+
+        # Use range:max now.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            ('modified',),
+            search_fields=({'id' : u'modified',
+                            'type' : 'Date',
+                            'value': '2006-01-01 00:00:00',
+                            'usage' : 'range:max',
+                            },))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        record = res.getResults()[0][0]
+        self.assertEqual(record['uid'], 'd1')
+        self.assertEqual(record['modified'], '2006-01-01 00:00:00')
+
     def test_sorting(self):
 
         ob1 = Foo(type="contact", name="Bob")
