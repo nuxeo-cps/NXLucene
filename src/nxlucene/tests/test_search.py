@@ -147,6 +147,69 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'/b'},))))
         self.assertEqual(res.getResults()[0], ())
 
+    def test_multiple_path(self):
+
+        # Indes a new document.
+        ob = Foo(path="/a/b/c")
+        ob2 = Foo(path="/aa/bb")
+
+        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),))
+        self._server.indexDocument('1', query)
+
+        query = FakeXMLInputStream(ob2, attributs=(('path', 'Path'),))
+        self._server.indexDocument('2', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'type' : 'path',
+                            'value': u'/a/b/c'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'type' : 'path',
+                            'value': u'/aa/bb'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
+
+        # Path as 2 configurations with condition
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'path',
+             'type' : 'path',
+             'value': u'/aa/bb',
+             'condition' : 'OR'},
+
+            {'id' : u'path',
+             'type' : 'path',
+             'value': u'/a/b/c',
+             'condition' : 'OR'},
+
+            ))))
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'1'}, {u'uid': u'2'},))
+        
+        # Path as 2 with  # separators
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'path',
+             'type' : 'path',
+             'value': '/aa/bb#/a/b/c',
+             },
+            ))))
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'1'}, {u'uid': u'2'},))
+        
+
     def test_keyword_search(self):
         # Indes a new document.
 

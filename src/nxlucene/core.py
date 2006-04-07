@@ -345,8 +345,28 @@ class LuceneServer(object):
             analyzer = field.get('analyzer', 'standard')
 
             if type.lower() == 'path':
-                term = PyLucene.Term(index, unicode(value))
-                subquery = PyLucene.PrefixQuery(term)
+
+                # FIXME !
+                subquery = PyLucene.BooleanQuery()
+
+                parser = PyLucene.QueryParser(
+                    index, PyLucene.KeywordAnalyzer())
+                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
+
+                # FIXME use tokenizer... this sucks... 
+                if '#' in value:
+                    values = value.split('#')
+                else:
+                    values = value.split()
+
+                # FIXME use tokenizer... this sucks... 
+                for each in values:
+                    term = PyLucene.Term(index, unicode(each))
+                    subquery.add(
+                        PyLucene.PrefixQuery(term),
+                        nxlucene.query.boolean_clauses_map.get('OR')
+                        )
+
                 query.add(
                     subquery,
                     nxlucene.query.boolean_clauses_map.get(

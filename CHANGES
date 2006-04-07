@@ -8,6 +8,8 @@ Bug fixes:
 ~~~~~~~~~~
 - Hack around startup scripts.
 - Hack around keyword multiple search.
+- Hack around multi path search
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- more tests
+- comments about dates
