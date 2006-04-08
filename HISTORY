@@ -1,4 +1,23 @@
 *******************************************
+** NXLucene V0.4.2 [R1 build 2006/04/08-14:12 by anahide]
+** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32533
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Hack around startup scripts.
+- Hack around keyword multiple search.
+- Hack around multi path search
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- more tests
+- comments about dates
+
+*******************************************
 ** NXLucene V0.4.1 [R1 build 2006/04/05-19:05 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32358
 Requires:
