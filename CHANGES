@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Avoid broken requests in searchQuery
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

@@ -509,9 +509,18 @@ class LuceneServer(object):
                                "tokenized field. "
                                "Use another field instead since it's not "
                                "possible" % str(sort_on))
-                hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
+                try:
+                    hits = searcher.get().search(query,
+                                                 PyLucene.Sort.RELEVANCE)
+                except PyLucene.JavaError:
+                    self.log.info("Request %s failed..." % repr(query))
+                    return results.getStream()
         else:
-            hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
+            try:
+                hits = searcher.get().search(query, PyLucene.Sort.RELEVANCE)
+            except PyLucene.JavaError:
+                self.log.info("Request %s failed..." % repr(query))
+                return results.getStream()
 
         nb_results = hits.length()
         results.addNumberOfResults(nb_results)
