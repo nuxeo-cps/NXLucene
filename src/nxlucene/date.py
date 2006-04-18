@@ -26,6 +26,11 @@ def getPythonDateTimeFromJavaStr(java_date_str):
     """Returns a Python datetime object given a string representation
     of a Java Date object.
     """
+
+    # XXX : Here the date stays the same (and is correct), but we're
+    # losing the timezone information (and using UTC). I'm not sure if
+    # whether or not this will be an issue at this stage.
+
     date = PyLucene.DateField.stringToDate(java_date_str)
     timestamp = date.getTime()
     return datetime.datetime.utcfromtimestamp(timestamp/1000)
