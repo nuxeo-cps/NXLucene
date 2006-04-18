@@ -59,8 +59,7 @@ class LuceneServer(object):
             creation = True
         return PyLucene.FSDirectory.getDirectory(self.store_dir, creation)
 
-    def getIndexer(self):
-        creation = False
+    def getIndexer(self, creation=False):
         if not os.path.exists(self.store_dir):
             creation = True
         analyzer = PyLucene.StandardAnalyzer()
@@ -114,7 +113,7 @@ class LuceneServer(object):
 
         self.write_lock.acquire()
 
-        indexer = LuceneIndexer(self.store_dir, creation=True)
+        indexer = self.getIndexer(creation=True)
         indexer.close()
 
         self.write_lock.release()
