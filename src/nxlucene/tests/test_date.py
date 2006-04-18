@@ -40,7 +40,7 @@ class DateTestCase(unittest.TestCase):
 
         date_str = u'0ell4h8pk'
         pydate = getPythonDateTimeFromJavaStr(date_str)
-        print pydate
+        self.assertEqual(pydate, datetime.datetime(2006, 4, 3, 18, 13, 59))
 
 def test_suite():
     suite = unittest.TestSuite()
