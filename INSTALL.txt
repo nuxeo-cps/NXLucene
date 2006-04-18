@@ -25,7 +25,8 @@ Requirements
 
   - Python-2.4.x_ installed.
 
-  - PyLucene_ >= 1.9.x_
+  - PyLucene_ == 1.9rc1. Currently NXLucene with version 1.9.1 of
+    PyLucene shows some issues that need to be addressed.
 
   - ZopeInterface_ >= 3.0.1. This depends of the Twisted_ requirements.
 
