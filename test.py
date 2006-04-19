@@ -24,14 +24,12 @@ zope.testing.testrunner.
 import sys
 
 path = "src"
-pylucene_path = "src/PyLucene/python"
 print "Running tests from", path
 
 # Insert the WebLucene src dir first in the sys.path to avoid a name conflict
 # with zope.whatever librairies that might be installed on the Python
 # version used to launch these tests.
 sys.path.insert(0, path)
-sys.path.append(pylucene_path)
 
 from zope.testing import testrunner
 

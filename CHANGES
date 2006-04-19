@@ -1,6 +1,6 @@
 Requires:
 ~~~~~~~~~
--
+- PyLucene 1.9.1 installed on the Python interpretor 
 New features:
 ~~~~~~~~~~~~~
 -

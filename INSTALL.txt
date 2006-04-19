@@ -25,8 +25,7 @@ Requirements
 
   - Python-2.4.x_ installed.
 
-  - PyLucene_ == 1.9rc1. Currently NXLucene with version 1.9.1 of
-    PyLucene shows some issues that need to be addressed.
+  - PyLucene_ == 1.9.1. 
 
   - ZopeInterface_ >= 3.0.1. This depends of the Twisted_ requirements.
 
@@ -163,11 +162,9 @@ your system has en ICS4 support then this error will occur.
 
 In this case you have 2 options :
 
- - Recompile a PyLucene_ version from source your system can support. 
+ - Recompile a PyLucene_ version from source your system can support
+   with UCS2 support. (Ubuntu users you will have to do that)
  
-     You will need to replace the src/PyLucene directory within NXLucene_
-     with the one you will compile.
-
  - Install a second Python for your own programs and leave the system
    Python alone.
 
