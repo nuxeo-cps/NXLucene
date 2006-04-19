@@ -12,4 +12,4 @@ Bug fixes:
 
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- Do not store date as Java date strings
