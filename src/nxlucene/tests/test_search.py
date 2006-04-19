@@ -455,12 +455,10 @@ class LuceneSeachTestCase(unittest.TestCase):
         record = res.getResults()[0][0]
         self.assertEqual(record['uid'], 'd1')
 
-        from nxlucene.date import getPythonDateTimeFromJavaStr
-
         # XXX UTC +1
         self.assertEqual(
-            str(getPythonDateTimeFromJavaStr(record['modified'])),
-            '2006-01-01 01:00:00')
+            record['modified'],
+            '2006-01-01 00:00:00')
         
     def test_sorting(self):
 

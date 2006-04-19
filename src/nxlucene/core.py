@@ -183,27 +183,7 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.Keyword(field_id, unicode(field_value)))
 
             elif field_type.lower() == 'date':
-                # The Date format must be an ISO one. This is a
-                # requierment right now.  XXX check this is the case ?
-
-                iso = 'yyyy-MM-dd HH:mm:ss'
-
-                try:
-                    date_formated = PyLucene.SimpleDateFormat(
-                        iso).parse(field_value)
-                except PyLucene.JavaError:
-                    continue
-
-                try:
-                    date_field = PyLucene.DateField.dateToString(date_formated)
-                except PyLucene.JavaError:
-                    # java.lang.RuntimeException: time too early
-                    # Shoud be > 1970
-                    date_formated = PyLucene.SimpleDateFormat(
-                        iso).parse('1970-01-01 00:00:00')
-                    date_field = PyLucene.DateField.dateToString(date_formated)
-
-                doc.add(PyLucene.Field.Keyword(field_id, date_field))
+                doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             elif field_type.lower() == 'path':
                 # XXX implement me.
@@ -400,24 +380,16 @@ class LuceneServer(object):
 
             elif type.lower() == 'date':
 
-                iso_format = 'yyyy-MM-dd HH:mm:ss'
-                date_iso = value
-
-                # XXX Deal with old dates.
-                date_formated = PyLucene.SimpleDateFormat(
-                    iso_format).parse(date_iso)
-
-                date_field = PyLucene.DateField.dateToString(date_formated)
-
                 start_range = None
                 end_range = None
+
                 if usage and usage != 'range:min:max':
 
                     if usage == 'range:min':
-                        start_range = PyLucene.Term(index, date_field)
+                        start_range = PyLucene.Term(index, value)
 
                     elif usage == 'range:max':
-                        end_range = PyLucene.Term(index, date_field)
+                        end_range = PyLucene.Term(index, value)
 
                     else:
                         self.log.error("Usage not supported %s" % str(usage))
@@ -426,7 +398,7 @@ class LuceneServer(object):
                         start_range, end_range, True)
                     
                 else:
-                    term = PyLucene.Term(index, date_field)
+                    term = PyLucene.Term(index,  value)
                     subquery = PyLucene.TermQuery(term)
 
                 query.add(
