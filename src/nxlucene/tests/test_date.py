@@ -42,6 +42,12 @@ class DateTestCase(unittest.TestCase):
         pydate = getPythonDateTimeFromJavaStr(date_str)
         self.assertEqual(pydate, datetime.datetime(2006, 4, 3, 18, 13, 59))
 
+    def test_date_invalid(self):
+
+        date_str=u'5xffa6xs0'
+        pydate = getPythonDateTimeFromJavaStr(date_str)
+        self.assertEqual(pydate, datetime.datetime(1970, 1, 1, 0, 0))
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(DateTestCase))

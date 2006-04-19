@@ -33,4 +33,10 @@ def getPythonDateTimeFromJavaStr(java_date_str):
 
     date = PyLucene.DateField.stringToDate(java_date_str)
     timestamp = date.getTime()
-    return datetime.datetime.utcfromtimestamp(timestamp/1000)
+
+    try:
+        pydate = datetime.datetime.utcfromtimestamp(timestamp/1000)
+    except ValueError:
+        pydate = datetime.datetime.utcfromtimestamp(0)
+
+    return pydate

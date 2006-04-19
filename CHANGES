@@ -8,6 +8,8 @@ Bug fixes:
 ~~~~~~~~~~
 - Avoid broken requests in searchQuery
 - #128 : date conversion problem (priv)
+- #127 : Invalid dates lead to site errors
+
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
