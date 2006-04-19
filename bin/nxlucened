@@ -19,6 +19,7 @@ LOGFILE=$NXLUCENE_HOME'/log/nxlucene.log'
 
 function start() {
     echo "Starting NXLucene:"    
+    export PYTHONPATH=$PYTHONPATH:$NXLUCENE_HOME'/src'
     exec $NXLUCENE_HOME'/bin/runnxlucene' &
 }
 
