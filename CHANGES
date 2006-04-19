@@ -7,6 +7,7 @@ New features:
 Bug fixes:
 ~~~~~~~~~~
 - Avoid broken requests in searchQuery
+- #128 : date conversion problem (priv)
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
