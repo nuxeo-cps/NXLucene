@@ -508,15 +508,13 @@ class LuceneServer(object):
 
         tstart = time.time()
 
-        j = -1
-        for i, doc in hits:
+        j = start
 
-            j += 1
+        for i in range(size):
 
-            if j < start:
-                continue
-
-            if j >= (start + size):
+            try:
+                doc = hits[j]
+            except PyLucene.JavaError:
                 break
 
             table = {}
@@ -538,6 +536,8 @@ class LuceneServer(object):
                 table[name] = value
                           
             results.addItem(table['uid'], table)
+
+            j += 1
 
         tstop = time.time()
         self.log.debug(
