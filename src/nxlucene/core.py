@@ -508,36 +508,20 @@ class LuceneServer(object):
 
         tstart = time.time()
 
-        j = start
-
-        for i in range(size):
+        i = start
+        while i < start+size:
 
             try:
-                doc = hits[j]
+                doc = hits[i]
             except PyLucene.JavaError:
                 break
 
-            table = {}
-            for field in doc:
-                name = field.name()
-                if not unicode(field.name()) in return_fields:
-                    continue
+            table = dict([(field.name(), field.stringValue()) for field in doc
+                          if unicode(field.name()) in return_fields])
 
-                value = field.stringValue()
-
-                # XXX Here the returned fields for dates are Java Date str.
-                # I'd like to check this 2 options :
-                #  - Identify the date field and return an UTC timestamp
-                #  - Apply a post match processing that converts the date
-                #    to timestemp.
-                # This way is annoying since the client has to deal with
-                # Java Date and this sucks.
-
-                table[name] = value
-                          
             results.addItem(table['uid'], table)
 
-            j += 1
+            i += 1
 
         tstop = time.time()
         self.log.debug(
