@@ -516,8 +516,8 @@ class LuceneServer(object):
             except PyLucene.JavaError:
                 break
 
-            table = dict([(field.name(), field.stringValue()) for field in doc
-                          if unicode(field.name()) in return_fields])
+            table = dict(((field.name(), field.stringValue()) for field in doc
+                          if unicode(field.name()) in return_fields))
 
             results.addItem(table['uid'], table)
 
