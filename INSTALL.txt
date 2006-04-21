@@ -36,10 +36,8 @@ Requirements
 
   - ElemenTtree_ and cElementTree_ >= 1.2.6-20050316
 
-Note, PyLucene_ is coming with the NXLucene_ distribution as a
-binary. You do not necesarly need to install it to make NXLucene_
-work. See the troubleshooting section if you are having errors at
-startup or while launching tests.
+See the troubleshooting section if you are having errors at startup or
+while launching tests with the PyLucene installation.
 
 .. _Python-2.4.x: http://www.python.org/download/releases/2.4.3/
 .. _NXLucene: http://www.cps-project.org/sections/nxlucene/
