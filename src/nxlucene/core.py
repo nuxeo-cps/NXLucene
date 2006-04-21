@@ -20,6 +20,7 @@ $Id$
 """
 
 import os
+import sys
 import threading
 import logging
 import PyLucene
@@ -312,6 +313,7 @@ class LuceneServer(object):
         #
 
         query = PyLucene.BooleanQuery()
+        query.setMaxClauseCount(sys.maxint)
         date_filter = None
 
         for field in search_fields:

@@ -9,7 +9,7 @@ Bug fixes:
 - Avoid broken requests in searchQuery
 - #128 : date conversion problem (priv)
 - #127 : Invalid dates lead to site errors
-
+- #129 : search crash using a path
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Do not store date as Java date strings
