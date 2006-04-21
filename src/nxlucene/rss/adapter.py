@@ -46,7 +46,19 @@ class PythonResultSet(object):
             res = {}
             res[unicode('uid')] = unicode(self._getUidFor(item))
             for field in self._getFieldsFor(item):
-                res[unicode(field.attrib['id'])] = unicode(field.text)
+                k = unicode(field.attrib['id'])
+                if k == unicode('uid'):
+                    continue
+                v = unicode(field.text)
+                if res.has_key(k):
+                    if not isinstance(res[k], list):
+                        res[k] = [res[k], v]
+                    else:
+                        old = res[k]
+                        old.append(v)
+                        res[k] = old
+                else:
+                    res[k] = v
             self._results += (res,)
         return (self._results, self._getNbItems())
 

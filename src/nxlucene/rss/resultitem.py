@@ -50,9 +50,12 @@ class ResultItem(object):
         # fields
         ifields = NXLuceneElement('fields')
         for k, v in fields_map.items():
-            ielt = NXLuceneElement('field')
-            ielt.attrib['id'] = k
-            ielt.text = v
-            ifields.append(ielt)
+            if not isinstance(v, list):
+                v = [v]
+            for sv in v:
+                ielt = NXLuceneElement('field')
+                ielt.attrib['id'] = k
+                ielt.text = sv
+                ifields.append(ielt)
         elt.append(ifields)
         return elt

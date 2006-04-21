@@ -208,7 +208,7 @@ class LuceneServer(object):
         for field in existing_fields:
             if (field.name() not in
                 [x['attribute'] for x in  query_instance.getFields()] and
-                field.name() != 'uid'):
+                field.name() != unicode('uid')):
                 doc.add(field)
 
         # We got to remove the document from the index first.
@@ -334,13 +334,13 @@ class LuceneServer(object):
                     index, PyLucene.KeywordAnalyzer())
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 if '#' in value:
                     values = value.split('#')
                 else:
                     values = value.split()
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 for each in values:
                     term = PyLucene.Term(index, unicode(each))
                     subquery.add(
@@ -363,13 +363,13 @@ class LuceneServer(object):
                     index, PyLucene.KeywordAnalyzer())
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 if '#' in value:
                     values = value.split('#')
                 else:
                     values = value.split()
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 for each in values:
                     each = each.replace(':', '_')
                     subquery.add(
@@ -398,7 +398,7 @@ class LuceneServer(object):
 
                     subquery = PyLucene.RangeQuery(
                         start_range, end_range, True)
-                    
+
                 else:
                     term = PyLucene.Term(index,  value)
                     subquery = PyLucene.TermQuery(term)
@@ -412,13 +412,13 @@ class LuceneServer(object):
 
                 subquery = PyLucene.BooleanQuery()
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 if '#' in value:
                     values = value.split('#')
                 else:
                     values = [value]
 
-                # FIXME use tokenizer... this sucks... 
+                # FIXME use tokenizer... this sucks...
                 for each in values:
                     each = each.replace(':', '_')
                     subquery.add(
@@ -518,8 +518,20 @@ class LuceneServer(object):
             except PyLucene.JavaError:
                 break
 
-            table = dict(((field.name(), field.stringValue()) for field in doc
-                          if unicode(field.name()) in return_fields))
+            table = {}
+            for field in doc:
+                k = field.name()
+                v = field.stringValue()
+                if unicode(k) in return_fields:
+                    if not table.has_key(k):
+                        table[k] = v
+                    else:
+                        old = table[k]
+                        if isinstance(old, list):
+                            old.append(v)
+                            table[k] = old
+                        else:
+                            table[k] = [table[k], v]
 
             results.addItem(table['uid'], table)
 

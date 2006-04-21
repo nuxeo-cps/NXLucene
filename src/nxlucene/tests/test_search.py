@@ -21,6 +21,7 @@ import os
 import shutil
 import unittest
 import PyLucene
+import random
 
 from nxlucene.core import LuceneServer
 
@@ -149,7 +150,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_multiple_path(self):
 
-        # Indes a new document.
+        # Index a new document.
         ob = Foo(path="/a/b/c")
         ob2 = Foo(path="/aa/bb")
 
@@ -208,6 +209,61 @@ class LuceneSeachTestCase(unittest.TestCase):
             ))))
         self.assertEqual(res.getResults()[0],
                          ({u'uid': u'1'}, {u'uid': u'2'},))
+
+    def test_multi_fields(self):
+
+        uid = unicode(str(random.randint(0, 1000)))
+
+        ob = Foo(field='a#b')
+
+        query = FakeXMLInputStream(ob, attributs=(('field', 'MultiKeyword'),))
+        self._server.indexDocument(uid, query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            ('field',),
+            search_fields=(
+
+            {'id' : u'field',
+             'type' : 'MultiKeyword',
+             'value': 'a',
+             },
+            ))))
+        self.assertEqual(res.getResults()[0],
+                         ({u'field': [u'a', u'b'], u'uid': uid},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            ('field',),
+            search_fields=(
+
+            {'id' : u'field',
+             'type' : 'MultiKeyword',
+             'value': 'b',
+             },
+            ))))
+        self.assertEqual(res.getResults()[0],
+                         ({u'field': [u'a', u'b'], u'uid': uid},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            ('field',),
+            search_fields=(
+
+            {'id' : u'field',
+             'type' : 'MultiKeyword',
+             'value': 'a',
+             'condition' : 'OR',
+             },
+
+            {'id' : u'field',
+             'type' : 'MultiKeyword',
+             'value': 'b',
+             'condition' : 'OR',
+             },
+            ))))
+        self.assertEqual(res.getResults()[0],
+                         ({u'field': [u'a', u'b'], u'uid': uid},))
         
 
     def test_keyword_search(self):
@@ -303,12 +359,15 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_text_more_keyword(self):
 
+        uid = unicode(str(random.randint(0, 1000)))
+
         ob = Foo(portal_type="Section")
 
         query = FakeXMLInputStream(
             ob,
             attributs=(('portal_type', 'Keyword'),))
-        self._server.indexDocument('6', query)
+        self._server.indexDocument(uid, query)
+        self._server.optimize()
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -317,7 +376,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'type' : 'Keyword',
                             'value': 'Section',
                             },))))
-        self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
+        self.assertEqual(res.getResults()[0], ({u'uid': uid},))
 
         ob = Foo(portal_type="CPS Type")
 
