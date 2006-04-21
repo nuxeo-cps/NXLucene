@@ -14,3 +14,4 @@ New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Do not store date as Java date strings
 - Batch optimizations.
+- New location at http://svn.nuxeo.org/pub/NXLucene
