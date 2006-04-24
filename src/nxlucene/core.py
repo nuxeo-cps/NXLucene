@@ -157,7 +157,7 @@ class LuceneServer(object):
             field_value = unicode(field['value'])
             field_type  = field['type']
 
-            field_analyzer = field.get('analyzer', 'standard')
+            field_analyzer = field.get('analyzer', 'standard').lower()
             if (not field_analyzer or
                 field_analyzer not in nxlucene.analyzer.analyzers_map.keys()):
                 field_analyzer = 'standard'
@@ -168,9 +168,9 @@ class LuceneServer(object):
                            % (nxlucene.analyzer.getAnalyzerById(field_analyzer),
                               field_id))
 
-            self.log.debug(
-                "Adding Field on doc with id=%s with value %s of type %s"
-                % (field_id, field_value, field_type))
+##            self.log.debug(
+##                "Adding Field on doc with id=%s with value %s of type %s"
+##                % (field_id, field_value, field_type))
 
             if field_type.lower() == 'text':
                 doc.add(
@@ -210,11 +210,11 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             else:
-                self.log.info(
-                    "Field configuration does not match for "
-                    "id=%s with value %s of type %s "
-                    "Adding a PyLucene.Field unindexed but stored"
-                    % (field_id, field_value, field_type))
+##                self.log.info(
+##                    "Field configuration does not match for "
+##                    "id=%s with value %s of type %s "
+##                    "Adding a PyLucene.Field unindexed but stored"
+##                    % (field_id, field_value, field_type))
                 doc.add(
                     PyLucene.Field(field_id, field_value, True, False, False)
                     )
