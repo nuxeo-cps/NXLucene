@@ -384,27 +384,36 @@ class LuceneServer(object):
 
                 subquery = None
 
-                start_range = None
-                end_range = None
+                start_date = None
+                end_date = None
 
                 if usage and usage != 'range:min:max':
 
                     if usage == 'range:min':
-                        start_range = PyLucene.Term(index, value)
+                        start_date = PyLucene.Term(index, value)
 
                     elif usage == 'range:max':
-                        end_range = PyLucene.Term(index, value)
+                        end_date = PyLucene.Term(index, value)
 
                     else:
                         self.log.error("Usage not supported %s" % str(usage))
 
-                    if start_range is not None or end_range is not None:
+                    if start_date is not None or end_date is not None:
                         subquery = PyLucene.RangeQuery(
-                            start_range, end_range, True)
+                            start_date, end_date, True)
 
                 else:
-                    term = PyLucene.Term(index,  value)
-                    subquery = PyLucene.TermQuery(term)
+                    values = value.split('#')
+                    if len(values) == 2:
+                        start_date = values[0]
+                        end_date = values[1]
+                        
+                        subquery = PyLucene.RangeQuery(
+                            PyLucene.Term(index, start_date),
+                            PyLucene.Term(index, end_date), True)
+                    else:
+                        term = PyLucene.Term(index,  value)
+                        subquery = PyLucene.TermQuery(term)
 
                 if subquery is not None:
                     query.add(

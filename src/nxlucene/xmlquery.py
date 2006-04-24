@@ -139,8 +139,11 @@ class XMLSearchQuery(object):
                     'value' : unicode(field.attrib['value'].strip()),
                     'type' : unicode(field.attrib.get('type', '').strip()),
                     'analyzer' : unicode(field.attrib.get('analyzer',
-                                                          'standard')).strip()
+                                                          'standard')).strip(),
                     }
+
+                if field.attrib.get('usage') is not None:
+                    mapping['usage'] = unicode(field.attrib['usage']).strip()
                 
 
                 condition = field.attrib.get('condition')
