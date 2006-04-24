@@ -331,7 +331,11 @@ class LuceneServer(object):
             type =  field.get('type', '')
             condition = field.get('condition', 'AND')
             usage = field.get('usage', '')
+
             analyzer = field.get('analyzer', 'standard')
+            if (not analyzer or
+                analyzer not in nxlucene.analyzer.analyzers_map.keys()):
+                analyzer = 'standard'
 
             if type.lower() == 'path':
 
