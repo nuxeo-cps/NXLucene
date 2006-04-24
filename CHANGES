@@ -3,7 +3,8 @@ Requires:
 - PyLucene 1.9.1 installed on the Python interpretor 
 New features:
 ~~~~~~~~~~~~~
--
+- Support PerFieldAnalyzer wrapper while indexing and
+searching. Analyzer information is carried by the field_confs.
 Bug fixes:
 ~~~~~~~~~~
 - Avoid broken requests in searchQuery
@@ -11,6 +12,7 @@ Bug fixes:
 - #127 : Invalid dates lead to site errors
 - #129 : search crash using a path
 - Fix multivalued fields results.
+- Hack around date range queries.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Do not store date as Java date strings
