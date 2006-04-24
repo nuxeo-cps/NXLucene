@@ -30,7 +30,7 @@ from nxlucene.rss.adapter import PythonResultSet
 
 class FakeXMLInputStream(object):
 
-    def __init__(self, ob, attributs=()):
+    def __init__(self, ob, attributs=(), analyzer='Standard'):
         self._fields = {}
         for attr, type_ in attributs:
             id_ = attr
@@ -39,6 +39,7 @@ class FakeXMLInputStream(object):
                 'attribute' : id_,
                 'type' : type_,
                 'value': getattr(ob, id_),
+                'analyzer' : analyzer,
                 }
 
     def getFields(self):
@@ -739,7 +740,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         query = FakeXMLInputStream(
             ob1,
-            attributs=(('content', 'Text'),))
+            attributs=(('content', 'Text'),),
+            analyzer='french'
+            )
         self._server.indexDocument('x', query)
 
         res = PythonResultSet(

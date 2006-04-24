@@ -183,7 +183,7 @@ class ILuceneServer(zope.interface.Interface):
         It will return None of not found.
         """
 
-    def getIndexer():
+    def getIndexer(creation=False, analyzer=None):
         """Return a nxlucene.LuceneIndexer instance. See ILuceneIndexer.
         """
     

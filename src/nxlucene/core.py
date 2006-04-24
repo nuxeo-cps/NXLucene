@@ -60,10 +60,11 @@ class LuceneServer(object):
             creation = True
         return PyLucene.FSDirectory.getDirectory(self.store_dir, creation)
 
-    def getIndexer(self, creation=False):
+    def getIndexer(self, creation=False, analyzer=None):
         if not os.path.exists(self.store_dir):
             creation = True
-        analyzer = PyLucene.StandardAnalyzer()
+        if analyzer is None:
+            analyzer = PyLucene.StandardAnalyzer()
         return LuceneIndexer(self.store_dir, creation, analyzer)
 
     def getSearcher(self):
@@ -146,12 +147,19 @@ class LuceneServer(object):
         doc = PyLucene.Document()
         doc.add(PyLucene.Field.Keyword('uid', unicode(uid)))
 
+        # Build a per-field analyzer wrapper we will use with the
+        # IndexWriter.
+        analyzer = nxlucene.analyzer.getPerFieldAnalyzerWrapper()
+
         for field in query_instance.getFields():
 
             field_id   = field['id']
             field_value = unicode(field['value'])
             field_type  = field['type']
             field_analyzer = field.get('analyzer', 'standard')
+
+            analyzer.addAnalyzer(
+                field_id, nxlucene.analyzer.getAnalyzerById(field_analyzer))
 
             self.log.debug(
                 "Adding Field on doc with id=%s with value %s of type %s"
@@ -218,7 +226,7 @@ class LuceneServer(object):
             self.unindexDocument(uid, lock=False)
 
         # Merge indexes
-        indexer = self.getIndexer()
+        indexer = self.getIndexer(analyzer=analyzer)
         writer = indexer.get()
         writer.addDocument(doc)
 #        writer.optimize()

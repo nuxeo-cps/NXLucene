@@ -28,6 +28,11 @@ analyzers_map = {
     }
 
 def getAnalyzerById(analyzer_id):
-    if not analyzer_id in analyzers_map.keys():
+    if not analyzer_id.lower() in analyzers_map.keys():
         analyzer_id = 'standard'
     return analyzers_map.get(analyzer_id)
+
+def getPerFieldAnalyzerWrapper(default_analyzer=None):
+    if default_analyzer is None:
+        default_analyzer = PyLucene.StandardAnalyzer()
+    return PyLucene.PerFieldAnalyzerWrapper(default_analyzer)
