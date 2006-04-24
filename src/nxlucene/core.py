@@ -156,10 +156,17 @@ class LuceneServer(object):
             field_id   = field['id']
             field_value = unicode(field['value'])
             field_type  = field['type']
+
             field_analyzer = field.get('analyzer', 'standard')
+            if (not field_analyzer or
+                field_analyzer not in nxlucene.analyzer.analyzers_map.keys()):
+                field_analyzer = 'standard'
 
             analyzer.addAnalyzer(
                 field_id, nxlucene.analyzer.getAnalyzerById(field_analyzer))
+            self.log.debug("Adding analyzer of type %s for field %s"
+                           % (nxlucene.analyzer.getAnalyzerById(field_analyzer),
+                              field_id))
 
             self.log.debug(
                 "Adding Field on doc with id=%s with value %s of type %s"
@@ -458,6 +465,8 @@ class LuceneServer(object):
             else:
 
                 this_analyzer = nxlucene.analyzer.getAnalyzerById(analyzer)
+                self.log.debug("Using analyzer of type %s for field %s" %
+                               (str(this_analyzer), index))
 
                 parser = PyLucene.QueryParser(index, this_analyzer)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
