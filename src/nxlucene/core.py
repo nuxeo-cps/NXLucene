@@ -453,10 +453,9 @@ class LuceneServer(object):
 
             else:
 
-                analyzer = PyLucene.StandardAnalyzer()
-#                analyz = nxlucene.analyzer.getAnalyzerById(analyzer)
+                this_analyzer = nxlucene.analyzer.getAnalyzerById(analyzer)
 
-                parser = PyLucene.QueryParser(index, analyzer)
+                parser = PyLucene.QueryParser(index, this_analyzer)
                 parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
 
                 try:
