@@ -382,6 +382,8 @@ class LuceneServer(object):
 
             elif type.lower() == 'date':
 
+                subquery = None
+
                 start_range = None
                 end_range = None
 
@@ -396,17 +398,19 @@ class LuceneServer(object):
                     else:
                         self.log.error("Usage not supported %s" % str(usage))
 
-                    subquery = PyLucene.RangeQuery(
-                        start_range, end_range, True)
+                    if start_range is not None or end_range is not None:
+                        subquery = PyLucene.RangeQuery(
+                            start_range, end_range, True)
 
                 else:
                     term = PyLucene.Term(index,  value)
                     subquery = PyLucene.TermQuery(term)
 
-                query.add(
-                    subquery,
-                    nxlucene.query.boolean_clauses_map.get(
-                    condition, default_clause))
+                if subquery is not None:
+                    query.add(
+                        subquery,
+                        nxlucene.query.boolean_clauses_map.get(
+                        condition, default_clause))
 
             elif type.lower() == 'keyword':
 
