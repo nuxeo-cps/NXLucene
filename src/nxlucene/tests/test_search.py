@@ -1,16 +1,16 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
@@ -61,13 +61,13 @@ class LuceneSeachTestCase(unittest.TestCase):
         ob = Foo(name = 'Foo')
         query = FakeXMLInputStream(ob, attributs=(('name', 'Text'),))
         self._server.indexDocument('1', query)
-        
+
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             search_fields=({'id' : u'name',
                             'value': u'Foo'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
-                      
+
     def test_fulltext(self):
 
         # Indes a new document.
@@ -196,7 +196,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ))))
         self.assertEqual(res.getResults()[0],
                          ({u'uid': u'1'}, {u'uid': u'2'},))
-        
+
         # Path as 2 with  # separators
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -265,7 +265,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ))))
         self.assertEqual(res.getResults()[0],
                          ({u'field': [u'a', u'b'], u'uid': uid},))
-        
+
 
     def test_keyword_search(self):
         # Indes a new document.
@@ -418,7 +418,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             ob2,
             attributs=(('modified', 'Date'),))
         self._server.indexDocument('10', query)
-        
+
         # Exact date match
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -519,7 +519,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             record['modified'],
             '2006-01-01 00:00:00')
-        
+
     def test_sorting(self):
 
         ob1 = Foo(type="contact", name="Bob")
@@ -544,7 +544,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             },))))
 
         self.assertEqual(res.getResults()[0], ({u'uid': u'jack'},))
-        
+
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -645,7 +645,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                             },))))
 
         self.assertEqual(res.getResults()[0], ())
-        
+
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -674,7 +674,7 @@ class LuceneSeachTestCase(unittest.TestCase):
              'value': 'CPS Type1',
              'condition': 'OR'
             },
-            
+
             ))))
 
         self.assertEqual(res.getResults()[0],
@@ -683,7 +683,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_no_analyzer(self):
 
-        ob1 = Foo(content="l'homme chante")
+        ob1 = Foo(content="l'homme eu chante")
 
         query = FakeXMLInputStream(
             ob1,
@@ -734,9 +734,25 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 0)
 
-    def xtest_french_analyzer(self):
+        # Found here since no French Analyzer for stopwords
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
 
-        ob1 = Foo(content="l'homme chante")
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "eu",
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+    def test_french_analyzer_stopwords(self):
+
+        fr = unicode("eu avoir chanté", 'latin-1')
+        ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
             ob1,
@@ -745,6 +761,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )
         self._server.indexDocument('x', query)
 
+
+        # This should be remove with stopwords using french analyzer
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -752,14 +770,15 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': "chante",
+             'value': unicode('avoir', 'latin-1'),
              'analyzer' : 'french',
             },
 
             ))))
 
-        self.assertEqual(len(res.getResults()[0]), 1)
+        self.assertEqual(len(res.getResults()[0]), 0)
 
+        # This should be remove with stopwords using french analyzer
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -767,15 +786,15 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': "l'homme",
+             'value': unicode('eu', 'latin-1'),
              'analyzer' : 'french',
             },
 
             ))))
 
-        self.assertEqual(len(res.getResults()[0]), 1)
+        self.assertEqual(len(res.getResults()[0]), 0)
 
-        # Not found here.
+        # This should not be remove with stopwords using standard analyzer
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -783,18 +802,64 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': "homme",
-             'analyzer' : 'french',
+             'value': unicode('avoir', 'latin-1'),
+             'analyzer' : 'standard',
             },
 
             ))))
 
         self.assertEqual(len(res.getResults()[0]), 1)
-        
+
+##        res = PythonResultSet(
+##            ResultSet(self._server.searchQuery(
+##            (),
+##            search_fields=(
+##
+##            {'id' : u'content',
+##             'type' : 'Text',
+##             'value': unicode('chanté', 'latin-1'),
+##             'analyzer' : 'french',
+##            },
+##
+##            ))))
+##
+##        self.assertEqual(len(res.getResults()[0]), 1)
+
+##        res = PythonResultSet(
+##            ResultSet(self._server.searchQuery(
+##            (),
+##            search_fields=(
+##
+##            {'id' : u'content',
+##             'type' : 'Text',
+##             'value': "l'homme",
+##             'analyzer' : 'french',
+##            },
+##
+##            ))))
+##
+##        self.assertEqual(len(res.getResults()[0]), 1)
+##
+##        # Not found here.
+##        res = PythonResultSet(
+##            ResultSet(self._server.searchQuery(
+##            (),
+##            search_fields=(
+##
+##            {'id' : u'content',
+##             'type' : 'Text',
+##             'value': "homme",
+##             'analyzer' : 'french',
+##            },
+##
+##            ))))
+##
+##        self.assertEqual(len(res.getResults()[0]), 1)
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
-    
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(LuceneSeachTestCase))
