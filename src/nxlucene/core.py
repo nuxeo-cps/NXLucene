@@ -174,7 +174,7 @@ class LuceneServer(object):
 
             if field_type.lower() == 'text':
                 doc.add(
-                    PyLucene.Field(field_id, field_value, True, True, True))
+                    PyLucene.Field.Text(field_id, field_value))
 
             elif field_type.lower() == 'unstored':
                 doc.add(PyLucene.Field.UnStored(field_id, field_value))
