@@ -761,7 +761,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             )
         self._server.indexDocument('x', query)
 
-
         # This should be remove with stopwords using french analyzer
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -810,51 +809,106 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 1)
 
-##        res = PythonResultSet(
-##            ResultSet(self._server.searchQuery(
-##            (),
-##            search_fields=(
-##
-##            {'id' : u'content',
-##             'type' : 'Text',
-##             'value': unicode('chanté', 'latin-1'),
-##             'analyzer' : 'french',
-##            },
-##
-##            ))))
-##
-##        self.assertEqual(len(res.getResults()[0]), 1)
+    def xtest_french_filter(self):
 
-##        res = PythonResultSet(
-##            ResultSet(self._server.searchQuery(
-##            (),
-##            search_fields=(
-##
-##            {'id' : u'content',
-##             'type' : 'Text',
-##             'value': "l'homme",
-##             'analyzer' : 'french',
-##            },
-##
-##            ))))
-##
-##        self.assertEqual(len(res.getResults()[0]), 1)
-##
-##        # Not found here.
-##        res = PythonResultSet(
-##            ResultSet(self._server.searchQuery(
-##            (),
-##            search_fields=(
-##
-##            {'id' : u'content',
-##             'type' : 'Text',
-##             'value': "homme",
-##             'analyzer' : 'french',
-##            },
-##
-##            ))))
-##
-##        self.assertEqual(len(res.getResults()[0]), 1)
+        fr = "L'enfant chante"
+        ob1 = Foo(content=fr)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'Text'),),
+            analyzer='french'
+            )
+        self._server.indexDocument('x', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': 'chante',
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': 'enfant',
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+        
+        
+    def xtest_french_stemmer(self):
+
+        fr = unicode("eu avoir chanté chansons", 'latin-1')
+        ob1 = Foo(content=fr)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'Text'),),
+            analyzer='french'
+            )
+        self._server.indexDocument('x', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': 'chansons',
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+#        res = PythonResultSet(
+#            ResultSet(self._server.searchQuery(
+#            (),
+#            search_fields=(
+#
+#            {'id' : u'content',
+#             'type' : 'Text',
+#             'value': "l'homme",
+#             'analyzer' : 'french',
+#            },
+#
+#            ))))
+#
+#        self.assertEqual(len(res.getResults()[0]), 1)
+#
+#        # Not found here.
+#        res = PythonResultSet(
+#            ResultSet(self._server.searchQuery(
+#            (),
+#            search_fields=(
+#
+#            {'id' : u'content',
+#             'type' : 'Text',
+#             'value': "homme",
+#             'analyzer' : 'french',
+#            },
+#
+#            ))))
+#
+#        self.assertEqual(len(res.getResults()[0]), 1)
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
