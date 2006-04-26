@@ -1,4 +1,31 @@
 *******************************************
+** NXLucene V0.5.0 [R1 build 2006/04/26-14:38 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 44994
+Requires:
+~~~~~~~~~
+- PyLucene 1.9.1 installed on the Python interpretor 
+New features:
+~~~~~~~~~~~~~
+- Support PerFieldAnalyzer wrapper while indexing and
+searching. Analyzer information is carried by the field_confs.
+- FrenchAnalyzer -> FrenchStemmer + FrenchFilter
+Bug fixes:
+~~~~~~~~~~
+- Avoid broken requests in searchQuery
+- #128 : date conversion problem (priv)
+- #127 : Invalid dates lead to site errors
+- #129 : search crash using a path
+- Fix multivalued fields results.
+- Hack around date range queries.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Do not store date as Java date strings
+- Batch optimizations.
+- New location at http://svn.nuxeo.org/pub/NXLucene
+- Support sort field that are not stored not tokenized but indexed
+giving the possiblity to users to define dedicated sort fields.
+
+*******************************************
 ** NXLucene V0.4.2 [R1 build 2006/04/08-14:12 by anahide]
 ** SVN URL: https://svn.nuxeo.org/priv/NXLucene/trunk Revision: 32533
 Requires:
