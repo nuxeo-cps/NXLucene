@@ -5,6 +5,7 @@ New features:
 ~~~~~~~~~~~~~
 - Support PerFieldAnalyzer wrapper while indexing and
 searching. Analyzer information is carried by the field_confs.
+- FrenchAnalyzer -> FrenchStemmer + FrenchFilter
 Bug fixes:
 ~~~~~~~~~~
 - Avoid broken requests in searchQuery
