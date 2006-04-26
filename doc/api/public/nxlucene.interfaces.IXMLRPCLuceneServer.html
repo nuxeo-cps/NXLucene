@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>nxlucene.interfaces.IXMLRPCLuceneServer</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="nxlucene.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" align="right" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr><th class="navbar" align="center">
+        <p class="nomargin">
+          <a class="navbar" target="_top" href="http://nxlucene.nuxeo.org">NXLucene</a>
+      </p></th></tr></table>
+    </th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="nxlucene.html">Package&nbsp;nxlucene</a> ::
+        <a href="nxlucene.interfaces.html">Module&nbsp;interfaces</a> ::
+        Class&nbsp;IXMLRPCLuceneServer
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/nxlucene.interfaces.IXMLRPCLuceneServer.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="nxlucene.interfaces.IXMLRPCLuceneServer.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Type IXMLRPCLuceneServer</h2>
+
+<pre class="base-tree">
+<a href="zope.interface.Interface.html"><code>Interface</code></a> --+
+            |
+           <b>IXMLRPCLuceneServer</b>
+</pre><br />
+
+<hr/>
+
+<p>XML-RPC Lucene Server interface</p>
+This is used as an adapter to ILuceneServer instance.
+<hr/>
+
+
+<!-- =========== START OF CLASS VARIABLE SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Class Variable Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_clean"><code>xmlrpc_clean</code></a></b> = <span title="'Clear the whole indexes.\n\n        This method removve *all* the indexes and documents from the store.\n        '"><code><span class="variable-quote">'</span>Clear&nbsp;the&nbsp;whole&nbsp;indexes.\n\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_getNumberOfDocuments"><code>xmlrpc_getNumberOfDocuments</code></a></b> = <span title="'Return the amount of document within the indexes store.\n        '"><code><span class="variable-quote">'</span>Return&nbsp;the&nbsp;amount&nbsp;of&nbsp;docu<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_getStoreDir"><code>xmlrpc_getStoreDir</code></a></b> = <span title="'Return the store dir location\n        '"><code><span class="variable-quote">'</span>Return&nbsp;the&nbsp;store&nbsp;dir&nbsp;location\n&nbsp;&nbsp;&nbsp;<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_hasUID"><code>xmlrpc_hasUID</code></a></b> = <span title="'Has the store a document having this UID ?\n        '"><code><span class="variable-quote">'</span>Has&nbsp;the&nbsp;store&nbsp;a&nbsp;document&nbsp;having&nbsp;this&nbsp;UI<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_indexDocument"><code>xmlrpc_indexDocument</code></a></b> = <span title="'Index a document\n\n        `uid` is the key for this document.\n\n        `xml_query` is an xml query containing the list of fields,\n                    to index the document with and their properties.\n\n        `b64` : xml_query compressed using base64 ?\n\n        &lt;doc&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; attribute=&quot;name&quot; type=&quot;text&quot;&gt;\n              The value of the field to index\n            &lt;/field&gt;\n          &lt;/field&gt;\n        &lt;/doc&gt;\n        '"><code><span class="variable-quote">'</span>Index&nbsp;a&nbsp;document\n\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`uid<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_optimize"><code>xmlrpc_optimize</code></a></b> = <span title="'Optmize the index store.\n        '"><code><span class="variable-quote">'</span>Optmize&nbsp;the&nbsp;index&nbsp;store.\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable-quote">'</span>   </code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_reindexDocument"><code>xmlrpc_reindexDocument</code></a></b> = <span title="'Reindex a document\n\n        `uid` is the key for this document.\n\n        `xml_query` is an xml query containing the list of fields to\n        reindex and their properties.\n\n        `b64` : xml_query compressed using base64 ?\n\n         &lt;doc&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; attribute=&quot;name&quot; type=&quot;text&quot;&gt;\n              The value of the field to index\n            &lt;/field&gt;\n          &lt;/fields&gt;\n        &lt;/doc&gt;\n        '"><code><span class="variable-quote">'</span>Reindex&nbsp;a&nbsp;document\n\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_search"><code>xmlrpc_search</code></a></b> = <span title="'Searching using Lucene native query.\n\n        `query_str` : Lucene query string.\n\n        For the Lucene query syntax see :\n        http://lucene.apache.org/java/docs/queryparsersyntax.html\n        '"><code><span class="variable-quote">'</span>Searching&nbsp;using&nbsp;Lucene&nbsp;native&nbsp;query.\n\<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_searchQuery"><code>xmlrpc_searchQuery</code></a></b> = <span title="'Searching.\n\n        `xml_query` should look like this :\n\n        &lt;search&gt;\n          &lt;analyzer&gt;standard&lt;/analyzer&gt;\n          &lt;return_fields&gt;\n            &lt;field&gt;name&lt;/field&gt;\n            &lt;field&gt;attr1&lt;/field&gt;\n          &lt;/return_fields&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; value=&quot;julien&quot;/&gt;\n            &lt;field id=&quot;uid&quot; value=&quot;1&quot;/&gt;\n          &lt;/fields&gt;\n          &lt;sort&gt;          \n            &lt;sort-on&gt;modified&lt;/sort-on&gt;\n            &lt;sort-limit&gt;100&lt;/sort-limit&gt;\n            &lt;sort-order&gt;reversed&lt;/sort-order&gt;\n          &lt;/sort&gt;\n          &lt;operator&gt;AND&lt;/operator&gt;\n          &lt;b..."><code><span class="variable-quote">'</span>Searching.\n\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`xml_query`&nbsp;<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="nxlucene.interfaces.IXMLRPCLuceneServer.html#xmlrpc_unindexDocument"><code>xmlrpc_unindexDocument</code></a></b> = <span title="'Unindex a document given its uid.\n        '"><code><span class="variable-quote">'</span>Unindex&nbsp;a&nbsp;document&nbsp;given&nbsp;its&nbsp;u<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+</table><br />
+
+
+<!-- =========== START OF CLASS VARIABLE DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Class Variable Details</th></tr>
+</table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_clean"></a>
+<h3>xmlrpc_clean</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Clear the whole indexes.\n\n        This method removve *all* the indexes and documents from the store.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Clear the whole indexes.
+
+        This method removve *all* the indexes and documents from the s<span class="variable-linewrap">\</span>
+tore.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_getNumberOfDocuments"></a>
+<h3>xmlrpc_getNumberOfDocuments</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Return the amount of document within the indexes store.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Return the amount of document within the indexes store.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_getStoreDir"></a>
+<h3>xmlrpc_getStoreDir</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Return the store dir location\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Return the store dir location
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_hasUID"></a>
+<h3>xmlrpc_hasUID</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Has the store a document having this UID ?\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Has the store a document having this UID ?
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_indexDocument"></a>
+<h3>xmlrpc_indexDocument</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Index a document\n\n        `uid` is the key for this document.\n\n        `xml_query` is an xml query containing the list of fields,\n                    to index the document with and their properties.\n\n        `b64` : xml_query compressed using base64 ?\n\n        &lt;doc&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; attribute=&quot;name&quot; type=&quot;text&quot;&gt;\n              The value of the field to index\n            &lt;/field&gt;\n          &lt;/field&gt;\n        &lt;/doc&gt;\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Index a document
+
+        `uid` is the key for this document.
+
+        `xml_query` is an xml query containing the list of fields,
+                    to index the document with and their properties.
+
+        `b64` : xml_query compressed using base64 ?
+<span class="variable-ellipsis">...</span>                                                                    </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_optimize"></a>
+<h3>xmlrpc_optimize</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Optmize the index store.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Optmize the index store.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_reindexDocument"></a>
+<h3>xmlrpc_reindexDocument</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Reindex a document\n\n        `uid` is the key for this document.\n\n        `xml_query` is an xml query containing the list of fields to\n        reindex and their properties.\n\n        `b64` : xml_query compressed using base64 ?\n\n         &lt;doc&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; attribute=&quot;name&quot; type=&quot;text&quot;&gt;\n              The value of the field to index\n            &lt;/field&gt;\n          &lt;/fields&gt;\n        &lt;/doc&gt;\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Reindex a document
+
+        `uid` is the key for this document.
+
+        `xml_query` is an xml query containing the list of fields to
+        reindex and their properties.
+
+        `b64` : xml_query compressed using base64 ?
+<span class="variable-ellipsis">...</span>                                                                    </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_search"></a>
+<h3>xmlrpc_search</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Searching using Lucene native query.\n\n        `query_str` : Lucene query string.\n\n        For the Lucene query syntax see :\n        http://lucene.apache.org/java/docs/queryparsersyntax.html\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Searching using Lucene native query.
+
+        `query_str` : Lucene query string.
+
+        For the Lucene query syntax see :
+        http://lucene.apache.org/java/docs/queryparsersyntax.html
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_searchQuery"></a>
+<h3>xmlrpc_searchQuery</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Searching.\n\n        `xml_query` should look like this :\n\n        &lt;search&gt;\n          &lt;analyzer&gt;standard&lt;/analyzer&gt;\n          &lt;return_fields&gt;\n            &lt;field&gt;name&lt;/field&gt;\n            &lt;field&gt;attr1&lt;/field&gt;\n          &lt;/return_fields&gt;\n          &lt;fields&gt;\n            &lt;field id=&quot;name&quot; value=&quot;julien&quot;/&gt;\n            &lt;field id=&quot;uid&quot; value=&quot;1&quot;/&gt;\n          &lt;/fields&gt;\n          &lt;sort&gt;          \n            &lt;sort-on&gt;modified&lt;/sort-on&gt;\n            &lt;sort-limit&gt;100&lt;/sort-limit&gt;\n            &lt;sort-order&gt;reversed&lt;/sort-order&gt;\n          &lt;/sort&gt;\n          &lt;operator&gt;AND&lt;/operator&gt;\n          &lt;b...">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Searching.
+
+        `xml_query` should look like this :
+
+        &lt;search&gt;
+          &lt;analyzer&gt;standard&lt;/analyzer&gt;
+          &lt;return_fields&gt;
+            &lt;field&gt;name&lt;/field&gt;
+<span class="variable-ellipsis">...</span>                                                                    </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="xmlrpc_unindexDocument"></a>
+<h3>xmlrpc_unindexDocument</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Unindex a document given its uid.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Unindex a document given its uid.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="nxlucene.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" align="right" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr><th class="navbar" align="center">
+        <p class="nomargin">
+          <a class="navbar" target="_top" href="http://nxlucene.nuxeo.org">NXLucene</a>
+      </p></th></tr></table>
+    </th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Apr 26 18:00:04 2006</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>
