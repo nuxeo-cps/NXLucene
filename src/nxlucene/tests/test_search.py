@@ -793,7 +793,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 0)
 
-        # This should not be remove with stopwords using standard analyzer
+        # This should be remove since indexed without.
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -807,11 +807,11 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             ))))
 
-        self.assertEqual(len(res.getResults()[0]), 1)
+        self.assertEqual(len(res.getResults()[0]), 0)
 
-    def xtest_french_filter(self):
+    def test_french_filter(self):
 
-        fr = "L'enfant chante"
+        fr = unicode("L'enfant a chanté", 'latin-1')
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -851,10 +851,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 1)
         
-        
-    def xtest_french_stemmer(self):
+    def test_french_stemmer(self):
 
-        fr = unicode("eu avoir chanté chansons", 'latin-1')
+        fr = unicode("chanté", "latin-1")
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -871,7 +870,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': 'chansons',
+             'value': unicode('chanté', 'latin-1'),
              'analyzer' : 'french',
             },
 
@@ -879,36 +878,36 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 1)
 
-#        res = PythonResultSet(
-#            ResultSet(self._server.searchQuery(
-#            (),
-#            search_fields=(
-#
-#            {'id' : u'content',
-#             'type' : 'Text',
-#             'value': "l'homme",
-#             'analyzer' : 'french',
-#            },
-#
-#            ))))
-#
-#        self.assertEqual(len(res.getResults()[0]), 1)
-#
-#        # Not found here.
-#        res = PythonResultSet(
-#            ResultSet(self._server.searchQuery(
-#            (),
-#            search_fields=(
-#
-#            {'id' : u'content',
-#             'type' : 'Text',
-#             'value': "homme",
-#             'analyzer' : 'french',
-#            },
-#
-#            ))))
-#
-#        self.assertEqual(len(res.getResults()[0]), 1)
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': "chante",
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        # Not found here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Text',
+             'value': unicode("chantée", "latin-1"),
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
 
     def tearDown(self):
         if os.path.exists(self._store_dir):

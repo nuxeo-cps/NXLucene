@@ -36,7 +36,7 @@ from searcher import LuceneSearcher
 import rss.resultset
 
 import nxlucene.query
-import nxlucene.analyzer
+import nxlucene.analysis.fr.analyzer
 
 class LuceneServer(object):
     """Lucene server.
@@ -149,7 +149,7 @@ class LuceneServer(object):
 
         # Build a per-field analyzer wrapper we will use with the
         # IndexWriter.
-        analyzer = nxlucene.analyzer.getPerFieldAnalyzerWrapper()
+        analyzer = nxlucene.analysis.fr.analyzer.getPerFieldAnalyzerWrapper()
 
         for field in query_instance.getFields():
 
@@ -159,15 +159,20 @@ class LuceneServer(object):
 
             field_analyzer = field.get('analyzer', 'standard').lower()
             if (not field_analyzer or
-                field_analyzer not in nxlucene.analyzer.analyzers_map.keys()):
+                field_analyzer not in
+                nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
                 field_analyzer = 'standard'
 
             analyzer.addAnalyzer(
-                field_id, nxlucene.analyzer.getAnalyzerById(field_analyzer))
-            self.log.debug("Adding analyzer of type %s for field %s"
-                           % (nxlucene.analyzer.getAnalyzerById(field_analyzer),
-                              field_id))
+                field_id,
+                nxlucene.analysis.fr.analyzer.getAnalyzerById(field_analyzer))
 
+            self.log.debug("Adding analyzer of type %s for field %s"
+                           % (
+                nxlucene.analysis.fr.analyzer.getAnalyzerById(field_analyzer),
+                field_id
+                ))
+            
 ##            self.log.debug(
 ##                "Adding Field on doc with id=%s with value %s of type %s"
 ##                % (field_id, field_value, field_type))
@@ -235,6 +240,8 @@ class LuceneServer(object):
         # Merge indexes
         indexer = self.getIndexer(analyzer=analyzer)
         writer = indexer.get()
+##        self.log.debug("Using analyzer %s for adding document"
+##                       % str(indexer._analyzer))
         writer.addDocument(doc)
 #        writer.optimize()
         indexer.close()
@@ -341,7 +348,7 @@ class LuceneServer(object):
 
             analyzer = field.get('analyzer', 'standard')
             if (not analyzer or
-                analyzer not in nxlucene.analyzer.analyzers_map.keys()):
+                analyzer not in nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
                 analyzer = 'standard'
 
             if type.lower() == 'path':
@@ -464,18 +471,27 @@ class LuceneServer(object):
 
             else:
 
-                this_analyzer = nxlucene.analyzer.getAnalyzerById(analyzer)
-                self.log.debug("Using analyzer of type %s for field %s" %
-                               (str(this_analyzer), index))
+                this_analyzer = nxlucene.analysis.fr.analyzer.getAnalyzerById(
+                    analyzer)
 
-                parser = PyLucene.QueryParser(index, this_analyzer)
-                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
+##                reader = PyLucene.StringReader(value)
+##                analyzed_text = [x.termText() for x in this_analyzer.tokenStream(index, value)]
+##                value = ' '.join(analyzed_text)
+
+##                self.log.debug("Using analyzer of type %s for field %s" %
+##                               (str(this_analyzer), index))
 
                 try:
-                    subquery = parser.parseQuery(value)
+                    subquery = PyLucene.QueryParser.parse(value, index, this_analyzer)
                 except PyLucene.JavaError:
-                    self.log.error("Invalid Query %s" % repr(value))
                     return results.getStream()
+
+#                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
+##                try:
+##                    subquery = parser.parseQuery(value)
+##                except PyLucene.JavaError:
+##                    self.log.error("Invalid Query %s" % repr(value))
+##                    return results.getStream()
 
                 query.add(
                     subquery,

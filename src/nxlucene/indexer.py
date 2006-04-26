@@ -33,12 +33,19 @@ class LuceneIndexer(object):
     _writer = None
 
     def __init__(self, store_dir, creation=False, analyzer=None):
+
         if creation:
             if os.path.exists(store_dir):
                 shutil.rmtree(store_dir)
             os.makedirs(store_dir)
+
+        if analyzer is None:
+            analyzer = PyLucene.StandardAnalyzer()
+        self._analyzer = analyzer
+    
         self._store = PyLucene.FSDirectory.getDirectory(store_dir, creation)
         self._writer = self.get(creation, analyzer)
+
         self.close()
 
     def get(self, creation=False, analyzer=None):
@@ -50,10 +57,8 @@ class LuceneIndexer(object):
             self._writer = None
 
     def _get(self, creation=False, analyzer=None):
-        if not self._writer:
-            if analyzer is None:
-                analyzer = PyLucene.StandardAnalyzer()
-            self._writer = PyLucene.IndexWriter(self._store, analyzer, creation)
+        if not self._writer or analyzer != self._analyzer:
+            self._writer = PyLucene.IndexWriter(self._store, self._analyzer, creation)
         return self._writer
     
     def __del__(self):
