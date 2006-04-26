@@ -157,11 +157,12 @@ class LuceneServer(object):
             field_value = unicode(field['value'])
             field_type  = field['type']
 
-            field_analyzer = field.get('analyzer', 'standard').lower()
+            field_analyzer = field.get('analyzer', 'standard')
             if (not field_analyzer or
-                field_analyzer not in
+                field_analyzer.lower() not in
                 nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
                 field_analyzer = 'standard'
+            field_analyzer = field_analyzer.lower()
 
             analyzer.addAnalyzer(
                 field_id,
@@ -348,8 +349,9 @@ class LuceneServer(object):
 
             analyzer = field.get('analyzer', 'standard')
             if (not analyzer or
-                analyzer not in nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
+                analyzer.lower() not in nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
                 analyzer = 'standard'
+            analyzer = analyzer.lower()
 
             if type.lower() == 'path':
 
@@ -471,15 +473,14 @@ class LuceneServer(object):
 
             else:
 
-                this_analyzer = nxlucene.analysis.fr.analyzer.getAnalyzerById(
-                    analyzer)
+                this_analyzer = nxlucene.analysis.fr.analyzer.getAnalyzerById(analyzer)
 
 ##                reader = PyLucene.StringReader(value)
 ##                analyzed_text = [x.termText() for x in this_analyzer.tokenStream(index, value)]
 ##                value = ' '.join(analyzed_text)
 
-##                self.log.debug("Using analyzer of type %s for field %s" %
-##                               (str(this_analyzer), index))
+                self.log.debug("Using analyzer of type %s for field %s" %
+                               (str(this_analyzer), index))
 
                 try:
                     subquery = PyLucene.QueryParser.parse(value, index, this_analyzer)

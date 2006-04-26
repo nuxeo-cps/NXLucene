@@ -104,7 +104,7 @@ class NXFrenchFilter(object):
 analyzers_map = {
     # XXX not complete
     'standard' : PyLucene.StandardAnalyzer(),
-     'french'   : NXFrenchAnalyzer(),
+    'french'   : NXFrenchAnalyzer(),
     }
 
 def getAnalyzerById(analyzer_id):

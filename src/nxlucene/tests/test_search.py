@@ -909,6 +909,166 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 1)
 
+    def test_french_stemmer_unstored(self):
+
+        fr = unicode("chanté", "latin-1")
+        ob1 = Foo(content=fr)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'UnStored'),),
+            analyzer='french'
+            )
+        self._server.indexDocument('x', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'Unstored',
+             'value': unicode('chanté', 'latin-1'),
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': "chante",
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        # Not found here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': unicode("chantée", "latin-1"),
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+    def test_french_filter_unstored(self):
+
+        fr = unicode("L'enfant a chanté", 'latin-1')
+        ob1 = Foo(content=fr)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'UnStored'),),
+            analyzer='french'
+            )
+        self._server.indexDocument('x', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': 'chante',
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': 'enfant',
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 1)
+
+    def test_french_analyzer_stopwords_unstored(self):
+
+        fr = unicode("eu avoir chanté", 'latin-1')
+        ob1 = Foo(content=fr)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('content', 'UnStored'),),
+            analyzer='french'
+            )
+        self._server.indexDocument('x', query)
+
+        # This should be remove with stopwords using french analyzer
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': unicode('avoir', 'latin-1'),
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 0)
+
+        # This should be remove with stopwords using french analyzer
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': unicode('eu', 'latin-1'),
+             'analyzer' : 'french',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 0)
+
+        # This should be remove since indexed without.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=(
+
+            {'id' : u'content',
+             'type' : 'UnStored',
+             'value': unicode('avoir', 'latin-1'),
+             'analyzer' : 'standard',
+            },
+
+            ))))
+
+        self.assertEqual(len(res.getResults()[0]), 0)
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
