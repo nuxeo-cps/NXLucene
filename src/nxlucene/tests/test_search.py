@@ -597,6 +597,70 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(res.getResults()[0],
                          ({u'uid': u'bob'}, {u'uid': u'jack'}))
 
+    def test_sort_field(self):
+
+        ob1 = Foo(name="aa", name_sort="aa")
+        ob2 = Foo(name="ab", name_sort="ab")
+        ob3 = Foo(name="ac", name_sort="ac")
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('name', 'Text'), ('name_sort', 'Sort'),))
+        self._server.indexDocument(1, query)
+
+        query = FakeXMLInputStream(
+            ob2,
+            attributs=(('name', 'Text'), ('name_sort', 'Sort'),))
+        self._server.indexDocument(2, query)
+
+        query = FakeXMLInputStream(
+            ob3,
+            attributs=(('name', 'Text'), ('name_sort', 'Sort'),))
+        self._server.indexDocument(3, query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'name',
+                            'type' : 'Text',
+                            'value': 'a*',},),
+            )))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'name',
+                            'type' : 'Text',
+                            'value': 'a*',},
+                           ),
+            search_options={
+                            'sort-on' : 'name_sort',
+                            'sort-order' : '',
+                            },
+            )))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'name',
+                            'type' : 'Text',
+                            'value': 'a*',},
+                           ),
+            search_options={
+                            'sort-on' : 'name_sort',
+                            'sort-order' : 'reverse',
+                            },
+            )))
+
+        self.assertEqual(res.getResults()[0],
+                         ({u'uid': u'3'}, {u'uid': u'2'}, {u'uid': u'1'}))
+
     def test_kewyord_search_with_spaces(self):
 
         o1 = Foo(portal_type='CPS Type1')

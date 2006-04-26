@@ -215,6 +215,11 @@ class LuceneServer(object):
                     field_value = '/' + field_value
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
+            elif field_type.lower() == 'sort':
+                doc.add(
+                    PyLucene.Field(field_id, field_value, False, True, False)
+                    )
+
             else:
 ##                self.log.info(
 ##                    "Field configuration does not match for "
@@ -222,7 +227,7 @@ class LuceneServer(object):
 ##                    "Adding a PyLucene.Field unindexed but stored"
 ##                    % (field_id, field_value, field_type))
                 doc.add(
-                    PyLucene.Field(field_id, field_value, True, False, False)
+                    PyLucene.Field(field_id, field_value, True, True, False)
                     )
 
         # Update
