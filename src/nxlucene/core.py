@@ -358,7 +358,56 @@ class LuceneServer(object):
                 analyzer = 'standard'
             analyzer = analyzer.lower()
 
-            if type.lower() == 'path':
+            if type.lower() == 'multikeyword':
+
+                # XXX this is a mess. refactoring needed.
+
+                subquery = PyLucene.BooleanQuery()
+
+                parser = PyLucene.QueryParser(
+                    index, PyLucene.KeywordAnalyzer())
+                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
+
+                # FIXME use tokenizer... this sucks...
+                if '#' in value:
+                    values = value.split('#')
+                else:
+                    values = value.split()
+
+                # FIXME use tokenizer... this sucks...
+                for each in values:
+                    each = each.replace(':', '_')
+                    subquery.add(
+                        parser.parseQuery(each),
+                        nxlucene.query.boolean_clauses_map.get('OR'))
+
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get('AND'))
+
+            elif type.lower() == 'keyword':
+
+                subquery = PyLucene.BooleanQuery()
+
+                # FIXME use tokenizer... this sucks...
+                if '#' in value:
+                    values = value.split('#')
+                else:
+                    values = [value]
+
+                # FIXME use tokenizer... this sucks...
+                for each in values:
+                    each = each.replace(':', '_')
+                    subquery.add(
+                        PyLucene.TermQuery(PyLucene.Term(index, each)),
+                        nxlucene.query.boolean_clauses_map.get('OR'))
+
+                query.add(
+                    subquery,
+                    nxlucene.query.boolean_clauses_map.get(
+                    condition, default_clause))
+
+            elif type.lower() == 'path':
 
                 # FIXME !
                 subquery = PyLucene.BooleanQuery()
@@ -385,33 +434,6 @@ class LuceneServer(object):
                     subquery,
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
-
-            elif type.lower() == 'multikeyword':
-
-                # XXX this is a mess. refactoring needed.
-
-                subquery = PyLucene.BooleanQuery()
-
-                parser = PyLucene.QueryParser(
-                    index, PyLucene.KeywordAnalyzer())
-                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
-
-                # FIXME use tokenizer... this sucks...
-                if '#' in value:
-                    values = value.split('#')
-                else:
-                    values = value.split()
-
-                # FIXME use tokenizer... this sucks...
-                for each in values:
-                    each = each.replace(':', '_')
-                    subquery.add(
-                        parser.parseQuery(each),
-                        nxlucene.query.boolean_clauses_map.get('OR'))
-
-                query.add(
-                    subquery,
-                    nxlucene.query.boolean_clauses_map.get('AND'))
 
             elif type.lower() == 'date':
 
@@ -453,28 +475,6 @@ class LuceneServer(object):
                         subquery,
                         nxlucene.query.boolean_clauses_map.get(
                         condition, default_clause))
-
-            elif type.lower() == 'keyword':
-
-                subquery = PyLucene.BooleanQuery()
-
-                # FIXME use tokenizer... this sucks...
-                if '#' in value:
-                    values = value.split('#')
-                else:
-                    values = [value]
-
-                # FIXME use tokenizer... this sucks...
-                for each in values:
-                    each = each.replace(':', '_')
-                    subquery.add(
-                        PyLucene.TermQuery(PyLucene.Term(index, each)),
-                        nxlucene.query.boolean_clauses_map.get('OR'))
-
-                query.add(
-                    subquery,
-                    nxlucene.query.boolean_clauses_map.get(
-                    condition, default_clause))
 
             else:
 
