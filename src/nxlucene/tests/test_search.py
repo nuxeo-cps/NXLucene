@@ -1134,6 +1134,31 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(len(res.getResults()[0]), 0)
 
+    def test_kw_with_integer(self):
+
+        ob1 = Foo(value=2)
+
+        query = FakeXMLInputStream(
+            ob1,
+            attributs=(('value', 'Keyword'),),
+            )
+        self._server.indexDocument(1, query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            ('value',),
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+            },
+
+            ))))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1', u'value': u'2'},))
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
