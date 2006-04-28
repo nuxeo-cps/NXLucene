@@ -1289,8 +1289,126 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
 
-    
+    def test_search_sort_analyzer_french(self):
 
+        ob1 = Foo(value=unicode('Ça va', 'latin-1'))
+        ob2 = Foo(value=unicode('À voir', 'latin-1'))
+        ob3 = Foo(value=unicode('Très bien', 'latin-1'))
+
+        for uid, ob in ((1, ob1), (2, ob2), (3, ob3)):
+
+            # My Fake API sucks...
+            query = FakeXMLInputStream(
+                ob,
+                attributs=(('value', 'Text',),),
+                analyzer='French',
+                )
+
+            query._fields['value_sort'] = {
+                'id' : 'value_sort',
+                'attribute' : 'value',
+                'type' : 'Sort',
+                'value': ob.value,
+                'analyzer' : 'Sort',
+                }
+            
+            self._server.indexDocument(uid, query)
+            
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '2',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '3',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+
+
+            ))))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
+
+        # Now sort this on calue-sort
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '2',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '3',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+
+            ),
+            search_options={
+            'sort-on' : 'value_sort',
+            },
+            )))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '2',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '3',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+
+            ),
+            search_options={
+            'sort-on' : 'value_sort',
+            'sort-order' : 'reverse',
+            },
+            )))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
 
     def tearDown(self):
         if os.path.exists(self._store_dir):

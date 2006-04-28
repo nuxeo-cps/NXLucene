@@ -19,7 +19,47 @@
 $Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
 """
 
+import string
 import PyLucene
+
+class NXAsciiFilter(object):
+
+    ACCENTED_CHARS_TRANSLATIONS = string.maketrans(
+        r"""ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜİàáâãäåçèéêëìíîïñòóôõöøùúûüıÿ""",
+        r"""AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy""")
+
+    def __init__(self, tokenStream):
+        self.input = tokenStream
+
+    def toAscii(self, s):
+        """Change accented and special characters by ASCII characters.
+        """
+        s = s.translate(self.ACCENTED_CHARS_TRANSLATIONS)
+        s = s.replace('Æ', 'AE')
+        s = s.replace('æ', 'ae')
+        s = s.replace('¼', 'OE')
+        s = s.replace('½', 'oe')
+        s = s.replace('ß', 'ss')
+        return s
+
+    def next(self):
+        token = self.input.next()
+        if token is None:
+            return None
+
+        ttext = token.termText()
+        
+        if not ttext:
+            return None
+
+        try:
+            ttext = str(ttext.encode('ISO-8859-15'))
+            ttext = self.toAscii(ttext)
+        except UnicodeEncodeError:
+            ttext = ttext
+
+        return PyLucene.Token(ttext, token.startOffset(),
+                              token.endOffset(), token.type())
 
 class NXSortAnalyzer(object):
     """NX SortAnalyzer
@@ -34,6 +74,7 @@ class NXSortAnalyzer(object):
     def tokenStream(self, fieldName, reader):
 
         result = PyLucene.StandardTokenizer(reader)
+        result = NXAsciiFilter(result)
         result = PyLucene.LowerCaseFilter(result)
 
         return result

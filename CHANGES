@@ -4,7 +4,7 @@ Requires:
 New features:
 ~~~~~~~~~~~~~
 - NXSortAnalyzer : dedicated analyzer to use for fields used for
-sorting purpose. (StandardTokenizer + LowerCase filter)
+sorting purpose. (StandardTokenizer + LowerCase filter + NXAsciiFilter)
 Bug fixes:
 ~~~~~~~~~~
 -
