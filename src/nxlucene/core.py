@@ -36,7 +36,7 @@ from searcher import LuceneSearcher
 import rss.resultset
 
 import nxlucene.query
-import nxlucene.analysis.fr.analyzer
+import nxlucene.analysis
 
 class LuceneServer(object):
     """Lucene server.
@@ -149,7 +149,7 @@ class LuceneServer(object):
 
         # Build a per-field analyzer wrapper we will use with the
         # IndexWriter.
-        analyzer = nxlucene.analysis.fr.analyzer.getPerFieldAnalyzerWrapper()
+        analyzer = nxlucene.analysis.getPerFieldAnalyzerWrapper()
 
         for field in query_instance.getFields():
 
@@ -160,17 +160,17 @@ class LuceneServer(object):
             field_analyzer = field.get('analyzer', 'standard')
             if (not field_analyzer or
                 field_analyzer.lower() not in
-                nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
+                nxlucene.analysis.analyzers_map.keys()):
                 field_analyzer = 'standard'
             field_analyzer = field_analyzer.lower()
 
             analyzer.addAnalyzer(
                 field_id,
-                nxlucene.analysis.fr.analyzer.getAnalyzerById(field_analyzer))
+                nxlucene.analysis.getAnalyzerById(field_analyzer))
 
             self.log.debug("Adding analyzer of type %s for field %s"
                            % (
-                nxlucene.analysis.fr.analyzer.getAnalyzerById(field_analyzer),
+                nxlucene.analysis.getAnalyzerById(field_analyzer),
                 field_id
                 ))
             
@@ -354,7 +354,7 @@ class LuceneServer(object):
 
             analyzer = field.get('analyzer', 'standard')
             if (not analyzer or
-                analyzer.lower() not in nxlucene.analysis.fr.analyzer.analyzers_map.keys()):
+                analyzer.lower() not in nxlucene.analysis.analyzers_map.keys()):
                 analyzer = 'standard'
             analyzer = analyzer.lower()
 
@@ -478,7 +478,7 @@ class LuceneServer(object):
 
             else:
 
-                this_analyzer = nxlucene.analysis.fr.analyzer.getAnalyzerById(analyzer)
+                this_analyzer = nxlucene.analysis.getAnalyzerById(analyzer)
 
 ##                reader = PyLucene.StringReader(value)
 ##                analyzed_text = [x.termText() for x in this_analyzer.tokenStream(index, value)]

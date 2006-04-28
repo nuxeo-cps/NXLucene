@@ -24,6 +24,7 @@ import unittest
 import PyLucene
 
 from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer
+from nxlucene.analysis.sort import NXSortAnalyzer
 
 class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
@@ -95,6 +96,18 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(
             tokens, [u'chanc'])
+
+    def test_sort_analyzer_lowercase(self):
+
+        a = NXSortAnalyzer()
+
+        term_str = unicode("A La MaiSon", 'latin-1')
+
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'a', u'la', u'maison'])
 
 def test_suite():
     suite = unittest.TestSuite()

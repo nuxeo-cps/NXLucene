@@ -14,29 +14,26 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Analyzer Helper
+"""Sort Analyzer
 
 $Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
 """
 
 import PyLucene
 
-from fr.analyzer import NXFrenchAnalyzer
-from sort import NXSortAnalyzer
+class NXSortAnalyzer(object):
+    """NX SortAnalyzer
 
-analyzers_map = {
-    # XXX not complete
-    'standard' : PyLucene.StandardAnalyzer(),
-    'french'   : NXFrenchAnalyzer(),
-    'sort'     : NXSortAnalyzer(),
-    }
+    Dedicated analyzer for soring purpose. It only applies a standard
+    and the lowercase analyzers.
 
-def getAnalyzerById(analyzer_id):
-    if not analyzer_id.lower() in analyzers_map.keys():
-        analyzer_id = 'standard'
-    return analyzers_map.get(analyzer_id)
+    Use this analyzer applied on fields that you will use for soring
+    purpose only.
+    """
 
-def getPerFieldAnalyzerWrapper(default_analyzer=None):
-    if default_analyzer is None:
-        default_analyzer = PyLucene.StandardAnalyzer()
-    return PyLucene.PerFieldAnalyzerWrapper(default_analyzer)
+    def tokenStream(self, fieldName, reader):
+
+        result = PyLucene.StandardTokenizer(reader)
+        result = PyLucene.LowerCaseFilter(result)
+
+        return result
