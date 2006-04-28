@@ -1168,7 +1168,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'1', u'value': u'2'},))
 
-    def test_search_sort_analyzer(self):
+    def test_search_sort_analyzer_no_french(self):
 
         ob1 = Foo(value=unicode('Bonjour', 'latin-1'))
         ob2 = Foo(value=unicode('Assez bien', 'latin-1'))
@@ -1255,6 +1255,41 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '2',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '3',
+             'analyzer' : 'Standard',
+             'condition' : 'OR',
+             },
+
+            ),
+            search_options={
+            'sort-on' : 'value_sort',
+            'sort-order' : 'reverse',
+            },
+            )))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
+
+    
 
 
     def tearDown(self):
