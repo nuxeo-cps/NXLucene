@@ -168,15 +168,15 @@ class LuceneServer(object):
                 field_id,
                 nxlucene.analysis.getAnalyzerById(field_analyzer))
 
-            self.log.debug("Adding analyzer of type %s for field %s"
-                           % (
-                nxlucene.analysis.getAnalyzerById(field_analyzer),
-                field_id
-                ))
+##            self.log.debug("Adding analyzer of type %s for field %s"
+##                           % (
+##                nxlucene.analysis.getAnalyzerById(field_analyzer),
+##                field_id
+##                ))
             
-##            self.log.debug(
-##                "Adding Field on doc with id=%s with value %s of type %s"
-##                % (field_id, field_value, field_type))
+            self.log.debug(
+                "Adding Field on doc with id=%s with value %s of type %s"
+                % (field_id, field_value, field_type))
 
             if field_type.lower() == 'text':
                 doc.add(
@@ -216,6 +216,17 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             elif field_type.lower() == 'sort':
+
+                reader = PyLucene.StringReader(field_value)
+
+                # We can't tokenized the field because we woudn't be
+                # able to sort against it later on.
+
+                # Let's analyze the value now before storing it.
+                a = nxlucene.analysis.sort.NXSortAnalyzer()
+                tokens = [token.termText() for token in a.tokenStream('', reader)]
+                field_value = ' '.join(tokens)
+
                 doc.add(
                     PyLucene.Field(field_id, field_value, False, True, False)
                     )
