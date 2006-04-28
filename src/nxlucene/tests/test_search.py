@@ -69,6 +69,15 @@ class LuceneSeachTestCase(unittest.TestCase):
                             'value': u'Foo'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
 
+        # Try to return the stored value
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('name',),
+            search_fields=({'id' : u'name',
+                            'value': u'Foo'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'1', u'name': u'Foo'},))
+
     def test_fulltext(self):
 
         # Indes a new document.
