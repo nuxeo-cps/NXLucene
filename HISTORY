@@ -1,4 +1,21 @@
 *******************************************
+** NXLucene V0.6.0 [R1 build 2006/04/28-20:48 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 45117
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- NXSortAnalyzer : dedicated analyzer to use for fields used for
+sorting purpose. (StandardTokenizer + LowerCase filter + NXAsciiFilter)
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** NXLucene V0.5.0 [R1 build 2006/04/26-14:38 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 44994
 Requires:
