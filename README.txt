@@ -93,7 +93,7 @@ Installation
 Need support
 ============
 
-  - http://lists.nuxeo.com/cps-devel
+  - http://lists.nuxeo.com/mailman/listinfo/cps-devel
 
 
 Looking for commercial support ?
@@ -103,7 +103,7 @@ Looking for commercial support ?
 
   - http://www.nuxeo.com/en/
 
-.. _Nuxeo: http://wwwn.nuxeo.com
+.. _Nuxeo: http://www.nuxeo.com/en/
 
 License
 =======
