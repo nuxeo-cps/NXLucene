@@ -29,6 +29,7 @@ analyzers_map = {
     'standard' : PyLucene.StandardAnalyzer(),
     'french'   : NXFrenchAnalyzer(),
     'sort'     : NXSortAnalyzer(),
+    'keyword'  : PyLucene.KeywordAnalyzer(),
     }
 
 def getAnalyzerById(analyzer_id):
