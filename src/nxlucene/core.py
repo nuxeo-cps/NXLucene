@@ -244,8 +244,9 @@ class LuceneServer(object):
         # Update
         for field in existing_fields:
             if (field.name() not in
-                [x['attribute'] for x in  query_instance.getFields()] and
+                [x['id'] for x in  query_instance.getFields()] and
                 field.name() != unicode('uid')):
+                self.log.debug("Preserving existing field %s" % field.name())
                 doc.add(field)
 
         # We got to remove the document from the index first.
