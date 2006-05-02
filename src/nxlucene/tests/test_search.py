@@ -134,7 +134,6 @@ class LuceneSeachTestCase(unittest.TestCase):
         query = FakeXMLInputStream(
             ob,
             attributs=(('path', 'Path'),),
-            analyzer='keyword'
             )
         self._server.indexDocument('3', query)
 
@@ -143,7 +142,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
-                            'analyzer' : 'keyword',
                             'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
@@ -152,7 +150,23 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
-                            'value': u'/a*'},))))
+                            'value': u'/a'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'type' : 'path',
+                            'value': u'/a/'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'path',
+                            'type' : 'path',
+                            'value': u'/a/*'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
         # Not good.
@@ -170,10 +184,10 @@ class LuceneSeachTestCase(unittest.TestCase):
         ob = Foo(path="/a/b/c")
         ob2 = Foo(path="/aa/bb")
 
-        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),), analyzer='keyword')
+        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),))
         self._server.indexDocument('1', query)
 
-        query = FakeXMLInputStream(ob2, attributs=(('path', 'Path'),), analyzer='keyword')
+        query = FakeXMLInputStream(ob2, attributs=(('path', 'Path'),))
         self._server.indexDocument('2', query)
 
         res = PythonResultSet(
@@ -181,7 +195,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
-                            'analyzer' :'keyword',
                             'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
 
@@ -190,7 +203,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
-                            'analyzer' :'keyword',
                             'value': u'/aa/bb'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
@@ -202,13 +214,11 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'path',
              'type' : 'path',
-             'analyzer' :'keyword',
              'value': u'/aa/bb',
              'condition' : 'OR'},
 
             {'id' : u'path',
              'type' : 'path',
-             'analyzer' :'keyword',
              'value': u'/a/b/c',
              'condition' : 'OR'},
 
@@ -224,7 +234,6 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'path',
              'type' : 'path',
-             'analyzer' :'keyword',
              'value': '/aa/bb#/a/b/c',
              },
             ))))

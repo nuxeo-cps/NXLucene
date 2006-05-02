@@ -173,7 +173,7 @@ class LuceneServer(object):
 ##                nxlucene.analysis.getAnalyzerById(field_analyzer),
 ##                field_id
 ##                ))
-            
+
             self.log.debug(
                 "Adding Field on doc with id=%s with value %s of type %s"
                 % (field_id, field_value, field_type))
@@ -214,10 +214,10 @@ class LuceneServer(object):
                 if not field_value.startswith('/'):
                     field_value = '/' + field_value
                 doc.add(
-                    #PyLucene.Field.Keyword(field_id, field_value)
-                    PyLucene.Field(field_id, field_value,
-                                   PyLucene.Field.Store.YES,
-                                   PyLucene.Field.Index.TOKENIZED)
+                    PyLucene.Field.Keyword(field_id, field_value)
+                    ##PyLucene.Field(field_id, field_value,
+                    ##               PyLucene.Field.Store.YES,
+                    ##               PyLucene.Field.Index.TOKENIZED)
                     )
 
             elif field_type.lower() == 'sort':
@@ -441,13 +441,29 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-                    if not each.endswith('*'):
-                        each += '*'
-                    subquery.add(
-                        PyLucene.QueryParser.parse(unicode(each), index,
-                                                   PyLucene.KeywordAnalyzer()),
-                        nxlucene.query.boolean_clauses_map.get('OR')
-                        )
+                    if each.endswith('*'):
+                        each  = each[:-1]
+
+                    pfq = PyLucene.PhrasePrefixQuery()
+
+                    reader = self.getReader()
+
+                    terms_with_prefix = []
+                    te = reader.get().terms(PyLucene.Term(index, each))
+                    while True:
+                        if te.term().text().startswith(each):
+                            terms_with_prefix.append(te.term())
+                        if not te.next():
+                            break
+                    reader.close()
+                    if terms_with_prefix:
+#                        raise str(terms_with_prefix)
+                        pfq.add(terms_with_prefix)
+
+                        subquery.add(
+                            pfq,
+                            nxlucene.query.boolean_clauses_map.get('OR')
+                            )
 
                 query.add(
                     subquery,
@@ -481,7 +497,7 @@ class LuceneServer(object):
                     if len(values) == 2:
                         start_date = values[0]
                         end_date = values[1]
-                        
+
                         subquery = PyLucene.RangeQuery(
                             PyLucene.Term(index, start_date),
                             PyLucene.Term(index, end_date), True)
