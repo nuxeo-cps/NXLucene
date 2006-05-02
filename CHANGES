@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
-- Fix updating documents
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- Optmizate prefixed query with paths.
+-
