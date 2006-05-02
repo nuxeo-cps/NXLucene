@@ -147,7 +147,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
-                            'value': u'/a'},))))
+                            'value': u'/a*'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
         # Not good.

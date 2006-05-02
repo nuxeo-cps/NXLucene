@@ -436,12 +436,9 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-                    # Hack here !
-                    if each.endswith('*'):
-                        each = each[:-1]
-                    term = PyLucene.Term(index, unicode(each))
                     subquery.add(
-                        PyLucene.PrefixQuery(term),
+                        PyLucene.QueryParser.parse(unicode(each), index,
+                                                   PyLucene.KeywordAnalyzer()),
                         nxlucene.query.boolean_clauses_map.get('OR')
                         )
 
