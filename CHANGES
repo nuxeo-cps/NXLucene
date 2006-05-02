@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Tokenize path fields
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

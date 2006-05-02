@@ -131,7 +131,11 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         # Indes a new document.
         ob = Foo(path="/a/b/c")
-        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),))
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('path', 'Path'),),
+            analyzer='keyword'
+            )
         self._server.indexDocument('3', query)
 
         res = PythonResultSet(
@@ -139,6 +143,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
+                            'analyzer' : 'keyword',
                             'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'3'},))
 
@@ -165,10 +170,10 @@ class LuceneSeachTestCase(unittest.TestCase):
         ob = Foo(path="/a/b/c")
         ob2 = Foo(path="/aa/bb")
 
-        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),))
+        query = FakeXMLInputStream(ob, attributs=(('path', 'Path'),), analyzer='keyword')
         self._server.indexDocument('1', query)
 
-        query = FakeXMLInputStream(ob2, attributs=(('path', 'Path'),))
+        query = FakeXMLInputStream(ob2, attributs=(('path', 'Path'),), analyzer='keyword')
         self._server.indexDocument('2', query)
 
         res = PythonResultSet(
@@ -176,6 +181,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
+                            'analyzer' :'keyword',
                             'value': u'/a/b/c'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'1'},))
 
@@ -184,6 +190,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'path',
                             'type' : 'path',
+                            'analyzer' :'keyword',
                             'value': u'/aa/bb'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
@@ -195,11 +202,13 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'path',
              'type' : 'path',
+             'analyzer' :'keyword',
              'value': u'/aa/bb',
              'condition' : 'OR'},
 
             {'id' : u'path',
              'type' : 'path',
+             'analyzer' :'keyword',
              'value': u'/a/b/c',
              'condition' : 'OR'},
 
@@ -215,6 +224,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'path',
              'type' : 'path',
+             'analyzer' :'keyword',
              'value': '/aa/bb#/a/b/c',
              },
             ))))

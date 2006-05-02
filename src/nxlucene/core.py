@@ -213,7 +213,12 @@ class LuceneServer(object):
                     field_value  = '/'.join(field_value.split())
                 if not field_value.startswith('/'):
                     field_value = '/' + field_value
-                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+                doc.add(
+                    #PyLucene.Field.Keyword(field_id, field_value)
+                    PyLucene.Field(field_id, field_value,
+                                   PyLucene.Field.Store.YES,
+                                   PyLucene.Field.Index.TOKENIZED)
+                    )
 
             elif field_type.lower() == 'sort':
 
@@ -436,6 +441,8 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
+                    if not each.endswith('*'):
+                        each += '*'
                     subquery.add(
                         PyLucene.QueryParser.parse(unicode(each), index,
                                                    PyLucene.KeywordAnalyzer()),
