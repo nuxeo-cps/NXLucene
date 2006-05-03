@@ -190,14 +190,14 @@ class XMLSearchQuery(object):
         # Add path field type at the end
 
         _fields = []
-        _end = []
+        _ends = []
         for each in self._search_fields:
             if each['type'].lower() == 'path':
                 _ends.append(each)
             else:
                 _fields.append(each)
 
-        for each in _end:
+        for each in _ends:
             _fields.append(each)
 
         return tuple(_fields)
