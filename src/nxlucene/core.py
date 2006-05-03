@@ -426,12 +426,7 @@ class LuceneServer(object):
 
             elif type.lower() == 'path':
 
-                # FIXME !
                 subquery = PyLucene.BooleanQuery()
-
-                parser = PyLucene.QueryParser(
-                    index, PyLucene.KeywordAnalyzer())
-                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
 
                 # FIXME use tokenizer... this sucks...
                 if '#' in value:
@@ -441,29 +436,26 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
+
+                    include_sub_path = False
                     if each.endswith('*'):
+                        include_sub_path = True
                         each  = each[:-1]
 
-                    pfq = PyLucene.PhrasePrefixQuery()
+                    # BBB
+                    include_sub_path = True
 
-                    reader = self.getReader()
+                    term = PyLucene.Term(index, each)
 
-                    terms_with_prefix = []
-                    te = reader.get().terms(PyLucene.Term(index, each))
-                    while True:
-                        if te.term().text().startswith(each):
-                            terms_with_prefix.append(te.term())
-                        if not te.next():
-                            break
-                    reader.close()
-                    if terms_with_prefix:
-#                        raise str(terms_with_prefix)
-                        pfq.add(terms_with_prefix)
-
-                        subquery.add(
-                            pfq,
-                            nxlucene.query.boolean_clauses_map.get('OR')
-                            )
+                    if include_sub_path:
+                        ssquery = PyLucene.PrefixQuery(term)
+                    else:
+                        ssquery = PyLucene.TermQuery(term)
+                    
+                    subquery.add(
+                        ssquery,
+                        nxlucene.query.boolean_clauses_map.get('OR')
+                        )
 
                 query.add(
                     subquery,
@@ -515,10 +507,6 @@ class LuceneServer(object):
 
                 this_analyzer = nxlucene.analysis.getAnalyzerById(analyzer)
 
-##                reader = PyLucene.StringReader(value)
-##                analyzed_text = [x.termText() for x in this_analyzer.tokenStream(index, value)]
-##                value = ' '.join(analyzed_text)
-
                 self.log.debug("Using analyzer of type %s for field %s" %
                                (str(this_analyzer), index))
 
@@ -527,21 +515,12 @@ class LuceneServer(object):
                 except PyLucene.JavaError:
                     return results.getStream()
 
-#                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_AND)
-##                try:
-##                    subquery = parser.parseQuery(value)
-##                except PyLucene.JavaError:
-##                    self.log.error("Invalid Query %s" % repr(value))
-##                    return results.getStream()
-
                 query.add(
                     subquery,
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
-        self.log.debug('query %s' % query.toString())
-
-#        print query.toString()
+#        self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
 
