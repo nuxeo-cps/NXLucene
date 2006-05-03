@@ -187,7 +187,20 @@ class XMLSearchQuery(object):
         return tuple(self._return_fields)
 
     def getSearchFields(self):
-        return tuple(self._search_fields)
+        # Add path field type at the end
+
+        _fields = []
+        _end = []
+        for each in self._search_fields:
+            if each['type'].lower() == 'path':
+                _ends.append(each)
+            else:
+                _fields.append(each)
+
+        for each in _end:
+            _fields.append(each)
+
+        return tuple(_fields)
 
     def getSearchOptions(self):
         return self._search_options
