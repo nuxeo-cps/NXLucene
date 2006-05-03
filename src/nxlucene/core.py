@@ -520,7 +520,7 @@ class LuceneServer(object):
                     nxlucene.query.boolean_clauses_map.get(
                     condition, default_clause))
 
-#        self.log.debug('query %s' % query.toString())
+        self.log.debug('query %s' % query.toString())
 
         tstart = time.time()
 
