@@ -1,15 +1,15 @@
 $Id: $
 
-weblucene
+NXLucene
 ==========
 
-This is the core lib of WebLucene. WebLucene is a standalone multi
+This is the core lib of NXLucene. NXLucene is a standalone multi
 threads remote server handling Lucene index store. It uses twisted and
 zope librairies for its implementation.
 
 One of the server ressource is XML-RPC.
 
-You may use your favorite language and xml-rpc client to request WebLucene.
+You may use your favorite language and xml-rpc client to request NXLucene.
 
 Let's take an example using the the xmlrpclib proxy server of the
 standard Python library :
