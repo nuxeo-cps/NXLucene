@@ -155,6 +155,10 @@ class LuceneServer(object):
 
             field_id   = field['id']
             field_value = unicode(field['value'])
+
+            # Escape special chars
+#            field_value = nxlucene.query.escape(field_value)
+
             field_type  = field['type']
 
             field_analyzer = field.get('analyzer', 'standard')
@@ -163,16 +167,6 @@ class LuceneServer(object):
                 nxlucene.analysis.analyzers_map.keys()):
                 field_analyzer = 'standard'
             field_analyzer = field_analyzer.lower()
-
-            analyzer.addAnalyzer(
-                field_id,
-                nxlucene.analysis.getAnalyzerById(field_analyzer))
-
-##            self.log.debug("Adding analyzer of type %s for field %s"
-##                           % (
-##                nxlucene.analysis.getAnalyzerById(field_analyzer),
-##                field_id
-##                ))
 
             self.log.debug(
                 "Adding Field on doc with id=%s with value %s of type %s"
@@ -189,17 +183,19 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
 
             elif field_type.lower() == 'multikeyword':
+                field_analyzer = 'keyword'
+
                 default_separator = '#'
 
                 if '#' in field_value:
                     values = field_value.split('#')
                 else:
-                    values = field_value.split()
+                    values = [field_value]
 
                 for value in values:
-                    if len(value.split(':')) > 1:
-                       value =  '_'.join(value.split(':'))
-                    doc.add(PyLucene.Field.Keyword(field_id, value))
+                    #if len(value.split(':')) > 1:
+                    #   value =  '_'.join(value.split(':'))
+                    doc.add(PyLucene.Field.Keyword(field_id, unicode(value)))
 
             elif field_type.lower() == 'keyword':
                 doc.add(PyLucene.Field.Keyword(field_id, unicode(field_value)))
@@ -245,6 +241,17 @@ class LuceneServer(object):
                 doc.add(
                     PyLucene.Field(field_id, field_value, True, True, False)
                     )
+
+            analyzer.addAnalyzer(
+                field_id,
+                nxlucene.analysis.getAnalyzerById(field_analyzer))
+
+#            print field_id, nxlucene.analysis.getAnalyzerById(field_analyzer)
+##            self.log.debug("Adding analyzer of type %s for field %s"
+##                           % (
+##                nxlucene.analysis.getAnalyzerById(field_analyzer),
+##                field_id
+##                ))
 
         # Update
         for field in existing_fields:
@@ -389,11 +396,12 @@ class LuceneServer(object):
                 if '#' in value:
                     values = value.split('#')
                 else:
-                    values = value.split()
+                    values = [value]
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-                    each = each.replace(':', '_')
+#                    each = each.replace(':', '_')
+                    each = nxlucene.query.escape(each)
                     subquery.add(
                         parser.parseQuery(each),
                         nxlucene.query.boolean_clauses_map.get('OR'))
@@ -414,7 +422,7 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-                    each = each.replace(':', '_')
+#                    each = each.replace(':', '_')
                     subquery.add(
                         PyLucene.TermQuery(PyLucene.Term(index, each)),
                         nxlucene.query.boolean_clauses_map.get('OR'))

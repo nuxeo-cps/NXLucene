@@ -26,3 +26,11 @@ boolean_clauses_map = {
     'OR'  : PyLucene.BooleanClause.Occur.SHOULD,
     'NOT' : PyLucene.BooleanClause.Occur.MUST_NOT
     }
+
+SPECIAL_CHARS = ('\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']',
+                 '^', '"', '~', '*', '?', ':')
+                 
+def escape(str_):
+    for char in SPECIAL_CHARS:
+        str_ = str_.replace(char, '\%s' % char)
+    return str_

@@ -299,7 +299,7 @@ class LuceneSeachTestCase(unittest.TestCase):
     def test_keyword_search(self):
         # Indes a new document.
 
-        ob = Foo(allowedRolesAndUsers="Manager Member")
+        ob = Foo(allowedRolesAndUsers="Manager#Member")
 
         query = FakeXMLInputStream(
             ob,
@@ -349,7 +349,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         query = FakeXMLInputStream(
             ob,
-            attributs=(('allowedRolesAndUsers', 'MultiKeyword'),))
+            attributs=(('allowedRolesAndUsers', 'MultiKeyword'),),)
         self._server.indexDocument('5', query)
 
         res = PythonResultSet(
@@ -362,7 +362,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(res.getResults()[0], ({u'uid': u'5'},))
 
 
-        ob = Foo(allowedRolesAndUsers="MMM xx:zz")
+        ob = Foo(allowedRolesAndUsers="MMM#xx:zz")
 
         query = FakeXMLInputStream(
             ob,
@@ -383,7 +383,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
                             'type' : 'MultiKeyword',
-                            'value': u'xx:zz MMM',
+                            'value': u'xx:zz#MMM',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
@@ -1428,6 +1428,68 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
+
+    def test_keyword_tiry(self):
+
+        ob = Foo(internet_user='ZopeFront:root')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('internet_user', 'Keyword',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': u'ZopeFront:root'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'internet_user',
+             'type' : 'Keyword',
+             'value': 'ZopeFront:root',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': u'ZopeFront:root'},))
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
