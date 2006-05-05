@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
-- Fix special chars for Lucene queries and cleanup the mess related on
+- Fix special chars (partial with ':') for Lucene queries and cleanup the mess related on
 keyword uses.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
