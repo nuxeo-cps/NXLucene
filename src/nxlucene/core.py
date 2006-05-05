@@ -155,10 +155,6 @@ class LuceneServer(object):
 
             field_id   = field['id']
             field_value = unicode(field['value'])
-
-            # Escape special chars
-#            field_value = nxlucene.query.escape(field_value)
-
             field_type  = field['type']
 
             field_analyzer = field.get('analyzer', 'standard')
@@ -193,8 +189,6 @@ class LuceneServer(object):
                     values = [field_value]
 
                 for value in values:
-                    #if len(value.split(':')) > 1:
-                    #   value =  '_'.join(value.split(':'))
                     doc.add(PyLucene.Field.Keyword(field_id, unicode(value)))
 
             elif field_type.lower() == 'keyword':
@@ -400,8 +394,10 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-#                    each = each.replace(':', '_')
-                    each = nxlucene.query.escape(each)
+                    # XXX specific case
+                    each = each.replace(':', '\:')
+#                    each = nxlucene.query.escape(each)
+                    print index, each
                     subquery.add(
                         parser.parseQuery(each),
                         nxlucene.query.boolean_clauses_map.get('OR'))
