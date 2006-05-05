@@ -109,6 +109,26 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(
             tokens, [u'a', u'la', u'maison'])
 
+    def test_standard_analyzer_with_columns(self):
+
+        a = PyLucene.StandardAnalyzer()
+        term_str = unicode('xx:yy')
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'xx', u'yy'])
+
+    def test_keyword_analyzer_with_columns(self):
+
+        a = PyLucene.KeywordAnalyzer()
+        term_str = unicode('xx:yy')
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'xx:yy'])
+        
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NXFrenchAnalyzerTestCase))
