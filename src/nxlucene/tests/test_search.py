@@ -1239,7 +1239,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             ))))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
+            res.getResults()[0],
+            ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
 
         # Now sort this on calue-sort
 
@@ -1273,7 +1274,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
+            res.getResults()[0],
+            ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -1306,7 +1308,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
+            res.getResults()[0],
+            ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
 
     def test_search_sort_analyzer_french(self):
 
@@ -1360,7 +1363,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             ))))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
+            res.getResults()[0],
+            ({u'uid': u'1'}, {u'uid': u'2'}, {u'uid': u'3'}))
 
         # Now sort this on calue-sort
 
@@ -1394,7 +1398,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
+            res.getResults()[0],
+            ({u'uid': u'2'}, {u'uid': u'1'}, {u'uid': u'3'}))
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
@@ -1427,7 +1432,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )))
 
         self.assertEqual(
-            res.getResults()[0], ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
+            res.getResults()[0],
+            ({u'uid': u'3'}, {u'uid': u'1'}, {u'uid': u'2'}))
 
     def test_keyword_tiry(self):
 
