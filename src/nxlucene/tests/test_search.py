@@ -1497,6 +1497,24 @@ class LuceneSeachTestCase(unittest.TestCase):
             res.getResults()[0],
             ({u'uid': u'1', u'internet_user': u'ZopeFront:root'},))
 
+        # With unicode
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'internet_user',
+             'type' : 'Keyword',
+             'value': unicode('ZopeFront:root'),
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': u'ZopeFront:root'},))
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
