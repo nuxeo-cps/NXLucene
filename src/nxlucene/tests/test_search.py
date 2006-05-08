@@ -1515,6 +1515,86 @@ class LuceneSeachTestCase(unittest.TestCase):
             res.getResults()[0],
             ({u'uid': u'1', u'internet_user': u'ZopeFront:root'},))
 
+    def test_multikeyword_tiry(self):
+
+        ob = Foo(internet_user='ZopeFront:root#ZopeFront:julien')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('internet_user', 'MultiKeyword',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'Keyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': [u'ZopeFront:root', u'ZopeFront:julien']},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'internet_user',
+             'type' : 'MultiKeyword',
+             'value': 'ZopeFront:root',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': [u'ZopeFront:root', u'ZopeFront:julien']},))
+
+        # With unicode
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            return_fields=('internet_user',),
+            search_fields=(
+
+            {'id' : u'internet_user',
+             'type' : 'MultiKeyword',
+             'value': unicode('ZopeFront:root'),
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0],
+            ({u'uid': u'1', u'internet_user': [u'ZopeFront:root', u'ZopeFront:julien']},))
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
