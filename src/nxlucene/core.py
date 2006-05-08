@@ -179,6 +179,8 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
 
             elif field_type.lower() == 'multikeyword':
+
+                # Force analyzer to keyword here.
                 field_analyzer = 'keyword'
 
                 default_separator = '#'
@@ -192,6 +194,8 @@ class LuceneServer(object):
                     doc.add(PyLucene.Field.Keyword(field_id, unicode(value)))
 
             elif field_type.lower() == 'keyword':
+                # Force analyzer to keyword here.
+                field_analyzer = 'keyword'
                 doc.add(PyLucene.Field.Keyword(field_id, unicode(field_value)))
 
             elif field_type.lower() == 'date':
@@ -205,9 +209,6 @@ class LuceneServer(object):
                     field_value = '/' + field_value
                 doc.add(
                     PyLucene.Field.Keyword(field_id, field_value)
-                    ##PyLucene.Field(field_id, field_value,
-                    ##               PyLucene.Field.Store.YES,
-                    ##               PyLucene.Field.Index.TOKENIZED)
                     )
 
             elif field_type.lower() == 'sort':
@@ -394,7 +395,7 @@ class LuceneServer(object):
 
                 # FIXME use tokenizer... this sucks...
                 for each in values:
-                    # XXX specific case
+                    # FIXME specific case
                     each = each.replace(':', '\:')
                     subquery.add(
                         parser.parseQuery(each),

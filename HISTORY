@@ -1,4 +1,21 @@
 *******************************************
+** NXLucene V0.6.3 [R1 build 2006/05/08-17:40 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 45340
+Requires:
+~~~~~~~~~
+- Reindexation of the existing stores.
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Fix special chars (partial with ':') for Lucene queries and cleanup the mess related on
+keyword uses.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** NXLucene V0.6.2 [R1 build 2006/05/03-00:38 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 45208
 Requires:

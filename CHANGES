@@ -1,13 +1,12 @@
 Requires:
 ~~~~~~~~~
-- Reindexation of the existing stores.
+-
 New features:
 ~~~~~~~~~~~~~
 -
 Bug fixes:
 ~~~~~~~~~~
-- Fix special chars (partial with ':') for Lucene queries and cleanup the mess related on
-keyword uses.
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

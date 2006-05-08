@@ -75,6 +75,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_searchQuery(self, xml_query=''):
         self._core.log.info("xmlrpc_searchQuery")
         if xml_query:
+#            self._core.log.debug(xml_query)
             iquery = XMLSearchQuery(xml_query)
 #            print iquery.getSearchFields()
             rss = self._core.searchQuery(iquery.getReturnFields(),
