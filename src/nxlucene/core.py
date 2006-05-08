@@ -396,8 +396,6 @@ class LuceneServer(object):
                 for each in values:
                     # XXX specific case
                     each = each.replace(':', '\:')
-#                    each = nxlucene.query.escape(each)
-                    print index, each
                     subquery.add(
                         parser.parseQuery(each),
                         nxlucene.query.boolean_clauses_map.get('OR'))
