@@ -158,6 +158,15 @@ above ::
 The reason is that the binaries are commpiled with UCS2 support. If
 your system has en ICS4 support then this error will occur.
 
+You can also check if your Python version is UCS2 or UCS4 by asking
+the sys module in a Python prompt::
+
+  >>> import sys
+  >>> sys.maxunicode
+  65535
+
+65535 is UCS2, a higher number is UCS4.
+
 In this case you have 2 options :
 
  - Recompile a PyLucene_ version from source your system can support
