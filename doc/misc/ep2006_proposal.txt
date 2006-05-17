@@ -1,0 +1,69 @@
+========================================================
+Lucene-based cataloging solution for Zope-3 and CPS-3.4
+========================================================
+
+:Author: Julien Anguenot
+:Revision: $Id: README.txt 45134 2006-05-02 10:41:54Z sfermigier $
+
+.. sectnum::    :depth: 1
+.. contents::   :depth: 1
+
+Lucene is an open source project from the Apache Software Foundation
+written in Java. This is a high-performance, full-featured text search
+engine library.
+
+NXLucene, from Nuxeo SAS, is a multi-threaded remote server handling
+Lucene stores. It takes advantage of the freaking fast PyLucene
+Python bindings and uses Twisted for its implementation. It uses some
+part of the Zope3 component architecture as well. NXLucene currently
+supports the XML-RPC and SOAP protocols. (Its roadmap even includes an
+ICE connector for the 1.x branch.) As well, NXlucene might be seen as
+a good example of what could be achieved using the best parts of
+different worlds (Java Lucene, PyLucene, Zope3, Twisted,...).
+
+nuxeo.lucene is a cataloging component integrated to the Zope3
+application server currently offering an xml-rpc proxy to an NXLucene
+remote server. As well, It offers an abstraction for Python objects
+cataloging strategy providing the ability to specify how Python
+objects should be indexed and retrieved from a Lucene store through
+NXLucene. (This is important to note here, that whatever remote server
+providing an XML-RPC remote interface could be theoretically used.)
+
+CPSLuceneCatalog is a CPS-3.4.x specific product adding the CPS
+specific business rules to nuxeo.lucene. For example, it takes
+care of the way different versions of CPS documents should be indexed.
+CPSLuceneCatalog is a complete substitute for the ZCatalog that is
+showing its limits while dealing with millions of objects within the
+ZODB. CPSLuceneCatalog will be shipped along with the next major
+release of CPS, version 4, along with the JackRabbit JCR repository.
+
+The result is a big win on large scaled deployments :
+
+ - Indexing and searching are much faster and scalable compared to ZCatalog
+ - Indexing and searching are much more powerful compared to ZCatalog
+ - (Analysis, ranking, etc...)
+ - Zope global performances are increased because Zope no longer deals
+   with the indexing and searching business.
+
+NXLucene is an open source project under the LGPL.
+nuxeo.lucene is an open source project available under the ZPL
+CPSLuceneCatalog is an open source project available under the GPL
+
+For more information :
+
+ - CPS Project : http://www.cps-project.org
+ - Zope3 : http://dev.zope.org/Zope3
+ - Apache Lucene : http://lucene.apache.org/java/docs/index.html
+ - PyLucene : http://pylucene.osafoundation.org
+ - NXLucene : http://www.cps-project.org/sections/projects/nxlucene
+ - nuxeo.lucene : http://svn.nuxeo.org/trac/pub/browser/Zope3/nuxeo.lucene/trunk
+ - CPSLuceneCatalog : http://svn.nuxeo.org/trac/pub/browser/CPS3/products/CPSLuceneCatalog/trunk
+ - Nuxeo SAS : http://www.nuxeo.com
+
+
+.. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
