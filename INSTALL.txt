@@ -42,7 +42,6 @@ while launching tests with the PyLucene installation.
 .. _Python-2.4.x: http://www.python.org/download/releases/2.4.3/
 .. _NXLucene: http://www.cps-project.org/sections/nxlucene/
 .. _PyLucene: http://pylucene.osafoundation.org/
-.. _1.9.x: http://downloads.osafoundation.org/PyLucene/linux/PyLucene-1.9.1.tar.gz
 .. _ZopeInterface: http://zope.org/Products/ZopeInterface
 .. _Twisted: http://twistedmatrix.com/projects/core/
 .. _2.2.0: http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
@@ -157,15 +156,6 @@ above ::
 
 The reason is that the binaries are commpiled with UCS2 support. If
 your system has en ICS4 support then this error will occur.
-
-You can also check if your Python version is UCS2 or UCS4 by asking
-the sys module in a Python prompt::
-
-  >>> import sys
-  >>> sys.maxunicode
-  65535
-
-65535 is UCS2, a higher number is UCS4.
 
 In this case you have 2 options :
 
