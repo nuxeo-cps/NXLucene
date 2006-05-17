@@ -72,9 +72,9 @@ Motivation
 .. _ZCatalog: http://www.faqs.org/docs/ZopeBook/SearchingZCatalog.html
 .. _ZODB: http://www.zope.org/Wikis/ZODB/
 .. _Zope3: http://dev.zope.org/Zope3/
-.. _nuxeo.lucene: http://svn.nuxeo.org/pub/nuxeo.lucene
-.. _CPSLuceneCatalog: http://svn.nuxeo.org/pub/CPSLuceneCatalog/
-.. _NXLucened: http://www.cps-project.org/sections/nxlucene
+.. _nuxeo.lucene: http://svn.nuxeo.org/pub/Zope3/nuxeo.lucene
+.. _CPSLuceneCatalog: http://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/
+.. _NXLucened: http://www.cps-project.org/workspaces/development/projects/nxlucene/
 
 Documentation
 =============
@@ -90,8 +90,8 @@ Installation
 
 .. _here : http://www.cps-project.org/workspaces/development/projects/nxlucene/readme
 
-Need support
-============
+Need support ?
+==============
 
   - http://lists.nuxeo.com/mailman/listinfo/cps-devel
 
