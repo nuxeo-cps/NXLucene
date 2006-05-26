@@ -25,7 +25,7 @@ Requirements
 
   - Python-2.4.x_ installed.
 
-  - PyLucene_ == 1.9.1. 
+  - PyLucene_ == 1.9.1.
 
   - ZopeInterface_ >= 3.0.1. This depends of the Twisted_ requirements.
 
@@ -161,7 +161,7 @@ In this case you have 2 options :
 
  - Recompile a PyLucene_ version from source your system can support
    with UCS2 support. (Ubuntu users you will have to do that)
- 
+
  - Install a second Python for your own programs and leave the system
    Python alone.
 
@@ -183,6 +183,21 @@ TwistedWeb. (See the dependencies on top of this file)::
     File "src/nxlucene/xmlrpc.py", line 24, in ?
       from twisted.web import xmlrpc
   ImportError: No module named web
+
+
+Lucene store directory
+----------------------
+
+DO NOT create the store directory yourself, let NXLucene do it, just make
+sure the user lauching the process has enough rights to do so.
+
+In case the directory exists but is empty, the server will fail and show
+logs like::
+
+  LuceneServer - INFO - Request <PyLucene.BooleanQuery; proxy of C++
+  org::apache::lucene::search::BooleanQuery instance at <PyCObject object at
+  0xb6106b18>> failed...
+
 
 .. Emacs
 .. Local Variables:

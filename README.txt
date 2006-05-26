@@ -37,7 +37,7 @@ What is it ?
 .. _PyLucene: http://pylucene.osafoundation.org/
 .. _Python: http://www.python.org/
 .. _Lucene: http://lucene.apache.org/
-.. _ZopeInterface: http://zope.org/Products/ZopeInterface	
+.. _ZopeInterface: http://zope.org/Products/ZopeInterface
 .. _Twisted: http://twistedmatrix.com/projects/core/
 
 Motivation
