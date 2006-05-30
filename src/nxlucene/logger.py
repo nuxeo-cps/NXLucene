@@ -20,25 +20,18 @@ $Id$
 """
 
 import logging
+from logging.handlers import RotatingFileHandler
 
 format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
-def _initFileHandler(level, file_):
-    logging.basicConfig(
-        filename=file_,
-        format=format,
-        level=getattr(logging, level))
-
-def _initConsoleHandler():
-    console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(format)
-    console.setFormatter(formatter)
-    logging.getLogger('').addHandler(console)
-
 def initLog(level, file_):
-    _initFileHandler(level, file_)
-    # XXX do not launch this all the time
-    _initConsoleHandler()
+    """Initialize a Rotating File Handler.
+    """
+    # XXX make maxBytes and backupCount configurable
+    handler = RotatingFileHandler(file_, maxBytes=1000000, backupCount=50)
+    formatter = logging.Formatter(format)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
+    logging.getLogger().setLevel(getattr(logging, level))
     
 

@@ -3,7 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- nxlucene.log is rotated automatically
 Bug fixes:
 ~~~~~~~~~~
 -

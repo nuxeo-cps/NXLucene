@@ -41,11 +41,12 @@ class NXLuceneController(object):
 
     def __init__(self):
 
-        self.log = logging.getLogger('NXLucene')
-
         config_file = os.environ['CONFIG_FILE']
         self._conf = NXLuceneConfiguration(config_file)
+
         initLog(self._conf.getLogLevel(), self._conf.getLogFile())
+
+        self.log = logging.getLogger()
 
         self._root = resource.Resource()
         self.initializeResources()
