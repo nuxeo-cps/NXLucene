@@ -1,0 +1,25 @@
+===========================
+Indexes store optimization
+===========================
+
+:Author: Julien Anguenot
+:Revision: $Id: INSTALL.txt 32177 2006-03-31 14:45:36Z janguenot $
+
+.. sectnum::    :depth: 1
+.. contents::   :depth: 1
+
+
+Indexes optimization is done once at server startup time. 
+
+If you are not planning to reboot the server you may want to launch
+the optimization of the store on regular basis using a crontab entry
+for instance. The XML-RPC interface and all future protocol
+implementation provide an optimize() method you may use for that.
+
+.. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
+
