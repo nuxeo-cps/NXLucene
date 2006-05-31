@@ -3,15 +3,10 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- nxlucene.log is rotated automatically
-- Flexible PyLucene thread pool to handle write operations.
+-
 Bug fixes:
 ~~~~~~~~~~
-- # 1657 : query on MultiKeyword using value with spaces is cut in multi values
-- # 1662 : bin/nxlucened status answers 'running' if another NXLucene instance is up
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- Update documentation
-- Add Tibo's logo in doc
-- INFO log level by default for the event log
-- Optimize indexes store at server startup
+-
