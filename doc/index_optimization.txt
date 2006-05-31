@@ -16,6 +16,14 @@ the optimization of the store on regular basis using a crontab entry
 for instance. The XML-RPC interface and all future protocol
 implementation provide an optimize() method you may use for that.
 
+Having a non optimized indexes store doesn't decrease the indexation
+performance. On the oher hand it can seriously descrease the
+searching ones while having large store.
+
+*IMPORTANT* : Optmizing the indexes store will require you at least
+ twice the size used by your indexes store. So be sure you have this
+ amount available on your filesystem before optimizing.
+
 .. Emacs
 .. Local Variables:
 .. mode: rst
