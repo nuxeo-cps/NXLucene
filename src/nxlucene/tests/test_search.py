@@ -329,7 +329,7 @@ class LuceneSeachTestCase(unittest.TestCase):
             (),
             search_fields=({'id' : u'allowedRolesAndUsers',
                             'type' : 'MultiKeyword',
-                            'value': u'Manager xxxxxx Member',
+                            'value': u'Manager#xxxxxx#Member',
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'4'},))
 
@@ -1594,6 +1594,49 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             res.getResults()[0],
             ({u'uid': u'1', u'internet_user': [u'ZopeFront:root', u'ZopeFront:julien']},))
+
+    def test_multikeyword_with_spaces(self):
+
+        ob = Foo(portal_types='CPS Type1#CPS Type2')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('portal_types', 'MultiKeyword',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'uid',
+             'type' : 'MultiKeyword',
+             'value': '1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'portal_types',
+             'type' : 'MultiKeyword',
+             'value': 'CPS Type1',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
 
     def tearDown(self):
         if os.path.exists(self._store_dir):

@@ -7,7 +7,7 @@ New features:
 - Flexible PyLucene thread pool to handle write operations.
 Bug fixes:
 ~~~~~~~~~~
--
+- # 1657 : query on MultiKeyword using value with spaces is cut in multi values
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Update documentation

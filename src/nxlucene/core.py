@@ -378,6 +378,8 @@ class LuceneServer(object):
                 analyzer = 'standard'
             analyzer = analyzer.lower()
 
+            # XXX refactore the simple and multi field here. It doesn't make sense.
+
             if type.lower() == 'multikeyword':
 
                 # XXX this is a mess. refactoring needed.
@@ -397,9 +399,9 @@ class LuceneServer(object):
                 # FIXME use tokenizer... this sucks...
                 for each in values:
                     # FIXME specific case
-                    each = each.replace(':', '\:')
+#                    each = each.replace(':', '\:')
                     subquery.add(
-                        parser.parseQuery(each),
+                        PyLucene.TermQuery(PyLucene.Term(index, each)),
                         nxlucene.query.boolean_clauses_map.get('OR'))
 
                 query.add(
