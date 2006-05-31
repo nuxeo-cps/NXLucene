@@ -378,37 +378,7 @@ class LuceneServer(object):
                 analyzer = 'standard'
             analyzer = analyzer.lower()
 
-            # XXX refactore the simple and multi field here. It doesn't make sense.
-
-            if type.lower() == 'multikeyword':
-
-                # XXX this is a mess. refactoring needed.
-
-                subquery = PyLucene.BooleanQuery()
-
-                parser = PyLucene.QueryParser(
-                    index, PyLucene.KeywordAnalyzer())
-                parser.setOperator(PyLucene.QueryParser.DEFAULT_OPERATOR_OR)
-
-                # FIXME use tokenizer... this sucks...
-                if '#' in value:
-                    values = value.split('#')
-                else:
-                    values = [value]
-
-                # FIXME use tokenizer... this sucks...
-                for each in values:
-                    # FIXME specific case
-#                    each = each.replace(':', '\:')
-                    subquery.add(
-                        PyLucene.TermQuery(PyLucene.Term(index, each)),
-                        nxlucene.query.boolean_clauses_map.get('OR'))
-
-                query.add(
-                    subquery,
-                    nxlucene.query.boolean_clauses_map.get('AND'))
-
-            elif type.lower() == 'keyword':
+            if type.lower() in ('keyword', 'multikeyword'):
 
                 subquery = PyLucene.BooleanQuery()
 
