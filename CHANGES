@@ -13,3 +13,4 @@ New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Update documentation
 - Add Tibo's logo in doc
+- INFO log level by default for the event log
