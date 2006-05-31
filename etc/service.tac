@@ -61,7 +61,8 @@ class NXLuceneController(object):
         core = LuceneServer(self._conf.getStoreDirPath())
 
         # Adapt to RPC and register this resource.
-        self._root.putChild('RPC2', XMLRPCLuceneServer(core))
+        self._root.putChild('RPC2', XMLRPCLuceneServer(
+            core, self._conf.getThreadsNumber()))
 
         self.log.info(
             "XML-RPC server "

@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>zope.interface.interface.InterfaceClass</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="nxlucene.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" align="right" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr><th class="navbar" align="center">
+        <p class="nomargin">
+          <a class="navbar" target="_top" href="http://nxlucene.nuxeo.org">NXLucene</a>
+      </p></th></tr></table>
+    </th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        Package&nbsp;zope ::
+        Package&nbsp;interface ::
+        Module&nbsp;interface ::
+        Class&nbsp;InterfaceClass
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<b>show&nbsp;private</b>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="zope.interface.interface.InterfaceClass.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Type InterfaceClass</h2>
+
+<pre class="base-tree">
+             <a href="__builtin__.object.html"><code>object</code></a> --+    
+                      |    
+                <a href="zope.interface.interface.Element.html"><code>Element</code></a> --+
+                          |
+         <a href="__builtin__.object.html"><code>object</code></a> --+       |
+                  |       |
+<a href="zope.interface.interface.SpecificationBasePy.html"><code>SpecificationBasePy</code></a> --+   |
+                      |   |
+          <a href="zope.interface.interface.Specification.html"><code>Specification</code></a> --+
+                          |
+                         <b>InterfaceClass</b>
+</pre><br />
+
+<hr/>
+
+Prototype (scarecrow) Interfaces Implementation.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__init__"></a><span class="summary-sig"><span class="summary-sig-name">__init__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>bases</span>,
+          <span class=summary-sig-arg>attrs</span>,
+          <span class=summary-sig-arg>__doc__</span>,
+          <span class=summary-sig-arg>__module__</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#__adapt__" class="summary-sig-name"><code>__adapt__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>obj</span>)</span></code>
+<br />
+Adapt an object to the reciever</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#__call__" class="summary-sig-name"><code>__call__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>obj</span>,
+          <span class=summary-sig-arg>alternate</span>)</span></code>
+<br />
+Adapt an object to the interface</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#__cmp" class="summary-sig-name"><code>__cmp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>o1</span>,
+          <span class=summary-sig-arg>o2</span>)</span></code>
+<br />
+Make interfaces sortable
+
+TODO: It would ne nice if:
+
+   More specific interfaces should sort before less specific ones.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__contains__"></a><span class="summary-sig"><span class="summary-sig-name">__contains__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__d"></a><span class="summary-sig"><span class="summary-sig-name">__d</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>dict</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#getDescriptionFor" class="summary-sig-name"><code>__getitem__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+<br />
+Return the attribute description for the given name.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__gt__"></a><span class="summary-sig"><span class="summary-sig-name">__gt__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__iter__"></a><span class="summary-sig"><span class="summary-sig-name">__iter__</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__lt__"></a><span class="summary-sig"><span class="summary-sig-name">__lt__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__reduce__"></a><span class="summary-sig"><span class="summary-sig-name">__reduce__</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__repr__"></a><span class="summary-sig"><span class="summary-sig-name">__repr__</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#_getInterface" class="summary-sig-name"><code>_getInterface</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>ob</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+<br />
+Retrieve a named interface.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#deferred" class="summary-sig-name"><code>deferred</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return a defered class corresponding to the interface.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="direct"></a><span class="summary-sig"><span class="summary-sig-name">direct</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="getBases"></a><span class="summary-sig"><span class="summary-sig-name">getBases</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#getDescriptionFor" class="summary-sig-name"><code>getDescriptionFor</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+<br />
+Return the attribute description for the given name.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#interfaces" class="summary-sig-name"><code>interfaces</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return an iterator for the interfaces in the specification</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#isEqualOrExtendedBy" class="summary-sig-name"><code>isEqualOrExtendedBy</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+<br />
+Same interface or extends?</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#names" class="summary-sig-name"><code>names</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>all</span>)</span></code>
+<br />
+Return the attribute names defined by the interface.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#namesAndDescriptions" class="summary-sig-name"><code>namesAndDescriptions</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>all</span>)</span></code>
+<br />
+Return attribute names and descriptions defined by interface.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="queryDescriptionFor"></a><span class="summary-sig"><span class="summary-sig-name">queryDescriptionFor</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>default</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.InterfaceClass.html#validateInvariants" class="summary-sig-name"><code>validateInvariants</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>obj</span>,
+          <span class=summary-sig-arg>errors</span>)</span></code>
+<br />
+validate object to defined invariants.</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from Element</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#getDoc" class="summary-sig-name"><code>getDoc</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Returns the documentation for the object.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#getName" class="summary-sig-name"><code>getName</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Returns the name of the object.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#getTaggedValue" class="summary-sig-name"><code>getTaggedValue</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>tag</span>)</span></code>
+<br />
+Returns the value associated with 'tag'.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#getTaggedValueTags" class="summary-sig-name"><code>getTaggedValueTags</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Returns a list of all tags.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#queryTaggedValue" class="summary-sig-name"><code>queryTaggedValue</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>tag</span>,
+          <span class=summary-sig-arg>default</span>)</span></code>
+<br />
+Returns the value associated with 'tag'.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Element.html#setTaggedValue" class="summary-sig-name"><code>setTaggedValue</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>tag</span>,
+          <span class=summary-sig-arg>value</span>)</span></code>
+<br />
+Associates 'value' with 'key'.</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from Specification</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#changed" class="summary-sig-name"><code>changed</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+We, or something we depend on, have changed</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#extends" class="summary-sig-name"><code>extends</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>interface</span>,
+          <span class=summary-sig-arg>strict</span>)</span></code>
+<br />
+Does the specification extend the given interface?</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#get" class="summary-sig-name"><code>get</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>default</span>)</span></code>
+<br />
+Query for an attribute description</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#isImplementedBy" class="summary-sig-name"><code>isImplementedBy</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>ob</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#isImplementedByInstancesOf" class="summary-sig-name"><code>isImplementedByInstancesOf</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>cls</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#isOrExtends" class="summary-sig-name"><code>isOrExtends</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>interface</span>)</span></code>
+<br />
+Is the interface the same as or extend the given interface</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#providedBy" class="summary-sig-name"><code>providedBy</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>ob</span>)</span></code>
+<br />
+Is the interface implemented by an object</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#subscribe" class="summary-sig-name"><code>subscribe</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>dependent</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#unsubscribe" class="summary-sig-name"><code>unsubscribe</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>dependent</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.Specification.html#weakref" class="summary-sig-name"><code>weakref</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>callback</span>)</span></code>
+</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from SpecificationBasePy</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="zope.interface.interface.SpecificationBasePy.html#implementedBy" class="summary-sig-name"><code>implementedBy</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>cls</span>)</span></code>
+<br />
+Test whether the specification is implemented by a class or 
+factory.</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from object</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__delattr__" class="summary-sig-name"><code>__delattr__</code></a>(<span class="summary-sig-vararg">...</span>)</span></code>
+<br />
+x.__delattr__('name') &lt;==&gt; del x.name</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__getattribute__" class="summary-sig-name"><code>__getattribute__</code></a>(<span class="summary-sig-vararg">...</span>)</span></code>
+<br />
+x.__getattribute__('name') &lt;==&gt; x.name</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__hash__" class="summary-sig-name"><code>__hash__</code></a>(<span class=summary-sig-arg>x</span>)</span></code>
+<br />
+x.__hash__() &lt;==&gt; hash(x)</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__new__" class="summary-sig-name"><code>__new__</code></a>(<span class=summary-sig-arg>T</span>,
+          <span class=summary-sig-arg>S</span>,
+          <span class="summary-sig-vararg">...</span>)</span></code>
+<br />
+T.__new__(S, ...) -&gt; a new object with type S, a subtype of T</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__reduce_ex__" class="summary-sig-name"><code>__reduce_ex__</code></a>(<span class="summary-sig-vararg">...</span>)</span></code>
+<br />
+helper for pickle</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__setattr__" class="summary-sig-name"><code>__setattr__</code></a>(<span class="summary-sig-vararg">...</span>)</span></code>
+<br />
+x.__setattr__('name', value) &lt;==&gt; x.name = value</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="__builtin__.object.html#__str__" class="summary-sig-name"><code>__str__</code></a>(<span class=summary-sig-arg>x</span>)</span></code>
+<br />
+x.__str__() &lt;==&gt; str(x)</td></tr>
+</table><br />
+
+
+<!-- =========== START OF PROPERTY SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Property Summary</th></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from Specification</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><b><a href="zope.interface.interface.Specification.html#__bases__"><code>__bases__</code></a></b></td></tr></table><br />
+
+
+<!-- =========== START OF CLASS VARIABLE SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Class Variable Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>Implements</code></font></td>
+<td><b><a href="zope.interface.interface.InterfaceClass.html#__implemented__"><code>__implemented__</code></a></b> = <span title="&lt;implementedBy zope.interface.interface.InterfaceClass&gt;"><code>&lt;implementedBy&nbsp;zope.interface.interfac<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>ClassProvides</code></font></td>
+<td><b><a href="zope.interface.interface.InterfaceClass.html#__provides__"><code>__provides__</code></a></b> = <span title="&lt;zope.interface.declarations.ClassProvides object at 0xb7eb502c&gt;"><code>&lt;zope.interface.declarations.ClassProvide<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from Element</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>ClassProvides</code></font></td>
+<td><b><a href="zope.interface.interface.Element.html#__providedBy__"><code>__providedBy__</code></a></b> = <span title="&lt;zope.interface.declarations.ClassProvides object at 0xb7eb354c&gt;"><code>&lt;zope.interface.declarations.ClassProvi<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="__adapt__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__adapt__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>obj</span>)</span>
+  </h3>
+  <p>Adapt an object to the reciever</p>
+  <p>This method is normally not called directly. It is called by the PEP 
+  246 adapt framework and by the interface __call__ operator.</p>
+  <p>The adapt method is responsible for adapting an object to the 
+  reciever.</p>
+  The default version returns None:
+<pre class="literalblock">
+ &gt;&gt;&gt; import zope.interface
+ &gt;&gt;&gt; class I(zope.interface.Interface):
+ ...     pass
+
+ &gt;&gt;&gt; I.__adapt__(0)
+</pre>
+  unless the object given provides the interface:
+<pre class="literalblock">
+ &gt;&gt;&gt; class C(object):
+ ...     zope.interface.implements(I)
+
+ &gt;&gt;&gt; obj = C()
+ &gt;&gt;&gt; I.__adapt__(obj) is obj
+ True
+</pre>
+  Adapter hooks can be provided (or removed) to provide custom 
+  adaptation. We'll install a silly hook that adapts 0 to 42. We install 
+  a hook by simply adding it to the adapter_hooks list:
+<pre class="literalblock">
+ &gt;&gt;&gt; from zope.interface.interface import adapter_hooks
+ &gt;&gt;&gt; def adapt_0_to_42(iface, obj):
+ ...     if obj == 0:
+ ...         return 42
+
+ &gt;&gt;&gt; adapter_hooks.append(adapt_0_to_42)
+ &gt;&gt;&gt; I.__adapt__(0)
+ 42
+</pre>
+  <p>Hooks must either return an adapter, or None if no adapter can be 
+  found.</p>
+  Hooks can be uninstalled by removing them from the list:
+<pre class="literalblock">
+ &gt;&gt;&gt; adapter_hooks.remove(adapt_0_to_42)
+ &gt;&gt;&gt; I.__adapt__(0)
+</pre>
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__call__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__call__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>obj</span>,
+          <span class=sig-arg>alternate</span>=<span class=sig-default>&lt;object&nbsp;object&nbsp;at&nbsp;0xb7ef4440&gt;</span>)</span>
+    <br /><i>(Call operator)</i>
+  </h3>
+  <p>Adapt an object to the interface</p>
+  <p>The sematics based on those of the PEP 246 adapt function.</p>
+  If an object cannot be adapted, then a TypeError is raised:
+<pre class="literalblock">
+ &gt;&gt;&gt; import zope.interface
+ &gt;&gt;&gt; class I(zope.interface.Interface):
+ ...     pass
+
+ &gt;&gt;&gt; I(0)
+ Traceback (most recent call last):
+ ...
+ TypeError: ('Could not adapt', 0, &lt;InterfaceClass zope.interface.interface.I&gt;)
+</pre>
+  unless an alternate value is provided as a second positional 
+  argument:
+<pre class="literalblock">
+ &gt;&gt;&gt; I(0, 'bob')
+ 'bob'
+</pre>
+  If an object already implements the interface, then it will be 
+  returned:
+<pre class="literalblock">
+ &gt;&gt;&gt; class C(object):
+ ...     zope.interface.implements(I)
+
+ &gt;&gt;&gt; obj = C()
+ &gt;&gt;&gt; I(obj) is obj
+ True
+</pre>
+  If an object implements __conform__, then it will be used:
+<pre class="literalblock">
+ &gt;&gt;&gt; class C(object):
+ ...     zope.interface.implements(I)
+ ...     def __conform__(self, proto):
+ ...          return 0
+
+ &gt;&gt;&gt; I(C())
+ 0
+</pre>
+  Adapter hooks (see __adapt__) will also be used, if present:
+<pre class="doctestblock">
+<span class="py-src"><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> zope.interface.interface <span class="py-keyword">import</span> adapter_hooks
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">def</span> adapt_0_to_42(iface, obj):
+<span class="py-prompt">... </span>    <span class="py-keyword">if</span> obj == 0:
+<span class="py-prompt">... </span>        <span class="py-keyword">return</span> 42</span></pre>
+<pre class="doctestblock">
+<span class="py-src"><span class="py-prompt">&gt;&gt;&gt; </span>adapter_hooks.append(adapt_0_to_42)
+<span class="py-prompt">&gt;&gt;&gt; </span>I(0)</span>
+<span class="py-output">42</span></pre>
+<pre class="doctestblock">
+<span class="py-src"><span class="py-prompt">&gt;&gt;&gt; </span>adapter_hooks.remove(adapt_0_to_42)
+<span class="py-prompt">&gt;&gt;&gt; </span>I(0)</span>
+<span class="py-output">Traceback (most recent call last):</span>
+
+<span class="py-src"><span class="py-prompt">...
+</span></span>
+<span class="py-output">TypeError: ('Could not adapt', 0, &lt;InterfaceClass zope.interface.interface.I&gt;)</span></pre>
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__cmp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__cmp</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>o1</span>,
+          <span class=sig-arg>o2</span>)</span>
+  </h3>
+<pre class="literalblock">
+Make interfaces sortable
+
+TODO: It would ne nice if:
+
+   More specific interfaces should sort before less specific ones.
+   Otherwise, sort on name and module.
+
+   But this is too complicated, and we're going to punt on it
+   for now.
+
+For now, sort on interface and module name.
+
+None is treated as a pseudo interface that implies the loosest
+contact possible, no contract. For that reason, all interfaces
+sort before None.
+</pre>
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getDescriptionFor"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__getitem__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>name</span>)</span>
+    <br /><i>(Indexing operator)</i>
+  </h3>
+  Return the attribute description for the given name.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="_getInterface"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">_getInterface</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>ob</span>,
+          <span class=sig-arg>name</span>)</span>
+  </h3>
+  Retrieve a named interface.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="deferred"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">deferred</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return a defered class corresponding to the interface.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getDescriptionFor"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getDescriptionFor</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>name</span>)</span>
+  </h3>
+  Return the attribute description for the given name.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="interfaces"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">interfaces</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Return an iterator for the interfaces in the specification</p>
+  for example:
+<pre class="literalblock">
+ &gt;&gt;&gt; from zope.interface import Interface
+ &gt;&gt;&gt; class I1(Interface): pass
+ ...
+ &gt;&gt;&gt;
+ &gt;&gt;&gt; i = I1.interfaces()
+ &gt;&gt;&gt; i.next().getName()
+ 'I1'
+ &gt;&gt;&gt; list(i)
+ []
+</pre>
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="zope.interface.interface.Specification.html#interfaces"><code>zope.interface.interface.Specification.interfaces</code></a></dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="isEqualOrExtendedBy"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">isEqualOrExtendedBy</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>other</span>)</span>
+  </h3>
+  Same interface or extends?
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="names"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">names</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>all</span>=<span class=sig-default>False</span>)</span>
+  </h3>
+  Return the attribute names defined by the interface.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="namesAndDescriptions"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">namesAndDescriptions</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>all</span>=<span class=sig-default>False</span>)</span>
+  </h3>
+  Return attribute names and descriptions defined by interface.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="validateInvariants"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">validateInvariants</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>obj</span>,
+          <span class=sig-arg>errors</span>=<span class=sig-default>None</span>)</span>
+  </h3>
+  validate object to defined invariants.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF CLASS VARIABLE DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Class Variable Details</th></tr>
+</table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="__implemented__"></a>
+<h3>__implemented__</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>Implements</code>
+
+      </dd>
+<span title="&lt;implementedBy zope.interface.interface.InterfaceClass&gt;">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+&lt;implementedBy zope.interface.interface.InterfaceClass&gt;                </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="__provides__"></a>
+<h3>__provides__</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>ClassProvides</code>
+
+      </dd>
+<span title="&lt;zope.interface.declarations.ClassProvides object at 0xb7eb502c&gt;">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+&lt;zope.interface.declarations.ClassProvides object at 0xb7eb502c&gt;       </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="nxlucene.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" align="right" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0">
+      <tr><th class="navbar" align="center">
+        <p class="nomargin">
+          <a class="navbar" target="_top" href="http://nxlucene.nuxeo.org">NXLucene</a>
+      </p></th></tr></table>
+    </th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed May 31 20:32:44 2006</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

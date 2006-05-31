@@ -27,7 +27,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
     This is used as an adapter to ILuceneServer instance.
     """
 
-    def xmlrpc_indexDocument(uid, xml_query='', b64=False):
+    def xmlrpc_indexDocument(uid, xml_query='', b64=False, sync=False):
         """Index a document
 
         `uid` is the key for this document.
@@ -46,7 +46,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         </doc>
         """
 
-    def xmlrpc_reindexDocument(uid, xml_query=''):
+    def xmlrpc_reindexDocument(uid, xml_query='', sync=False):
         """Reindex a document
 
         `uid` is the key for this document.
@@ -65,7 +65,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         </doc>
         """
 
-    def xmlrpc_unindexDocument(uid):
+    def xmlrpc_unindexDocument(uid, sync=False):
         """Unindex a document given its uid.
         """
 

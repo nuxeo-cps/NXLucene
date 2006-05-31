@@ -39,6 +39,7 @@ class FakeXMLRPCLuceneServer(object):
     def __init__(self, core):
         assert (core is not None)
         self._core = core
+        self._core._write_sync = True
 
     def indexDocument(self, uid, xml_query='', b64=False):
         return self._core.xmlrpc_indexDocument(uid, xml_query, b64)

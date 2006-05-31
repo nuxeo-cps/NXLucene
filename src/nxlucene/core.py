@@ -47,7 +47,7 @@ class LuceneServer(object):
     def __init__(self, store_dir):
         self.store_dir = store_dir
         self.write_lock = threading.Lock()
-        self.log = logging.getLogger("LuceneServer")
+        self.log = logging.getLogger("NXLucene.core")
 
     def __len__(self):
         reader = self.getReader()

@@ -4,6 +4,7 @@ Requires:
 New features:
 ~~~~~~~~~~~~~
 - nxlucene.log is rotated automatically
+- Flexible PyLucene thread pool to handle write operations.
 Bug fixes:
 ~~~~~~~~~~
 -
