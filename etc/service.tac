@@ -60,6 +60,9 @@ class NXLuceneController(object):
         # Create a core server instance.
         core = LuceneServer(self._conf.getStoreDirPath())
 
+        # Optimize the indexes at startup 
+        core.optimize()
+
         # Adapt to RPC and register this resource.
         self._root.putChild('RPC2', XMLRPCLuceneServer(
             core, self._conf.getThreadsNumber()))
@@ -70,7 +73,7 @@ class NXLuceneController(object):
 
     def start(self):
         self.log.info(
-            "Indexes are located there : %s" % self._conf.getStoreDirPath())
+            "Indexes are located here : %s" % self._conf.getStoreDirPath())
         res = internet.TCPServer(self._conf.getPort(),
                          server.Site(self._root))
         res.setServiceParent(application)
