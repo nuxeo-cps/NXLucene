@@ -99,13 +99,14 @@ class LuceneServer(object):
         return res
 
     def optimize(self, indexer=None):
-        self.log.debug("Optimize indexes store")
         close = False
         if indexer is None:
             indexer = self.getIndexer().get()
             close = True
         self.write_lock.acquire()
+        self.log.info("Indexes store optmization starts...")
         indexer.optimize()
+        self.log.info("Indexes store optmization done...")
         if close:
             indexer.close()
         self.write_lock.release()
