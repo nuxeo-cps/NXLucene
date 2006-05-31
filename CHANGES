@@ -8,6 +8,7 @@ New features:
 Bug fixes:
 ~~~~~~~~~~
 - # 1657 : query on MultiKeyword using value with spaces is cut in multi values
+- # 1662 : bin/nxlucened status answers 'running' if another NXLucene instance is up
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Update documentation

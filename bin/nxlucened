@@ -39,8 +39,7 @@ function stop() {
 }
 
 function status() {
-    ps ax |grep twistd | grep $NAME &>/dev/null
-    if [ "$?" -eq 0 ] ; then
+    if [ -s $PIDDIR/$NAME.pid ] ; then
 	echo "NXLucene running..."
     else
 	echo "NXLucene not running..."
