@@ -77,7 +77,7 @@ import shutil
 
 TMP_STORE_DIR = '/tmp/NXLuceneTesting'
 
-def _getFakeServerProxy(url):
+def _getFakeServerProxy(url, transport=None):
     # XXX Use a RAMDirectory for tests
     core = LuceneServer(TMP_STORE_DIR)
     xmlrpc_server = XMLRPCLuceneServer(core)
