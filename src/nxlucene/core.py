@@ -104,9 +104,9 @@ class LuceneServer(object):
             indexer = self.getIndexer().get()
             close = True
         self.write_lock.acquire()
-        self.log.info("Indexes store optmization starts...")
+        self.log.info("Indexes store optimization starts...")
         indexer.optimize()
-        self.log.info("Indexes store optmization done...")
+        self.log.info("Indexes store optimization done...")
         if close:
             indexer.close()
         self.write_lock.release()
