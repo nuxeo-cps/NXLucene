@@ -9,5 +9,6 @@ Bug fixes:
 -
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- Fake xmlrpc server proxy is now supporting a 'transport' optionnal arg as the xmlrpclib does.
+- Fake xmlrpc server proxy is now supporting a 'transport' optionnal arg as the xmlrpclib does
+- Suggest main reactor thread pool size to 10. 
 

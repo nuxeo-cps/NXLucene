@@ -25,7 +25,7 @@ import logging
 
 from twisted.web import resource
 from twisted.web import server
-from twisted.internet import reactor
+
 from twisted.application import service
 from twisted.application import internet
 
@@ -34,6 +34,9 @@ from nxlucene.logger import initLog
 from nxlucene.configuration import NXLuceneConfiguration
 
 from nxlucene.xmlrpc import XMLRPCLuceneServer
+
+from twisted.internet import reactor
+reactor.suggestThreadPoolSize(10)
 
 application = service.Application("NXLucene")
 
