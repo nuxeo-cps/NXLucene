@@ -1,4 +1,22 @@
 *******************************************
+** NXLucene V0.8.0 [R1 build 2006/06/02-13:28 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46177
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Fake xmlrpc server proxy is now supporting a 'transport' optionnal arg as the xmlrpclib does
+- Suggest main reactor thread pool size to 10. 
+
+
+*******************************************
 ** NXLucene V0.7.0 [R1 build 2006/05/31-23:50 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46113
 Requires:
