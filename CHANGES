@@ -8,6 +8,7 @@ Bug fixes:
 ~~~~~~~~~~
 - Fix PyLucene.PythonThread memory leak and add gc.garbage debug infos
 in debug mode
+- Explicit gc collection
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

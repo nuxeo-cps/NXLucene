@@ -77,6 +77,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
             pool.queueTask(self._indexDocument, args, None)
         else:
             self._indexDocument(*args)
+        gc.collect()
         return True
 
     def xmlrpc_reindexDocument(self, uid, xml_query='', b64=False, sync=False):
@@ -90,6 +91,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
                 self._unindexDocument, (uid,), None)
         else:
             self._unindexDocument(*args)
+        gc.collect()
         return True
 
     def xmlrpc_search(self, query_str=''):
@@ -120,7 +122,9 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
                 "xmlrpc_searchQuery : search_fields=%s "
                 "search_options=%s and search_options=%s" % params )
 
-            return self._core.searchQuery(*params)
+            res = self._core.searchQuery(*params)
+            gc.collect()
+            return res
 
         else:
             # Return an empty resultset
@@ -151,6 +155,7 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
                 self._core.optimize, (), None)
         else:
             self._core.optimize()
+        gc.collect()
         return True
 
     def xmlrpc_getNumberOfDocuments(self):
