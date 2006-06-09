@@ -23,10 +23,13 @@ Thanks Tim Lesher
 
 $Id: $
 """
-
+import gc
 from time import sleep
 import threading
-import PyLucene
+import logging
+from nxlucene.PatchPythonThread import PythonThread
+
+logger = logging.getLogger("NXLucene.ThreadPool")
 
 class ThreadPool:
 
@@ -92,6 +95,8 @@ class ThreadPool:
 
         """Insert a task into the queue.  task must be callable;
         args and taskCallback can be None."""
+
+        logger.debug("ThreadPool -> gc.garbage : %s" % str(gc.garbage))
         
         if self.__isJoining == True:
             return False
@@ -149,7 +154,7 @@ class ThreadPool:
         finally:
             self.__resizeLock.release()
 
-class ThreadPoolThread(PyLucene.PythonThread):
+class ThreadPoolThread(PythonThread):
 
     """ Pooled thread class. """
     
@@ -159,7 +164,7 @@ class ThreadPoolThread(PyLucene.PythonThread):
 
         """ Initialize the thread and remember the pool. """
         
-        PyLucene.PythonThread.__init__(self)
+        PythonThread.__init__(self)
         self.__pool = pool
         self.__isDying = False
         
@@ -175,6 +180,8 @@ class ThreadPoolThread(PyLucene.PythonThread):
                 sleep(ThreadPoolThread.threadSleepTime)
             elif callback is None:
                 cmd(*args)
+                logger.debug("ThreadPoolThread gc.garbage : %s" %
+                             str(gc.garbage))
             else:
                 callback(cmd(*args))
     

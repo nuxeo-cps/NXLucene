@@ -19,6 +19,7 @@
 $Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
 """
 
+import gc
 import PyLucene
 import threading
 import base64
@@ -67,6 +68,9 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
 
     def xmlrpc_indexDocument(self, uid, xml_query='', b64=False, sync=False):
 
+        self._core.log.debug("xmlrpc_indexDocument gc.garbage : %s" %
+                             str(gc.garbage))
+
         args = (uid, xml_query, b64)
         pool = self._getWriteThreadPool()
         if sync is False and pool is not None:
@@ -89,6 +93,8 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         return True
 
     def xmlrpc_search(self, query_str=''):
+        self._core.log.debug("xmlrpc_indexDocument gc.garbage : %s" %
+                             str(gc.garbage))
         # XXX not tested yet.
         if query_str:
             return self._core.search(query_str)
