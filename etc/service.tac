@@ -19,6 +19,7 @@
 $Id: run.py 31105 2006-03-08 12:05:26Z janguenot $
 """
 
+import gc
 import os
 import sys
 import logging
@@ -51,6 +52,10 @@ class NXLuceneController(object):
 
         self.log = logging.getLogger()
 
+        if self._conf.getLogLevel() == 'DEBUG':
+            self.log.info("gc.set_debug(gc.DEBUG_LEAK)")
+            gc.set_debug(gc.DEBUG_LEAK)
+            
         self._root = resource.Resource()
         self.initializeResources()
 
