@@ -1,4 +1,22 @@
 *******************************************
+** NXLucene V0.8.1 [R1 build 2006/06/09-04:33 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46360
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Fix PyLucene.PythonThread memory leak and add gc.garbage debug infos
+in debug mode
+- Explicit gc collection
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** NXLucene V0.8.0 [R1 build 2006/06/02-13:28 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46177
 Requires:
