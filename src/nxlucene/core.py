@@ -155,7 +155,7 @@ class LuceneServer(object):
         for field in query_instance.getFields():
 
             field_id   = field['id']
-            field_value = unicode(field['value'])
+            field_value = field['value']
             field_type  = field['type']
 
             field_analyzer = field.get('analyzer', 'standard')
@@ -192,12 +192,12 @@ class LuceneServer(object):
                     values = [field_value]
 
                 for value in values:
-                    doc.add(PyLucene.Field.Keyword(field_id, unicode(value)))
+                    doc.add(PyLucene.Field.Keyword(field_id, value))
 
             elif field_type.lower() == 'keyword':
                 # Force analyzer to keyword here.
                 field_analyzer = 'keyword'
-                doc.add(PyLucene.Field.Keyword(field_id, unicode(field_value)))
+                doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             elif field_type.lower() == 'date':
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))

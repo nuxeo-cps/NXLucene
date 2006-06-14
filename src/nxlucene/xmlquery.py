@@ -35,7 +35,7 @@ class XMLQuery(object):
 
     zope.interface.implements(IXMLQuery)
 
-    def __init__(self, xml_stream='', encoding='ISO-8859-15'):
+    def __init__(self, xml_stream='', encoding='utf-8'):
 
         self._xml_stream = xml_stream
         self._encoding = encoding
@@ -66,8 +66,12 @@ class XMLQuery(object):
                 # Convert to unicode.
                 try:
                     value = unicode(value)
-                except:
-                    value = unicode(value, self._encoding)
+                except UnicodeError:
+                    try:
+                        value = unicode(value, self._encoding)
+                    except UnicodeError:
+                        # BBB
+                        value = unicode(value, 'iso-8859-15')
 
             logger.debug('Found id=%s with value=%s' % (id_, value))
             self._fields += ({
@@ -107,7 +111,7 @@ class XMLSearchQuery(object):
         if not xml_stream:
             return
 
-        doc = etree.XML(xml_stream)
+        doc = etree.XML(xml_stream.encode('utf-8'))
 
 
         #
@@ -144,7 +148,6 @@ class XMLSearchQuery(object):
 
                 if field.attrib.get('usage') is not None:
                     mapping['usage'] = unicode(field.attrib['usage']).strip()
-                
 
                 condition = field.attrib.get('condition')
                 if condition is not None:

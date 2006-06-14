@@ -1164,7 +1164,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_kw_with_integer(self):
 
-        ob1 = Foo(value=2)
+        ob1 = Foo(value=unicode(2))
 
         query = FakeXMLInputStream(
             ob1,
