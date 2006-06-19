@@ -1,4 +1,20 @@
 *******************************************
+** NXLucene V0.8.4 [R1 build 2006/06/19-15:03 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46602
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- timer at info level
+
+*******************************************
 ** NXLucene V0.8.3-threadpool [R1 build 2006/06/19-14:50 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/branches/threadpool Revision: 46596
 Requires:
