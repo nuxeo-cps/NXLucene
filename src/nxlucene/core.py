@@ -542,10 +542,10 @@ class LuceneServer(object):
 
         nb_results = hits.length()
         results.addNumberOfResults(nb_results)
-        self.log.debug("Number of results %s" % str(nb_results))
+        self.log.info("Number of results %s" % str(nb_results))
 
         tstop = time.time()
-        self.log.debug("Time to find return results %s" % str(tstop-tstart))
+        self.log.info("Time to find return results %s" % str(tstop-tstart))
 
         # Use bits iterator here for performance reasons.  Don't ever
         # think about building a list and use offset for the batch the
@@ -583,7 +583,7 @@ class LuceneServer(object):
             i += 1
 
         tstop = time.time()
-        self.log.debug(
+        self.log.info(
             "Time to construct the RSS query %s" % str(tstop-tstart))
 
         searcher.close()
