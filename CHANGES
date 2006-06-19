@@ -3,10 +3,10 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- Moving to unicode, dealing with utf-8 input
+-
 Bug fixes:
 ~~~~~~~~~~
-- Moving to unicode
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- timing logs are set at the info level
+-

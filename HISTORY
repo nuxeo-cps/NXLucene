@@ -1,4 +1,37 @@
 *******************************************
+** NXLucene V0.8.3-threadpool [R1 build 2006/06/19-14:50 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/branches/threadpool Revision: 46596
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Don't clean nor optimize outside of the main thread to be sure we'll wait for completion.
+
+
+*******************************************
+** NXLucene V0.8.2-threadpool [R1 build 2006/06/19-10:39 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/branches/threadpool Revision: 46584
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- Moving to unicode, dealing with utf-8 input
+Bug fixes:
+~~~~~~~~~~
+- Moving to unicode
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Ensure Python standard Thread is never used within NXLucene.
+
+*******************************************
 ** NXLucene V0.8.1 [R1 build 2006/06/09-04:33 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46360
 Requires:

@@ -23,6 +23,8 @@ import gc
 import os
 import sys
 import logging
+import threading
+import PyLucene
 
 from twisted.web import resource
 from twisted.web import server
@@ -35,6 +37,9 @@ from nxlucene.logger import initLog
 from nxlucene.configuration import NXLuceneConfiguration
 
 from nxlucene.xmlrpc import XMLRPCLuceneServer
+
+# Ensure Python standard Thread is never used within NXLucene.
+threading.Thread = PyLucene.PythonThread
 
 from twisted.internet import reactor
 reactor.suggestThreadPoolSize(10)

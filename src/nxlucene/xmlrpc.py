@@ -137,25 +137,14 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
         return self._core.getDocumentByUID(uid) is not None
 
     def xmlrpc_clean(self):
-        pool = self._getWriteThreadPool()
-        if pool is not None:
-            pool.queueTask(
-                self._core.clean, (), None)
-        else:
-            self._core.clean()
+        self._core.clean()
         return True
 
     def xmlrpc_getStoreDir(self):
         return self._core.store_dir
 
     def xmlrpc_optimize(self):
-        pool = self._getWriteThreadPool()
-        if pool is not None:
-            pool.queueTask(
-                self._core.optimize, (), None)
-        else:
-            self._core.optimize()
-        gc.collect()
+        self._core.optimize()
         return True
 
     def xmlrpc_getNumberOfDocuments(self):
