@@ -1,4 +1,23 @@
 *******************************************
+** NXLucene V0.8.6 [R1 build 2006/06/20-19:52 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46660
+Requires:
+~~~~~~~~~
+- cElementTree is now mandatory (ElementTree fallback has been removed
+  to prevent setting up a slow system by forgetting to install cElementTree)
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- typo in cElementTree import
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Acquire global lock at optmization time before getting the indexer
+to avoid Lucene store lock timeout. (i.e : if threadpool is full and
+taking time to flush)
+
+*******************************************
 ** NXLucene V0.8.5 [R1 build 2006/06/19-15:10 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46606
 Requires:
