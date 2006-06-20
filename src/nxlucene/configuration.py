@@ -20,10 +20,7 @@ $Id$
 """
 
 import os
-try:
-    import cElementTree as etree
-except ImportError:
-    import elementtree.ElementTree as etree
+import cElementTree as etree
 
 NS = 'http://namespaces.nuxeo.org/nxlucene'
 

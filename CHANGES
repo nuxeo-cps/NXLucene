@@ -1,6 +1,7 @@
 Requires:
 ~~~~~~~~~
--
+- cElementTree is now mandatory (ElementTree fallback has been removed
+  to prevent setting up a slow system by forgetting to install cElementTree)
 New features:
 ~~~~~~~~~~~~~
 -
