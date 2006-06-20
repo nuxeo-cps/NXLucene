@@ -21,7 +21,7 @@ $Id$
 
 import unittest
 
-import cElemenTree as etree
+import cElementTree as etree
 
 from nxlucene.rss.resultitem import ResultItem
 
