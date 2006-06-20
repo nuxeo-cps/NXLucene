@@ -21,10 +21,7 @@ $Id$
 
 import unittest
 
-try:
-    import cElemenTree as etree
-except ImportError:
-    import elementtree.ElementTree as etree
+import cElemenTree as etree
 
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet

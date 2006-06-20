@@ -21,10 +21,7 @@ $Id$
 
 import os.path
 
-try:
-    import cElementTree as etree
-except ImportError:
-    import elementtree.ElementTree as etree
+import cElementTree as etree
 
 import zope.interface
 
