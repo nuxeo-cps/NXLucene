@@ -9,4 +9,6 @@ Bug fixes:
 -
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- Acquire global lock at optmization time before getting the indexer
+to avoid Lucene store lock timeout. (i.e : if threadpool is full and
+taking time to flush)
