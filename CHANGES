@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- typo in cElementTree import
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Acquire global lock at optmization time before getting the indexer
