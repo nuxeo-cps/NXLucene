@@ -179,11 +179,17 @@ class ThreadPoolThread(PythonThread):
             if cmd is None:
                 sleep(ThreadPoolThread.threadSleepTime)
             elif callback is None:
+                logger.info(
+                    "Worker thread %s starts execution ...." % self.getName())
                 cmd(*args)
-                logger.debug("ThreadPoolThread gc.garbage : %s" %
-                             str(gc.garbage))
+                logger.info(
+                    "Worker thread %s execution is done ...." % self.getName())
             else:
+                logger.info(
+                    "Worker thread %s starts execution ...." % self.getName())
                 callback(cmd(*args))
+                logger.info(
+                    "Worker thread %s execution is done ...." % self.getName())
     
     def goAway(self):
 
