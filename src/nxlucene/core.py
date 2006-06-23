@@ -35,6 +35,7 @@ from searcher import LuceneSearcher
 
 import rss.resultset
 
+import nxlucene.document
 import nxlucene.query
 import nxlucene.analysis
 
@@ -144,9 +145,7 @@ class LuceneServer(object):
             self.log.debug(
                 "Document with uid=%s does not exist yet" % str(uid))
 
-        # Create a new document instance.
-        doc = PyLucene.Document()
-        doc.add(PyLucene.Field.Keyword('uid', unicode(uid)))
+        doc = nxlucene.document.Document(uid)
 
         # Build a per-field analyzer wrapper we will use with the
         # IndexWriter.
@@ -203,14 +202,26 @@ class LuceneServer(object):
                 doc.add(PyLucene.Field.Keyword(field_id, field_value))
 
             elif field_type.lower() == 'path':
-                # XXX implement me.
-                if '/' not in field_value:
-                    field_value  = '/'.join(field_value.split())
-                if not field_value.startswith('/'):
-                    field_value = '/' + field_value
-                doc.add(
-                    PyLucene.Field.Keyword(field_id, field_value)
-                    )
+
+                # We support both a string path separated by '/' or a
+                # list representing the path elements.
+
+                if '/' in field_value:
+                    field_value  = field_value.split('/')
+
+                if not isinstance(field_value, list):
+                    field_value = [field_value]
+
+                # Path field custom implementation for better
+                # performances. Index the path as multiple keywords
+                # for all subpaths so that we will be able to match
+                # using simple keyword matches.
+
+                for i in xrange(len(field_value)):
+                    subpath = '/'.join(field_value[:i+1])
+                    doc.add(
+                        PyLucene.Field.Keyword(field_id, subpath)
+                        )
 
             elif field_type.lower() == 'sort':
 
@@ -413,21 +424,18 @@ class LuceneServer(object):
                 # FIXME use tokenizer... this sucks...
                 for each in values:
 
-                    include_sub_path = False
                     if each.endswith('*'):
-                        include_sub_path = True
+                        # :FIXME:
                         each  = each[:-1]
 
-                    # BBB
-                    include_sub_path = True
+                    # Remove trailing '/' since we remove it at
+                    # indexation time.
+                    if each.endswith('/'):
+                        each  = each[:-1]
 
                     term = PyLucene.Term(index, each)
+                    ssquery = PyLucene.TermQuery(term)
 
-                    if include_sub_path:
-                        ssquery = PyLucene.PrefixQuery(term)
-                    else:
-                        ssquery = PyLucene.TermQuery(term)
-                    
                     subquery.add(
                         ssquery,
                         nxlucene.query.boolean_clauses_map.get('OR')
