@@ -1638,6 +1638,76 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'1'},))
 
+    def test_keyword_with_special_chars(self):
+
+        ob = Foo()
+        setattr(ob, 'portal:types', 'CPS:type')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('portal:types', 'Keyword',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'portal:types',
+             'type' : 'Keyword',
+             'value': 'CPS:type',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+
+    def test_multi_keyword_with_special_chars(self):
+
+        ob = Foo()
+        setattr(ob, 'portal:types', 'CPS:type#CPS:type2')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('portal:types', 'MultiKeyword',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+        
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'portal:types',
+             'type' : 'MultiKeyword',
+             'value': 'CPS:type',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'portal:types',
+             'type' : 'MultiKeyword',
+             'value': 'CPS:type2',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+        
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
     def tearDown(self):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
