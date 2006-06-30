@@ -1,4 +1,21 @@
 *******************************************
+** NXLucene V0.9.0 [R1 build 2006/06/30-15:08 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46864
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- 
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- New faster PathField implementation.
+- More tests with ':' in attr names
+
+*******************************************
 ** NXLucene V0.8.6 [R1 build 2006/06/20-19:52 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 46660
 Requires:
