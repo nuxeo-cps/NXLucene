@@ -56,81 +56,23 @@ A web resource.
 <hr/>
 
 
-<!-- =========== START OF METHOD SUMMARY =========== -->
-<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="summary">
-  <th colspan="2">Method Summary</th></tr>
-<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
-  <td><code><span class="summary-sig"><a href="twisted.web.resource.IResource.html#getChildWithDefault" class="summary-sig-name"><code>getChildWithDefault</code></a>(<span class=summary-sig-arg>name</span>,
-          <span class=summary-sig-arg>request</span>)</span></code>
-<br />
-Return a child with the given name for the given request.</td></tr>
-<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
-  <td><code><span class="summary-sig"><a href="twisted.web.resource.IResource.html#putChild" class="summary-sig-name"><code>putChild</code></a>(<span class=summary-sig-arg>path</span>,
-          <span class=summary-sig-arg>child</span>)</span></code>
-<br />
-Put a child IResource implementor at the given path.</td></tr>
-<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
-  <td><code><span class="summary-sig"><a href="twisted.web.resource.IResource.html#render" class="summary-sig-name"><code>render</code></a>(<span class=summary-sig-arg>request</span>)</span></code>
-<br />
-Render a request.</td></tr>
-</table><br />
-
-
 <!-- =========== START OF CLASS VARIABLE SUMMARY =========== -->
 <table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="summary">
   <th colspan="2">Class Variable Summary</th></tr>
-<tr><td align="right" valign="top" width="15%"><font size="-1"><code>Attribute</code></font></td>
-<td><b><a href="twisted.web.resource.IResource.html#isLeaf"><code>isLeaf</code></a></b> = <span title="&lt;zope.interface.interface.Attribute object at 0xb7638ccc&gt;"><code>&lt;zope.interface.interface.Attribute&nbsp;object&nbsp;at&nbsp;0<span class="variable-ellipsis">...</span></code>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="twisted.web.resource.IResource.html#getChildWithDefault"><code>getChildWithDefault</code></a></b> = <span title="'Return a child with the given name for the given request.\n        This is the external interface used by the Resource publishing\n        machinery. If implementing IResource without subclassing\n        Resource, it must be provided. However, if subclassing Resource,\n        getChild overridden instead.\n        '"><code><span class="variable-quote">'</span>Return&nbsp;a&nbsp;child&nbsp;with&nbsp;the&nbsp;given&nbsp;nam<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="twisted.web.resource.IResource.html#isLeaf"><code>isLeaf</code></a></b> = <span title="'Signal if this IResource implementor is a &quot;leaf node&quot; or not. If True,\ngetChildWithDefault will not be called on this Resource.'"><code><span class="variable-quote">'</span>Signal&nbsp;if&nbsp;this&nbsp;IResource&nbsp;implementor&nbsp;is&nbsp;a&nbsp;&quot;lea<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="twisted.web.resource.IResource.html#putChild"><code>putChild</code></a></b> = <span title="'Put a child IResource implementor at the given path.\n        '"><code><span class="variable-quote">'</span>Put&nbsp;a&nbsp;child&nbsp;IResource&nbsp;implementor&nbsp;at&nbsp;the&nbsp;giv<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>str</code></font></td>
+<td><b><a href="twisted.web.resource.IResource.html#render"><code>render</code></a></b> = <span title="'Render a request. This is called on the leaf resource for\n        a request. Render must return either a string, which will\n        be sent to the browser as the HTML for the request, or\n        server.NOT_DONE_YET. If NOT_DONE_YET is returned,\n        at some point later (in a Deferred callback, usually)\n        call request.write(&quot;&lt;html&gt;&quot;) to write data to the request,\n        and request.finish() to send the data to the browser.\n        '"><code><span class="variable-quote">'</span>Render&nbsp;a&nbsp;request.&nbsp;This&nbsp;is&nbsp;called&nbsp;on&nbsp;the&nbsp;leaf&nbsp;r<span class="variable-ellipsis">...</span></code>
 </span></td></tr>
 </table><br />
-
-
-<!-- =========== START OF METHOD DETAILS =========== -->
-<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="details">
-  <th colspan="2">Method Details</th></tr>
-</table>
-
-<a name="getChildWithDefault"></a>
-<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
-  <h3><span class="sig"><span class="sig-name">getChildWithDefault</span>(<span class=sig-arg>name</span>,
-          <span class=sig-arg>request</span>)</span>
-  </h3>
-  Return a child with the given name for the given request. This is 
-  the external interface used by the Resource publishing machinery. If 
-  implementing IResource without subclassing Resource, it must be 
-  provided. However, if subclassing Resource, getChild overridden 
-  instead.
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-
-<a name="putChild"></a>
-<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
-  <h3><span class="sig"><span class="sig-name">putChild</span>(<span class=sig-arg>path</span>,
-          <span class=sig-arg>child</span>)</span>
-  </h3>
-  Put a child IResource implementor at the given path.
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-
-<a name="render"></a>
-<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
-  <h3><span class="sig"><span class="sig-name">render</span>(<span class=sig-arg>request</span>)</span>
-  </h3>
-  Render a request. This is called on the leaf resource for a request. 
-  Render must return either a string, which will be sent to the browser 
-  as the HTML for the request, or server.NOT_DONE_YET. If NOT_DONE_YET is 
-  returned, at some point later (in a Deferred callback, usually) call 
-  request.write(&quot;&lt;html&gt;&quot;) to write data to the request, 
-  and request.finish() to send the data to the browser.
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-<br />
 
 
 <!-- =========== START OF CLASS VARIABLE DETAILS =========== -->
@@ -138,6 +80,32 @@ Render a request.</td></tr>
 <tr bgcolor="#70b0f0" class="details">
   <th colspan="2">Class Variable Details</th></tr>
 </table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="getChildWithDefault"></a>
+<h3>getChildWithDefault</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Return a child with the given name for the given request.\n        This is the external interface used by the Resource publishing\n        machinery. If implementing IResource without subclassing\n        Resource, it must be provided. However, if subclassing Resource,\n        getChild overridden instead.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Return a child with the given name for the given request.
+        This is the external interface used by the Resource publishing
+        machinery. If implementing IResource without subclassing
+        Resource, it must be provided. However, if subclassing Resourc<span class="variable-linewrap">\</span>
+e,
+        getChild overridden instead.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
 <table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
 <a name="isLeaf"></a>
 <h3>isLeaf</h3>
@@ -147,13 +115,63 @@ Render a request.</td></tr>
     <dl>
       <dt><b>Type:</b></dt>
       <dd>
-          <code>Attribute</code>
+          <code>str</code>
 
       </dd>
-<span title="&lt;zope.interface.interface.Attribute object at 0xb7638ccc&gt;">      <dt><b>Value:</b></dt>
+<span title="'Signal if this IResource implementor is a &quot;leaf node&quot; or not. If True,\ngetChildWithDefault will not be called on this Resource.'">      <dt><b>Value:</b></dt>
       <dd><table><tr><td>
 <pre class="variable">
-&lt;zope.interface.interface.Attribute object at 0xb7638ccc&gt;              </pre>
+<span class="variable-quote">'''</span>Signal if this IResource implementor is a &quot;leaf node&quot; or not. If Tr<span class="variable-linewrap">\</span>
+ue,
+getChildWithDefault will not be called on this Resource.<span class="variable-quote">'''</span>            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="putChild"></a>
+<h3>putChild</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Put a child IResource implementor at the given path.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Put a child IResource implementor at the given path.
+        <span class="variable-quote">'''</span>                                                            </pre>
+        </td></tr></table></dd>
+</span>    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="render"></a>
+<h3>render</h3>
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <code>str</code>
+
+      </dd>
+<span title="'Render a request. This is called on the leaf resource for\n        a request. Render must return either a string, which will\n        be sent to the browser as the HTML for the request, or\n        server.NOT_DONE_YET. If NOT_DONE_YET is returned,\n        at some point later (in a Deferred callback, usually)\n        call request.write(&quot;&lt;html&gt;&quot;) to write data to the request,\n        and request.finish() to send the data to the browser.\n        '">      <dt><b>Value:</b></dt>
+      <dd><table><tr><td>
+<pre class="variable">
+<span class="variable-quote">'''</span>Render a request. This is called on the leaf resource for
+        a request. Render must return either a string, which will
+        be sent to the browser as the HTML for the request, or
+        server.NOT_DONE_YET. If NOT_DONE_YET is returned,
+        at some point later (in a Deferred callback, usually)
+        call request.write(&quot;&lt;html&gt;&quot;) to write data to the request,
+        and request.finish() to send the data to the browser.
+        <span class="variable-quote">'''</span>                                                            </pre>
         </td></tr></table></dd>
 </span>    </dl>
   </dd>
@@ -180,7 +198,7 @@ Render a request.</td></tr>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed May 31 20:32:44 2006</font></td>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Fri Jun 30 16:38:46 2006</font></td>
     <td align="right"><a href="http://epydoc.sourceforge.net"
                       ><font size="-2">http://epydoc.sf.net</font></a></td>
   </tr>
