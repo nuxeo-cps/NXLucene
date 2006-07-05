@@ -18,9 +18,12 @@ Requirements
     contributing installers for those platforms.
 
   - Building NXLucene_ requires GNU's compiler for Java, GCJ as
-    PyLucene_ requires it. Use gcc-3.4.x. This is the only branch
+    PyLucene_ requires it. Use gcc-3.4.6. This is the only branch
     reported as working well on all the different Linux
-    distributions. Please, use GCC : 3.4.4, 3.4.5 or 3.4.6
+    distributions. If you can choose your Linux distribution on which
+    you are going to run NXLucene, I would advice you to choose the
+    leading one which is Redhat or Fedora. Reason is simple : redhat
+    do pay GCC devels.
 
     If your distributions doesn't come with one of the above
     disributions you can installed a version aside against which you
