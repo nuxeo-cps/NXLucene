@@ -36,6 +36,15 @@ FRENCH_STOP_WORDS = [unicode(x, 'latin-1') for x in FRENCH_STOP_WORDS]
 
 FRENCH_EXCLUDED_WORDS = []
 
+xlate_table = {ord(u'é'): u'e',
+               ord(u'è'): u'e',
+               ord(u'ê'): u'e',
+               ord(u'ë'): u'e',
+               ord(u'à'): u'a',
+               ord(u'ù'): u'u',
+               ord(u'ç'): u'c',
+               }
+
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
 
@@ -97,6 +106,8 @@ class NXFrenchFilter(object):
 
             if ttext.lower().endswith("'s"):
                 ttext = ttext[:2]
+                
+        ttext = ttext.translate(xlate_table)
 
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())

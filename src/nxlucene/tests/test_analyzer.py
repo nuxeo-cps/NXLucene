@@ -49,6 +49,15 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(
             tokens, [u'chant'])
 
+        # Make sure it also works if you skip the accent:
+        term_str = unicode("chante", 'latin-1')
+        
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'chant'])
+
     def test_french_samples_plurals(self):
 
         a = NXFrenchAnalyzer()
@@ -128,6 +137,19 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(
             tokens, [u'xx:yy'])
+
+    def test_french_chars(self):
+
+        a = NXFrenchAnalyzer()
+
+        term_str = unicode("йилкащc", 'latin-1')
+        
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'eeeeauc'])
+
         
 def test_suite():
     suite = unittest.TestSuite()
