@@ -6,9 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
-- The french analyzer had some inconsistensies in handling of french 
-  characters. It shold now convert most french characters to plain ascii,
-  to enable search from non-french keyboards.
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- Update install doc
+-
