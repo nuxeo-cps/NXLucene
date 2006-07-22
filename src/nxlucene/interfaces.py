@@ -39,7 +39,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
 
         <doc>
           <fields>
-            <field id="name" attribute="name" type="text">
+            <field id="name" type="text" analyzer="French">
               The value of the field to index
             </field>
           </field>
@@ -58,7 +58,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
 
          <doc>
           <fields>
-            <field id="name" attribute="name" type="text">
+            <field id="name" type="text" analyzer="French">
               The value of the field to index
             </field>
           </fields>
@@ -87,8 +87,8 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
             <field>attr1</field>
           </return_fields>
           <fields>
-            <field id="name" value="julien"/>
-            <field id="uid" value="1"/>
+            <field id="name" value="julien" type="Text" analyze="French"/>
+            <field id="uid" value="1" type="Keyword" analyzer="KeywordAnalyzer"/>
           </fields>
           <sort>          
             <sort-on>modified</sort-on>
@@ -100,7 +100,7 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
         </search>
 
         This will return a tuple containing the RSS document as a
-        resultset with the number of results.
+        resultset with the total number of results.
 
         -> (<rss_stream>, <nb_items>)
         
