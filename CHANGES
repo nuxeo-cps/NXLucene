@@ -9,4 +9,5 @@ Bug fixes:
 -
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- Update comments
+- Remove encoding warnings
