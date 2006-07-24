@@ -58,9 +58,6 @@ class NXFrenchAnalyzer(object):
 
         result = PyLucene.StandardTokenizer(reader)
 
-        # Sepcific French filter (see below)
-        result = NXFrenchFilter(result)
-
         # Filtering the hell out.
         result = PyLucene.StandardFilter(result)
         result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
@@ -68,6 +65,9 @@ class NXFrenchAnalyzer(object):
 
         # French stemmer.
         result = PyLucene.FrenchStemFilter(result)
+
+        # Specific French filter (see below)
+        result = NXFrenchFilter(result)
 
         # Lowercase filtering
         result = PyLucene.LowerCaseFilter(result)
