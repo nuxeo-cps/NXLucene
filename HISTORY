@@ -1,4 +1,21 @@
 *******************************************
+** NXLucene V0.9.2 [R1 build 2006/07/25-10:25 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 47401
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Moved the french filter to after the french stemmer.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Update comments
+- Remove encoding warnings
+
+*******************************************
 ** NXLucene V0.9.1 [R1 build 2006/07/17-15:12 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 47132
 Requires:

@@ -6,8 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
-- Moved the french filter to after the french stemmer.
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- Update comments
-- Remove encoding warnings
+-
