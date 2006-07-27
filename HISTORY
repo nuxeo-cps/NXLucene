@@ -1,4 +1,20 @@
 *******************************************
+** NXLucene V0.9.3 [R1 build 2006/07/27-17:17 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 47504
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- French stemming was not independent of case.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** NXLucene V0.9.2 [R1 build 2006/07/25-10:25 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/NXLucene/trunk Revision: 47401
 Requires:
