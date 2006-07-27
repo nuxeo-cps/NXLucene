@@ -150,6 +150,36 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(
             tokens, [u'eeeeauc'])
 
+    def test_french_case_accents_stemming(self):
+        # This is to make sure that case, accent and endings all result
+        # in the same index word.
+        search_words = ('déontologie',
+                        'Déontologie',
+                        'DEONTOLOGIE',
+                        'deontologie',
+                        'Deontologie',
+                        'DEONTOLOGIES',
+                        'déontologies',
+                        'Déontologies',
+                        'DEONTOLOGI',
+                        'déontologi',
+                        'Déontologi',
+                        'DEONTOLOGIS',
+                        'déontologis',
+                        'Déontologis',
+                        'dEONTOLOGIE',
+                    )
+
+        a = NXFrenchAnalyzer()
+        
+        for word in search_words:
+            term_str = unicode(word, 'latin-1')
+    
+            reader = PyLucene.StringReader(term_str)
+            tokens = a.tokenStream('', reader)
+            tokens = [token.termText() for token in tokens]
+            self.assertEquals(tokens, [u'deontolog'])
+
         
 def test_suite():
     suite = unittest.TestSuite()
