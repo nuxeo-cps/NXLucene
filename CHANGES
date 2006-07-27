@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- French stemming was not independent of case.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

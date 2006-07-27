@@ -35,7 +35,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(
-            tokens, [u'un', u'test'])
+            tokens, [u'test'])
 
     def test_french_samples_pp(self):
 
