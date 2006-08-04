@@ -5,11 +5,8 @@
 # chkconfig:    2345 25 90
 # description:  NXLucene
 #
-# $Id: $
+# $Id$
 
-# AT: LD_LIBRARY_PATH specifics
-
-export LD_LIBRARY_PATH='/usr/lib/libgcj.so.5'
 
 RETVAL=0
 PWD=`pwd`
