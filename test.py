@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.4
+#! /opt/bin/python2.4
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
 #

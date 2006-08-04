@@ -62,7 +62,7 @@ Installation
 
   Linux is currently the only supported and tested platform. See the
   requirements section above for more information.
- 
+
   **Install GCC from source** ::
 
     $ cd /tmp
@@ -72,7 +72,7 @@ Installation
     $ bunzip2 -c ../gcc-3.4.6.tar.bz2 | tar -xvf -
     $ mkdir build
     $ cd build
-    $ ../gcc-3.4.6/configure --enable-threads=posix \ 
+    $ ../gcc-3.4.6/configure --enable-threads=posix \
       --prefix=/usr/local/gcc-3.4.6 --enable-languages=c,c++,java
     $ make bootstrap
     $ sudo make install
@@ -105,12 +105,12 @@ Installation
       #DB=$(PYLUCENE)/db-$(DB_VER)
       #PREFIX_DB=$(PREFIX)/BerkeleyDB.$(DB_LIB_VER)
       ANT=ant
- 
-      $ make 
+
+      $ make
       $ sudo make install
 
     Note, you do *not* need any bdb suport since NXLucene doesn't
-    provide any support for it. 
+    provide any support for it.
 
   **Install Python dependencies for NXLucene**
 
@@ -120,31 +120,31 @@ Installation
       $ python setup.py build
       $ sudo python setup.py install
 
-    
+
     Please, check the dependencies list above.
 
   **Install NXLucene**
 
     Uncompress the NXLucene_ archive ::
-    
+
       $ cd /usr/local/
       $ tar -xzf /tmp/NXLucene-x.x-x.tgz
-    
+
     In the resulting folder ::
-    
+
       $ python setup.py build
       $ sudo python setup.py install
-    
+
     This will install the core NXLucene_ libs within the site-packages
     of the Python interpertor. They might be useful for Python third
     party apps. Especially, the nxlucene.rss sub-module.
 
     Add the gcj shared libs in the path ::
 
-      $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib 
-    
+      $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib
+
     You can now start the NXLucene_ server ::
-    
+
       $ cd ./bin
       $ ./nxlucened start
 
@@ -182,7 +182,7 @@ Testing for developpers
 
   followed by::
 
-    $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib 
+    $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib
     $ ./test.py -vk -s nxlucene
 
   The test runner is a zope.testing runner. Use --help for all
