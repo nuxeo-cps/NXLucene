@@ -183,7 +183,7 @@ Testing for developpers
   followed by::
 
     $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib 
-    $ ./test -vk -s nxlucene
+    $ ./test.py -vk -s nxlucene
 
   The test runner is a zope.testing runner. Use --help for all
   available options.
