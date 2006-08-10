@@ -274,6 +274,14 @@ logs like::
   0xb6106b18>> failed...
 
 
+Analysers
+---------
+
+If you are working with the French analyzer for instance, make sure the user
+running NXLucene has read rights on executable files and others like text
+files listing stop words.
+
+
 .. Emacs
 .. Local Variables:
 .. mode: rst
