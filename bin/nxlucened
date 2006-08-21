@@ -15,7 +15,8 @@ NAME='nxlucened'
 # Change me.
 NXLUCENE_HOME='..'
 
-export LD_LIBRARY_PATH=/usr/local/lib
+# Chane me if needed
+#export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib/
 
 PIDDIR=$NXLUCENE_HOME'/var'
 LOGFILE=$NXLUCENE_HOME'/log/nxlucene.log'
