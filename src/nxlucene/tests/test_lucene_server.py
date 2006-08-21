@@ -36,8 +36,12 @@ from nxlucene.rss.resultset import ResultSet
 
 class P(object):
     zope.interface.implements(zope.interface.Interface)
-    def __init__(self, name):
+    def __init__(self, name, givenName=''):
         self.name = name
+        if givenName == '':
+            self.givenName = name
+        else:
+            self.givenName = givenName
 
 class FakeXMLInputStream(object):
 
@@ -312,7 +316,7 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'uid',
                                                        'value': u'1'},))
-        
+
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ())
 
@@ -468,6 +472,81 @@ class LuceneServerTestCase(unittest.TestCase):
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(len(res), 1)
 
+    def test_reindexSelectedField(self):
+
+        self.assertEqual(len(self._server), 0)
+
+        uid = '/portal/foo/bar'
+
+        object = P('Anguenot', 'Julien')
+
+        self._server.indexDocument(
+           uid, FakeXMLInputStream(object, attributs=('name', 'givenName')))
+
+        self.assertEqual(len(self._server), 1)
+
+        # Search using name attr
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'Anguenot',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 1)
+
+        # Search using givenName attr
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'givenName',
+                            'value': 'Julien',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 1)
+
+        # Reindex givenName only
+        object.name = 'Bond'
+        self._server.reindexDocument(uid, FakeXMLInputStream(object, attributs=('name',)))
+
+        # Search using name attr
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'Anguenot',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 0)
+
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'name',
+                            'value': 'Bond',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 1)
+
+        # Search using givenName attr
+        res = self._server.searchQuery(
+            search_fields=({'id' : u'givenName',
+                            'value': 'Julien',
+                            'type' : 'Text',},),
+            search_options={},
+            )
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(len(res), 1)
+
+    def tearDown(self):
+        if os.path.exists(self._store_dir):
+            shutil.rmtree(self._store_dir)
+
 class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -505,7 +584,6 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
         self.assertEqual(self.counter, tmax)
 
         self.counter = 0
-
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
