@@ -3,8 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- Use a PythonFileDirectory instead of an FSDirectory to avoid the gcc-3.4.6 2go
-  limit.
+-
 Bug fixes:
 ~~~~~~~~~~
 -

@@ -39,8 +39,6 @@ import nxlucene.document
 import nxlucene.query
 import nxlucene.analysis
 
-from nxlucene.directory.PythonDirectory import PythonFileDirectory
-
 class LuceneServer(object):
     """Lucene server.
     """
@@ -61,7 +59,7 @@ class LuceneServer(object):
     def getStore(self, creation=False):
         if not os.path.exists(self.store_dir):
             creation = True
-        return PythonFileDirectory(self.store_dir, creation)
+        return PyLucene.FSDirectory.getDirectory(self.store_dir, creation)
 
     def getIndexer(self, creation=False, analyzer=None):
         if not os.path.exists(self.store_dir):

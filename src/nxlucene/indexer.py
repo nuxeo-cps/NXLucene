@@ -1,16 +1,16 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-#
+# 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-#
+# 
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
@@ -25,8 +25,6 @@ import PyLucene
 
 import zope.interface
 from interfaces import ILuceneIndexer
-
-from nxlucene.directory.PythonDirectory import PythonFileDirectory
 
 class LuceneIndexer(object):
 
@@ -44,8 +42,8 @@ class LuceneIndexer(object):
         if analyzer is None:
             analyzer = PyLucene.StandardAnalyzer()
         self._analyzer = analyzer
-
-        self._store = PythonFileDirectory(store_dir, creation)
+    
+        self._store = PyLucene.FSDirectory.getDirectory(store_dir, creation)
         self._writer = self.get(creation, analyzer)
 
         self.close()
@@ -62,6 +60,6 @@ class LuceneIndexer(object):
         if not self._writer or analyzer != self._analyzer:
             self._writer = PyLucene.IndexWriter(self._store, self._analyzer, creation)
         return self._writer
-
+    
     def __del__(self):
-        self.close()
+        self.close()    
