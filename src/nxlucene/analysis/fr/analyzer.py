@@ -19,8 +19,6 @@
 
 $Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
 """
-
-import sys
 import string
 import os.path
 import PyLucene
@@ -85,7 +83,7 @@ class NXFrenchFilter(object):
             return None
 
         ttext = token.termText()
-        
+
         if not ttext:
             return None
 
@@ -107,7 +105,7 @@ class NXFrenchFilter(object):
 
             if ttext.lower().endswith("'s"):
                 ttext = ttext[:2]
-                
+
         ttext = ttext.translate(xlate_table)
 
         return PyLucene.Token(ttext, token.startOffset(),

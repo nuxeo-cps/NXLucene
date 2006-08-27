@@ -24,8 +24,8 @@ import xmlrpclib
 
 import nxlucene.testing.xmlrpc
 
-from nxlucene.xmlrpc import XMLRPCLuceneServer
-from nxlucene.core import LuceneServer
+from nxlucene.server.xmlrpc import XMLRPCLuceneServer
+from nxlucene.server.core import LuceneServer
 
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet
@@ -38,7 +38,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
-        from nxlucene.interfaces import IXMLRPCLuceneServer
+        from nxlucene.server.interfaces import IXMLRPCLuceneServer
         self.assert_(verifyClass(IXMLRPCLuceneServer, XMLRPCLuceneServer))
 
     def test_adapter(self):
@@ -52,7 +52,7 @@ class XMLRPCLuceneServerTestCase(unittest.TestCase):
 
     def test_optimize(self):
         self.assertEqual(self._xmlrpc_client.optimize(), True)
-        
+
     def test_store_dir(self):
         # nxlucene.testing has its own tmp store dir
         self.assert_(isinstance(self._xmlrpc_client.getStoreDir(), str))

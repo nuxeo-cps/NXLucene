@@ -19,13 +19,16 @@
 $Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
 """
 
+import threading
+import PyLucene
+
 import zope.interface
 
-from nxlucene.interfaces import IXMLRPCLuceneServer
+from nxlucene.server.interfaces import IXMLRPCLuceneServer
 from nxlucene.testing.interfaces import IFakeXMLRPCLuceneServer
 
-from nxlucene.xmlrpc import XMLRPCLuceneServer
-from nxlucene.core import LuceneServer
+from nxlucene.server.xmlrpc import XMLRPCLuceneServer
+from nxlucene.server.core import LuceneServer
 
 class FakeXMLRPCLuceneServer(object):
     """Fake XMLRPC server
@@ -85,6 +88,11 @@ def _getFakeServerProxy(url, transport=None):
     return fake_server
 
 def setUp():
+
+    # Set PythonThread
+    threading.Thread = PyLucene.PythonThread
+
+    # Path xmlrpclib
     xmlrpclib._old_ServerProxy = xmlrpclib.ServerProxy
     xmlrpclib.ServerProxy = _getFakeServerProxy
 

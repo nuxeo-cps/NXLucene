@@ -26,11 +26,11 @@ import os
 import shutil
 import unittest
 import threading
-import PyLucene
 
 import zope.interface
 
-from nxlucene.core import LuceneServer
+from nxlucene.server.PatchPythonThread import PythonThread
+from nxlucene.server.core import LuceneServer
 from nxlucene.rss.adapter import PythonResultSet
 from nxlucene.rss.resultset import ResultSet
 
@@ -76,7 +76,7 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
-        from nxlucene.interfaces import ILuceneServer
+        from nxlucene.server.interfaces import ILuceneServer
         self.assert_(verifyClass(ILuceneServer, LuceneServer))
 
     def test_optimize(self):
@@ -543,9 +543,29 @@ class LuceneServerTestCase(unittest.TestCase):
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(len(res), 1)
 
-    def tearDown(self):
-        if os.path.exists(self._store_dir):
-            shutil.rmtree(self._store_dir)
+class LuceneServerWithPyDirectoryTestCase(LuceneServerTestCase):
+
+    def setUp(self):
+        self._store_dir = '/tmp/lucene'
+        self._server = LuceneServer(self._store_dir, 'PythonDirectory')
+        self._o1 = P('foo')
+        self._o2 = P('bar')
+
+class LuceneServerWithFSDirectoryTestCase(LuceneServerTestCase):
+
+    def setUp(self):
+        self._store_dir = '/tmp/lucene'
+        self._server = LuceneServer(self._store_dir, 'FSDirectory')
+        self._o1 = P('foo')
+        self._o2 = P('bar')
+
+class LuceneServerWithRAMDirectoryTestCase(LuceneServerTestCase):
+
+    def setUp(self):
+        self._store_dir = '/tmp/lucene'
+        self._server = LuceneServer(self._store_dir, 'RamDirectory')
+        self._o1 = P('foo')
+        self._o2 = P('bar')
 
 class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
@@ -572,8 +592,7 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
         threads = []
         for i in xrange(tmax):
-            threads.append(PyLucene.PythonThread(
-                target=self._indexObjects))
+            threads.append(PythonThread(target=self._indexObjects))
 
         for thread in threads:
             thread.start()
@@ -591,7 +610,9 @@ class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(LuceneServerTestCase))
+    suite.addTest(unittest.makeSuite(LuceneServerWithFSDirectoryTestCase))
+    suite.addTest(unittest.makeSuite(LuceneServerWithPyDirectoryTestCase))
+    #suite.addTest(unittest.makeSuite(LuceneServerWithRAMDirectoryTestCase))
     suite.addTest(unittest.makeSuite(LuceneServerMultiThreadTestCase))
     return suite
 

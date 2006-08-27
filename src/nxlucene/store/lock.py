@@ -1,5 +1,4 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
-# Author: Julien Anguenot <ja@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -14,28 +13,26 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Testing the thread pool
+"""Python File Lock.
+
+$Id$
 """
 
-import unittest
-import nxlucene.server.threadpool
+class PythonDirLock(object):
 
-class ThreadPoolTestCase(unittest.TestCase):
+    def __init__(self, name, path, lock):
+        self.name = name # XXX Unused
+        self.lock_file = path # XXX Unused
+        self.lock = lock
 
-    def setUp(self):
-        self._pool = nxlucene.server.threadpool.ThreadPool(5)
+    def isLocked(self):
+        return self.lock.locked()
 
-    def test_instanciation(self):
-        self.assertEqual(5, self._pool.getThreadCount())
-        self.assertEqual(self._pool.getNextTask(), (None, None, None))
+    def obtainTimeout(self, timeout):
+        return self.lock.acquire(timeout)
 
-    def tearDown(self):
-        self._pool.joinAll(True, True)
+    def obtain(self):
+        return self.lock.acquire()
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ThreadPoolTestCase))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+    def release(self):
+        return self.lock.release()

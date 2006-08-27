@@ -1,16 +1,16 @@
 # Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
@@ -23,11 +23,11 @@ import unittest
 
 from zope.interface.verify import verifyClass
 
-from nxlucene.interfaces import IXMLQuery
-from nxlucene.interfaces import IXMLSearchQuery
+from nxlucene.server.interfaces import IXMLQuery
+from nxlucene.server.interfaces import IXMLSearchQuery
 
-from nxlucene.xmlquery import XMLQuery
-from nxlucene.xmlquery import XMLSearchQuery
+from nxlucene.server.xmlquery import XMLQuery
+from nxlucene.server.xmlquery import XMLSearchQuery
 
 class XMLQueryTestCase(unittest.TestCase):
 

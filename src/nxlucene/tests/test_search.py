@@ -21,10 +21,9 @@
 import os
 import shutil
 import unittest
-import PyLucene
 import random
 
-from nxlucene.core import LuceneServer
+from nxlucene.server.core import LuceneServer
 
 from nxlucene.rss.resultset import ResultSet
 from nxlucene.rss.adapter import PythonResultSet

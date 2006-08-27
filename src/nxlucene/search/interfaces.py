@@ -14,28 +14,18 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Testing the thread pool
+"""NXLucene interfaces
+
+$Id$
 """
 
-import unittest
-import nxlucene.server.threadpool
+import zope.interface
 
-class ThreadPoolTestCase(unittest.TestCase):
+class ILuceneSearcher(zope.interface.Interface):
+    """Lucene Searcher
+    """
 
-    def setUp(self):
-        self._pool = nxlucene.server.threadpool.ThreadPool(5)
+    def get():
+        """Return an IndexSearcher instance
+        """
 
-    def test_instanciation(self):
-        self.assertEqual(5, self._pool.getThreadCount())
-        self.assertEqual(self._pool.getNextTask(), (None, None, None))
-
-    def tearDown(self):
-        self._pool.joinAll(True, True)
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ThreadPoolTestCase))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

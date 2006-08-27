@@ -14,28 +14,27 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Testing the thread pool
+"""XXX
+
+$Id$
 """
 
-import unittest
-import nxlucene.server.threadpool
+import zope.interface
 
-class ThreadPoolTestCase(unittest.TestCase):
+class IStoreBackened(zope.interface.Interface):
 
-    def setUp(self):
-        self._pool = nxlucene.server.threadpool.ThreadPool(5)
+    def get(*args, **kw):
+        pass
 
-    def test_instanciation(self):
-        self.assertEqual(5, self._pool.getThreadCount())
-        self.assertEqual(self._pool.getNextTask(), (None, None, None))
+class IFSDirectoryBackened(IStoreBackened):
+    pass
 
-    def tearDown(self):
-        self._pool.joinAll(True, True)
+class IPythonDirectoryBackened(IStoreBackened):
+    pass
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ThreadPoolTestCase))
-    return suite
+class IRamDirectoryBackened(IStoreBackened):
+    pass
 
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+class IBdbDirectoryBackened(IStoreBackened):
+    pass
+

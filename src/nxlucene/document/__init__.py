@@ -14,28 +14,26 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
-"""Testing the thread pool
+"""NXLucene document.definition
+
+$Id: $
 """
 
-import unittest
-import nxlucene.server.threadpool
+import PyLucene
 
-class ThreadPoolTestCase(unittest.TestCase):
+UID_FIELD_ID = 'uid'
 
-    def setUp(self):
-        self._pool = nxlucene.server.threadpool.ThreadPool(5)
+class Document(PyLucene.Document):
 
-    def test_instanciation(self):
-        self.assertEqual(5, self._pool.getThreadCount())
-        self.assertEqual(self._pool.getNextTask(), (None, None, None))
+    def __init__(self, uid=None):
 
-    def tearDown(self):
-        self._pool.joinAll(True, True)
+        if uid is None:
+            raise ValueError("You need to provide an uid for this document")
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ThreadPoolTestCase))
-    return suite
+        PyLucene.Document.__init__(self)
+        self.add(PyLucene.Field.Keyword(UID_FIELD_ID, unicode(uid)))
 
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+    def getUID(self):
+        return self.get(UID_FIELD_ID)
+
+
