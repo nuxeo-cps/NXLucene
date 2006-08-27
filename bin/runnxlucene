@@ -16,7 +16,7 @@ os.environ['SOFTWARE_HOME'] = SOFTWARE_HOME
 CONFIG_FILE = os.path.join(INSTANCE_HOME, "etc", "nxlucene.conf")
 os.environ['CONFIG_FILE'] = CONFIG_FILE
 
-from nxlucene.configuration import NXLuceneConfiguration
+from nxlucene.server.configuration import NXLuceneConfiguration
 conf = NXLuceneConfiguration(CONFIG_FILE)
 
 tac_file = conf.getTwistdServiceTac()

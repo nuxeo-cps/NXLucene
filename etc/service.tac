@@ -32,11 +32,10 @@ from twisted.web import server
 from twisted.application import service
 from twisted.application import internet
 
-from nxlucene.core import LuceneServer
-from nxlucene.logger import initLog
-from nxlucene.configuration import NXLuceneConfiguration
-
-from nxlucene.xmlrpc import XMLRPCLuceneServer
+from nxlucene.server.core import LuceneServer
+from nxlucene.server.logger import initLog
+from nxlucene.server.configuration import NXLuceneConfiguration
+from nxlucene.server.xmlrpc import XMLRPCLuceneServer
 
 # Ensure Python standard Thread is never used within NXLucene.
 threading.Thread = PyLucene.PythonThread
@@ -60,9 +59,27 @@ class NXLuceneController(object):
         if self._conf.getLogLevel() == 'DEBUG':
             self.log.info("gc.set_debug(gc.DEBUG_LEAK)")
             gc.set_debug(gc.DEBUG_LEAK)
-            
+
         self._root = resource.Resource()
+        self._setTmpDir()
+        self._setLockDirectoy()
         self.initializeResources()
+
+    def _setTmpDir(self):
+        """Initialize tmp dir directory
+        """
+        # XXX Make this configurable
+        tmp_dir = '/'.join(self._conf.getStoreDirPath().split('/')[:-1])
+        self.log.info("Tmp dir is located here : %s" % tmp_dir)
+        PyLucene.System.setProperty("java.io.tmpdir", tmp_dir)
+
+    def _setLockDirectoy(self):
+        """Initialize lock dir directory
+        """
+        # XXX Make this configurable
+        lock_dir = '/'.join(self._conf.getStoreDirPath().split('/')[:-1])
+        self.log.info("Lock dir is located here : %s" % lock_dir)
+        PyLucene.System.setProperty("org.apache.lucene.lockdir", lock_dir)
 
     def initializeResources(self):
         """Initialize server resources
@@ -71,9 +88,10 @@ class NXLuceneController(object):
         """
 
         # Create a core server instance.
-        core = LuceneServer(self._conf.getStoreDirPath())
+        core = LuceneServer(self._conf.getStoreDirPath(),
+                            self._conf.getStoreBackenedId())
 
-        # Optimize the indexes at startup 
+        # Optimize the indexes at startup
         core.optimize()
 
         # Adapt to RPC and register this resource.
