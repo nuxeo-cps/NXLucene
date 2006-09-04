@@ -509,7 +509,12 @@ class LuceneServer(object):
                                (str(this_analyzer), index))
 
                 try:
-                    subquery = PyLucene.QueryParser.parse(value, index, this_analyzer)
+                    qparser = PyLucene.QueryParser(index, this_analyzer)
+                    # Set default operator
+                    defaultop = nxlucene.search.query.query_parser_operators_map.get(default_query_operator,
+                                nxlucene.search.query.query_parser_operators_map.get('OR'))
+                    qparser.setOperator(defaultop)
+                    subquery = qparser.parseQuery(value)
                 except PyLucene.JavaError:
                     return results.getStream()
 

@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Implement a flexible query parser operator.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - clean doc
