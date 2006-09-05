@@ -1707,7 +1707,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         self.assertEqual(
             res.getResults()[0], ({u'uid': u'1'},))
 
-    def test_queryparser_stemming_with_wildcards(self):
+    def test_queryparser_stemming_with_wildcards_FR(self):
 
         ob = Foo()
         setattr(ob, 'SearchableText', 'GEIDE')
@@ -1746,6 +1746,52 @@ class LuceneSeachTestCase(unittest.TestCase):
              'type' : 'Unstored',
              'value': 'GE?DE',
              'analyzer' : 'French',
+             },
+
+            ))))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+    def test_queryparser_stemming_with_wildcards_STD(self):
+
+        ob = Foo()
+        setattr(ob, 'SearchableText', 'GEIDE')
+
+        # My Fake API sucks...
+        query = FakeXMLInputStream(
+            ob,
+            attributs=(('SearchableText', 'Unstored',),),
+            analyzer='Standard',
+            )
+
+        self._server.indexDocument(1, query)
+
+        # No wildcard here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'SearchableText',
+             'type' : 'Unstored',
+             'value': 'GEIDE',
+             'analyzer' : 'Standard',
+             },
+
+            ))))
+
+        self.assertEqual(
+            res.getResults()[0], ({u'uid': u'1'},))
+
+        # Wildcard here.
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            search_fields=(
+
+            {'id' : u'SearchableText',
+             'type' : 'Unstored',
+             'value': 'GE?DE',
+             'analyzer' : 'Standard',
              },
 
             ))))
