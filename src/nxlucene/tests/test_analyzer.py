@@ -42,7 +42,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = unicode("chanté", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -51,7 +51,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         # Make sure it also works if you skip the accent:
         term_str = unicode("chante", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -63,7 +63,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = unicode("messages", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -75,7 +75,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = unicode("jolie", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -87,7 +87,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = unicode("l'enfant", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -99,7 +99,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = "avoir de la chance"
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -143,7 +143,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         term_str = unicode("éèëêàùc", 'latin-1')
-        
+
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -171,16 +171,27 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
                     )
 
         a = NXFrenchAnalyzer()
-        
+
         for word in search_words:
             term_str = unicode(word, 'latin-1')
-    
+
             reader = PyLucene.StringReader(term_str)
             tokens = a.tokenStream('', reader)
             tokens = [token.termText() for token in tokens]
             self.assertEquals(tokens, [u'deontolog'])
 
-        
+    def test_french_stemming_wildcards(self):
+
+        a = NXFrenchAnalyzer()
+
+        term_str = unicode("GE?DE", 'latin-1')
+
+        reader = PyLucene.StringReader(term_str)
+
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(
+            tokens, [u'ge?de'])
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NXFrenchAnalyzerTestCase))
