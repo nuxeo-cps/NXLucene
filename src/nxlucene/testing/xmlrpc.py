@@ -82,7 +82,7 @@ TMP_STORE_DIR = '/tmp/NXLuceneTesting'
 
 def _getFakeServerProxy(url, transport=None):
     # XXX Use a RAMDirectory for tests
-    core = LuceneServer(TMP_STORE_DIR)
+    core = LuceneServer(TMP_STORE_DIR,  store_backened_id='FSDirectory')
     xmlrpc_server = XMLRPCLuceneServer(core)
     fake_server = FakeXMLRPCLuceneServer(xmlrpc_server)
     return fake_server
