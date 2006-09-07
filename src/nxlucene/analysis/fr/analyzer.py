@@ -54,19 +54,19 @@ class NXFrenchAnalyzer(object):
 
     def tokenStream(self, fieldName, reader):
 
-        result = PyLucene.StandardTokenizer(reader)
+        result = PyLucene.WhitespaceTokenizer(reader)
 
-        # Lowercase filtering
+        # Standard / Lowercase filtering
+        result = PyLucene.StandardFilter(result)
         result = PyLucene.LowerCaseFilter(result)
 
-        # French stemmer.
+        #  French stemmer.
         result = PyLucene.FrenchStemFilter(result)
 
-        # Specific French filter (see below)
+        # Custom French filter (see below)
         result = NXFrenchFilter(result)
 
-        # Filtering the hell out.
-        result = PyLucene.StandardFilter(result)
+        # Stop filters.
         result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
         result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
 
