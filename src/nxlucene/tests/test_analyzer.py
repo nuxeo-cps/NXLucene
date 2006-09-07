@@ -180,17 +180,35 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             tokens = [token.termText() for token in tokens]
             self.assertEquals(tokens, [u'deontolog'])
 
-    def test_french_stemming_wildcards(self):
+    def test_french_wildcards(self):
+
+        term_str = unicode("INVENTA?RE", 'latin-1')
 
         a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+
+        self.assertEquals(tokens_fr, [u"inventa?r"])
+
+    def test_french_stemming_wildcards(self):
 
         term_str = unicode("GE?DE", 'latin-1')
 
+        a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
 
-        tokens = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(
-            tokens, [u'ge?de'])
+        self.assertEquals(tokens_fr, ['ge?d'])
+
+    def test_french_misc(self):
+
+        term_str = unicode("l'enfant", 'latin-1')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['enfant'])
+
 
 def test_suite():
     suite = unittest.TestSuite()
