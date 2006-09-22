@@ -44,6 +44,52 @@ xlate_table = {ord(u'é'): u'e',
                ord(u'ç'): u'c',
                }
 
+class WildCardMagikBefore(PyLucene.Tokenizer):
+    
+    def __init__(self, tokenstream, wildcards):
+        self._wildcards = wildcards
+        self.input = tokenstream
+        self.count = 0
+        
+    def next(self):
+        term = self.input.next()
+        if term is None:
+            return None
+        text = term.termText()
+        self._wildcards[self.count] = {}
+            
+        for wildcard in ('?', '*'):
+            pos = 0
+            while True:
+                pos = text.find(wildcard, pos+1)
+                if pos == -1:
+                    break
+                self._wildcards[self.count][pos] = wildcard
+                text = text[:pos] + 'n' + text[pos+1:]
+        self.count += 1
+        return PyLucene.Token(text, term.startOffset(), 
+                              term.endOffset(), u'word')
+    
+class WildCardMagikAfter(PyLucene.Tokenizer):
+    
+    def __init__(self, tokenstream, wildcards):
+        self._wildcards = wildcards
+        self.input = tokenstream
+        self.count = 0
+
+    def next(self):
+        term = self.input.next()
+        if term is None:
+            return None
+        text = term.termText()
+        for pos, char in self._wildcards[self.count].items():
+            text = text[:pos] + char + text[pos+1:]
+        self.count += 1
+        return PyLucene.Token(text, term.startOffset(), 
+                              term.endOffset(), u'word')
+        
+    
+    
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
 
@@ -54,6 +100,7 @@ class NXFrenchAnalyzer(object):
 
     def tokenStream(self, fieldName, reader):
 
+        #result = WildCardTokenizer(reader)
         result = PyLucene.WhitespaceTokenizer(reader)
 
         # Standard / Lowercase filtering
@@ -61,7 +108,10 @@ class NXFrenchAnalyzer(object):
         result = PyLucene.LowerCaseFilter(result)
 
         #  French stemmer.
+        wildcards = {}
+        result = WildCardMagikBefore(result, wildcards)
         result = PyLucene.FrenchStemFilter(result)
+        result = WildCardMagikAfter(result, wildcards)
 
         # Custom French filter (see below)
         result = NXFrenchFilter(result)
