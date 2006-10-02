@@ -116,8 +116,8 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
                 )
 
             self._core.log.info(
-                "xmlrpc_searchQuery : search_fields=%s "
-                "search_options=%s and search_options=%s" % params )
+                "xmlrpc_searchQuery : RETURN_FIELDS=%s "
+                "SEARCH_FIELDS=%s and SEARCH_OPTIONS=%s" % params )
 
             res = self._core.searchQuery(*params)
             gc.collect()
