@@ -36,6 +36,11 @@ class ResultSet(object):
     zope.interface.implements(IResultSet)
 
     def __init__(self, xml_stream=''):
+        import os
+        fname = os.path.join(CLIENT_HOME, 'debug_dump.rss')
+        f = open(fname, 'w')
+        f.write(xml_stream)
+        f.close()
         if not xml_stream:
             self._doc = self._getElementSkel()
         else:
@@ -46,6 +51,9 @@ class ResultSet(object):
             return etree.tostring(self._doc)
         # XXX etree doesn't provide pretty print yet.
         raise NotImplementedError
+
+    def getTree(self):
+        return self._doc
 
     def addItem(self, uid, fields_map={}):
         item = ResultItem().getElement(uid, fields_map)

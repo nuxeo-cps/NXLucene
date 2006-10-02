@@ -35,7 +35,7 @@ class PythonResultSet(object):
     __used_for__ = IResultSet
 
     def __init__(self, resultset):
-        self._elt = etree.XML(resultset.getStream())
+        self._elt = resultset.getTree()
         self._results = ()
 
     def getResults(self):
