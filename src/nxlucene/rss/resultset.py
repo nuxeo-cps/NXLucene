@@ -36,11 +36,6 @@ class ResultSet(object):
     zope.interface.implements(IResultSet)
 
     def __init__(self, xml_stream=''):
-        import os
-        fname = os.path.join(CLIENT_HOME, 'debug_dump.rss')
-        f = open(fname, 'w')
-        f.write(xml_stream)
-        f.close()
         if not xml_stream:
             self._doc = self._getElementSkel()
         else:
