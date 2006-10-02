@@ -29,8 +29,8 @@ class PythonResultSetTestCase(unittest.TestCase):
 
     def setUp(self):
         self._rs = ResultSet()
-        self._rs.addItem('1', {'name' : 'Anguenot', 'givenName' : 'Julien'})
-        self._rs.addItem('2', {'name' : 'Barroca', 'givenName' : 'Éric'})
+        self._rs.addItem('1', {'name' : u'Anguenot', 'givenName' : u'Julien'})
+        self._rs.addItem('2', {'name' : u'Barroca', 'givenName' : u'\xc9ric'})
         self._pyrs = PythonResultSet(self._rs)
 
     def test_getItems(self):
