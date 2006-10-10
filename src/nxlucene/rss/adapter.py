@@ -39,24 +39,25 @@ class PythonResultSet(object):
         self._results = ()
 
     def getResults(self):
+        results = []
         for item in self._getItems():
             res = {}
-            res[unicode('uid')] = unicode(self._getUidFor(item))
+            res[u'uid'] = unicode(self._getUidFor(item))
             for field in self._getFieldsFor(item):
                 k = unicode(field.attrib['id'])
-                if k == unicode('uid'):
+                if k == u'uid':
                     continue
                 v = unicode(field.text)
-                if res.has_key(k):
-                    if not isinstance(res[k], list):
-                        res[k] = [res[k], v]
-                    else:
-                        old = res[k]
-                        old.append(v)
-                        res[k] = old
-                else:
+                existing = res.get(k)
+                if existing is None:
                     res[k] = v
-            self._results += (res,)
+                elif not isinstance(existing, list):
+                    res[k] = [existing, v]
+                else:
+                    existing.append(v)
+            results.append(res)
+
+        self._results = tuple(results)
         return (self._results, self._getNbItems())
 
     def _getItems(self):
