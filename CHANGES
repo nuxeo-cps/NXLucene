@@ -7,6 +7,9 @@ New features
 Bug fixes
 ~~~~~~~~~
 - Optimized RSS parsing method
+- The Whitespace tokenizer will keep punctuation, making it impossible to 
+  search for words ending sentences. Hence, I have here my own tokenizer, 
+  which passes all the tests.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

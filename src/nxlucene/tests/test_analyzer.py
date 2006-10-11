@@ -210,6 +210,21 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens_fr, ['enfant'])
 
 
+    def test_french_complet(self):
+        text = "Les parts sociales ne peuvent être données en nantissement. " \
+               "Je suis un enfant de l'industrie. Je ch?rche f*rcement bien!"
+
+        term_str = unicode(text, 'latin-1')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, 
+                          [u'part', u'social', u'peuvent', u'don', 
+                           u'nant', u'suis', u'enfant', u'industrie', 
+                           u'ch?rche', u'f*rcement', u'bien'] )
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NXFrenchAnalyzerTestCase))
