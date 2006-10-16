@@ -225,7 +225,6 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
                            u'peuvent', u'don', u'nant', u'suis', u'enfant',
                            u'industrie', u'ch?rche', u'f*rcement', u'bien'])
 
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NXFrenchAnalyzerTestCase))
