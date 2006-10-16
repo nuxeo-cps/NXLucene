@@ -112,6 +112,13 @@ Installation
     Note, you do *not* need any bdb suport since NXLucene doesn't
     provide any support for it.
 
+    You can test out your PyLucene installation by running the tests ::
+
+    $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib
+    $ make test
+
+    You should not get any errors.
+
   **Install Python dependencies for NXLucene**
 
     Every Python dependencies can be easily installed using the
