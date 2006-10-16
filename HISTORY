@@ -1,4 +1,27 @@
 ===========================================================
+Package: NXLucene 0.10.1
+===========================================================
+First release built by: lregebro at: 2006-10-16T15:24:12
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.10.1
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@49609
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- Optimized RSS parsing method
+- The Whitespace tokenizer will keep punctuation, making it impossible to 
+  search for words ending sentences. Hence, I have here my own tokenizer, 
+  which passes all the tests.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 0.10.0
 ===========================================================
 First release built by: gracinet at: 2006-09-27T12:45:18
