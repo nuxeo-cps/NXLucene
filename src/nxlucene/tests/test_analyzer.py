@@ -212,7 +212,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en " \
-               "nantissement. Je suis un enfant de l'industrie. Je ch?rche " \
+               "nantissement. Je suis un enfant de l'indépendance. Je ch?rche " \
                "f*rcement bien!"
 
         term_str = unicode(text, 'latin-1')
@@ -223,7 +223,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens_fr, 
                           [u'test', u'67', u'236', u'part', u'social', 
                            u'peuvent', u'don', u'nant', u'suis', u'enfant',
-                           u'industrie', u'ch?rche', u'f*rcement', u'bien'])
+                           u'independ', u'ch?rche', u'f*rcement', u'bien'])
 
 def test_suite():
     suite = unittest.TestSuite()

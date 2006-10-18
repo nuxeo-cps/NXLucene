@@ -6,7 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- Fixed inconsistent handling of words starting with l' in the french analyzer.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

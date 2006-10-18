@@ -100,25 +100,7 @@ class WildCardTokenizer(PyLucene.Tokenizer):
                     continue
                 # The end of a word, and therefore probably the end of a 
                 # sentence. We skip the question mark, and return the word.
-                break
-            elif char == "'":
-                # Keep these when they are within words
-                if result == '':
-                    continue
-                next_char = self._getChar()
-                if next_char is None:
-                    # End of stream.
-                    break
-                if next_char.isalnum():
-                    # The word continues after the single quote mark. It's a
-                    # word, like "it's" or "l'avion", add both to the result.
-                    result += char
-                    result += next_char
-                    continue
-                # The end of a word, and therefore probably the end of a 
-                # sentence. We skip the question mark, and return the word.
-                break
- 
+                break 
             else:
                 # Not a letter, not a wildcard. 
                 if result: # We have a word
@@ -189,8 +171,6 @@ class NXFrenchAnalyzer(object):
     def tokenStream(self, fieldName, reader):
 
         result = WildCardTokenizer(reader)
-        #result = PyLucene.WhitespaceTokenizer(reader)
-        #result = PyLucene.StandardTokenizer(reader)
 
         # Standard / Lowercase filtering
         result = PyLucene.StandardFilter(result)

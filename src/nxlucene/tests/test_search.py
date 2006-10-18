@@ -126,6 +126,35 @@ class LuceneSeachTestCase(unittest.TestCase):
 ##                            'value': "a*"},))))
 ##        self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
+    def test_french_fulltest(self):
+        text = "Test n°67-236: Les parts sociales ne peuvent être données en " \
+       "nantissement. Je suis un enfant de l'indépendance. Je ch?rche " \
+       "f*rcement bien!"
+        text = unicode(text, 'latin-1')
+
+        # Indes a new document.
+        ob = Foo(fulltext=text)
+        query = FakeXMLInputStream(ob, attributs=(('fulltext', 'UnStored'),),
+                                   analyzer="french")
+        self._server.indexDocument('2.1', query)
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'fulltext',
+                             'value': u"indépendance",
+                             'analyzer': 'french'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2.1'},))
+
+        res = PythonResultSet(
+            ResultSet(self._server.searchQuery(
+            (),
+            search_fields=({'id' : u'fulltext',
+                             'value': u"l'indépendance",
+                             'analyzer': 'french'},))))
+        self.assertEqual(res.getResults()[0], ({u'uid': u'2.1'},))
+
+    
     def test_path(self):
 
         # Indes a new document.

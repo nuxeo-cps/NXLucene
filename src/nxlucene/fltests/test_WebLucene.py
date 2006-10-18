@@ -53,7 +53,7 @@ class WebLucene(FunkLoadTestCase):
         </doc>""" % self._lipsum.getWord()
 
         uid = self._lipsum.getWord()
-        self.xmlrpc(self.weblucene_url, 'indexob',
+        self.xmlrpc(self.weblucene_url, 'indexDocument',
                     params=(uid, stream), description=INDEX_SIMPLE_DOCUMENT)
 
     def test_simple_search(self):
