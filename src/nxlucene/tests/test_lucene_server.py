@@ -36,23 +36,23 @@ from nxlucene.rss.resultset import ResultSet
 
 class P(object):
     zope.interface.implements(zope.interface.Interface)
-    def __init__(self, name, givenName=''):
+    def __init__(self, name, givenName='', fulltext=''):
         self.name = name
         if givenName == '':
             self.givenName = name
         else:
             self.givenName = givenName
+        self.fulltext = fulltext
 
 class FakeXMLInputStream(object):
 
     def __init__(self, ob, attributs=()):
         self._fields = {}
-        for attr in attributs:
-            id_ = attr
+        for id_ in attributs:
             self._fields[id_] = {
                 'id' : id_,
                 'attribute' : id_,
-                'type' : 'Text',
+                'type' : id_ == 'fulltext' and 'Unstored' or 'Text',
                 'value': getattr(ob, id_),
                 }
 
@@ -64,8 +64,8 @@ class LuceneServerTestCase(unittest.TestCase):
     def setUp(self):
         self._store_dir = '/tmp/lucene'
         self._server = LuceneServer(self._store_dir)
-        self._o1 = P('foo')
-        self._o2 = P('bar')
+        self._o1 = P('foo', fulltext="Fulltext on object1")
+        self._o2 = P('bar', fulltext="Fulltext on object2")
 
     def tearDown(self):
         if os.path.exists(self._store_dir):
@@ -84,8 +84,10 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def _indexObjects(self):
         self.assertEqual(len(self._server), 0)
-        self._server.indexDocument(1, FakeXMLInputStream(self._o1, attributs=('name',)))
-        self._server.indexDocument(2, FakeXMLInputStream(self._o2, attributs=('name',)))
+        self._server.indexDocument(1, FakeXMLInputStream(self._o1, 
+                                   attributs=('name','fulltext')))
+        self._server.indexDocument(2, FakeXMLInputStream(self._o2, 
+                                   attributs=('name','fulltext')))
         self.assertEqual(len(self._server), 2)
 
     def test_clean(self):
@@ -207,7 +209,6 @@ class LuceneServerTestCase(unittest.TestCase):
         self.assertEqual(res, ())
 
     def test_reindexing(self):
-
         self._indexObjects()
 
         # Search o1 on uid (no return fields)
@@ -226,10 +227,26 @@ class LuceneServerTestCase(unittest.TestCase):
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
+        # Search o1 on fulltext (no return fields)
+        res = self._server.searchQuery(return_fields=(),
+                                       search_fields=({'id' : u'fulltext',
+                                                       'value': u'object1'},))
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(res, ({u'uid': u'1'},))
+
+        # Search o2 on fulltext (no return fields)
+        res = self._server.searchQuery(return_fields=(),
+                                       search_fields=({'id' : u'fulltext',
+                                                       'value': u'object2'},))
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(res, ({u'uid': u'2'},))
+
         # Reindex o1 with a new name
         self._o1.name = 'newfoo'
         self._server.reindexDocument(1, FakeXMLInputStream(
-            self._o1, attributs=('name',)))
+            self._o1, attributs=('name','fulltext')))
 
         # Search o1 on uid (no return fields)
         res = self._server.searchQuery(return_fields=('name',),
@@ -255,7 +272,15 @@ class LuceneServerTestCase(unittest.TestCase):
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
-        # Reindex o2 with a new name
+        # Search o1 on fulltext (no return fields)
+        res = self._server.searchQuery(return_fields=(),
+                                       search_fields=({'id' : u'fulltext',
+                                                       'value': u'object1'},))
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(res, ({u'uid': u'1'},))
+
+        # Reindex o2 with a new name, reindex only the name field
         self._o2.name = 'newbar'
         self._server.reindexDocument(2, FakeXMLInputStream(
             self._o2, attributs=('name',)))
@@ -288,6 +313,14 @@ class LuceneServerTestCase(unittest.TestCase):
         res = self._server.searchQuery(return_fields=(),
                                        search_fields=({'id' : u'name',
                                                        'value': u'newbar'},))
+
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(res, ({u'uid': u'2'},))
+
+        # Search o2 on fulltext (no return fields)
+        res = self._server.searchQuery(return_fields=(),
+                                       search_fields=({'id' : u'fulltext',
+                                                       'value': u'object2'},))
 
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
@@ -546,26 +579,20 @@ class LuceneServerTestCase(unittest.TestCase):
 class LuceneServerWithPyDirectoryTestCase(LuceneServerTestCase):
 
     def setUp(self):
-        self._store_dir = '/tmp/lucene'
+        LuceneServerTestCase.setUp(self)
         self._server = LuceneServer(self._store_dir, 'PythonDirectory')
-        self._o1 = P('foo')
-        self._o2 = P('bar')
 
 class LuceneServerWithFSDirectoryTestCase(LuceneServerTestCase):
 
     def setUp(self):
-        self._store_dir = '/tmp/lucene'
+        LuceneServerTestCase.setUp(self)
         self._server = LuceneServer(self._store_dir, 'FSDirectory')
-        self._o1 = P('foo')
-        self._o2 = P('bar')
 
 class LuceneServerWithRAMDirectoryTestCase(LuceneServerTestCase):
 
     def setUp(self):
-        self._store_dir = '/tmp/lucene'
+        LuceneServerTestCase.setUp(self)
         self._server = LuceneServer(self._store_dir, 'RamDirectory')
-        self._o1 = P('foo')
-        self._o2 = P('bar')
 
 class LuceneServerMultiThreadTestCase(unittest.TestCase):
 
