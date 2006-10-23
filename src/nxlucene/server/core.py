@@ -372,7 +372,8 @@ class LuceneServer(object):
             )
 
         # uid will be returned automatically
-        return_fields = ('uid',) + return_fields
+        if 'uid' not in return_fields:
+            return_fields = ('uid',) + return_fields
 
         # Create a RSS ResultSet instance to stack result items.
         results = nxlucene.rss.resultset.ResultSet()
@@ -596,10 +597,9 @@ class LuceneServer(object):
                 break
 
             table = {}
-            for field in doc:
-                k = field.name()
-                v = field.stringValue()
-                if unicode(k) in return_fields:
+            for k in return_fields:
+                for field in doc.getFields(k):
+                    v = field.stringValue()
                     if not table.has_key(k):
                         table[k] = v
                     else:
@@ -611,6 +611,8 @@ class LuceneServer(object):
                             table[k] = [table[k], v]
 
             results.addItem(table['uid'], table)
+            if isinstance(table['uid'], list):
+                import pdb;pdb.set_trace()
 
             i += 1
 
