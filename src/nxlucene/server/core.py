@@ -611,8 +611,6 @@ class LuceneServer(object):
                             table[k] = [table[k], v]
 
             results.addItem(table['uid'], table)
-            if isinstance(table['uid'], list):
-                import pdb;pdb.set_trace()
 
             i += 1
 
