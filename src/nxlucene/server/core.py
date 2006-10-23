@@ -152,12 +152,20 @@ class LuceneServer(object):
         doc = self.getDocumentByUID(uid)
         delete_existing = doc and True or False
 
-        if doc is None:
+        # In case we need to update we'll have to take care of the
+        # existing fields.
+        existing_fields = ()
+
+        if doc is not None:
+            self.log.debug("FOUND document with uid=%s to update" % str(uid))
+            # Keep fields for update purpose.
+            existing_fields = doc.fields()
+        else:
             self.log.debug(
                 "Document with uid=%s does not exist yet" % str(uid))
-            doc = nxlucene.document.Document(uid)
 
-        existing_fields = [x.name() for x in doc.fields()]
+        doc = nxlucene.document.Document(uid)
+
         # Build a per-field analyzer wrapper we will use with the
         # IndexWriter.
         analyzer = nxlucene.analysis.getPerFieldAnalyzerWrapper()
@@ -167,8 +175,6 @@ class LuceneServer(object):
             field_id   = field['id']
             field_value = field['value']
             field_type  = field['type']
-            if field_id in existing_fields:
-                doc.removeField(field_id)
 
             field_analyzer = field.get('analyzer', 'standard')
             if (not field_analyzer or
@@ -247,6 +253,7 @@ class LuceneServer(object):
                 a = nxlucene.analysis.sort.NXSortAnalyzer()
                 tokens = [token.termText() for token in a.tokenStream('', reader)]
                 field_value = ' '.join(tokens)
+
                 doc.add(
                     PyLucene.Field(field_id, field_value, False, True, False)
                     )
@@ -271,6 +278,14 @@ class LuceneServer(object):
 ##                nxlucene.analysis.getAnalyzerById(field_analyzer),
 ##                field_id
 ##                ))
+
+        # Update
+        for field in existing_fields:
+            if (field.name() not in
+                [x['id'] for x in  query_instance.getFields()] and
+                field.name() != unicode('uid')):
+                self.log.debug("Preserving existing field %s" % field.name())
+                doc.add(field)
 
         # We got to remove the document from the index first.
         # http://wiki.apache.org/jakarta
