@@ -1749,6 +1749,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )
 
         self._server.indexDocument(1, query)
+        setattr(ob, 'SearchableText', 'should not match')
+        self._server.indexDocument(2, query)
 
         # No wildcard here.
         res = PythonResultSet(
@@ -1763,8 +1765,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             ))))
 
-        self.assertEqual(
-            res.getResults()[0], ({u'uid': u'1'},))
+        res = res.getResults()
+        self.assertEqual(res[-1], 1)
+        self.assertEqual(res[0], ({u'uid': u'1'},))
 
         # Wildcard here.
         res = PythonResultSet(
@@ -1779,8 +1782,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             ))))
 
-        self.assertEqual(
-            res.getResults()[0], ({u'uid': u'1'},))
+        res = res.getResults()
+        self.assertEqual(res[-1], 1)
+        self.assertEqual(res[0], ({u'uid': u'1'},))
 
     def test_queryparser_stemming_with_wildcards_FR(self):
 
@@ -1795,6 +1799,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             )
 
         self._server.indexDocument(1, query)
+        setattr(ob, 'SearchableText', 'should not match')
+        self._server.indexDocument(2, query)
 
         # No wildcard here.
         res = PythonResultSet(
@@ -1809,8 +1815,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             ))))
 
-        #self.assertEqual(
-        #    res.getResults()[0], ({u'uid': u'1'},))
+        res = res.getResults()
+        self.assertEqual(res[-1], 1)
+        self.assertEqual(res[0], ({u'uid': u'1'},))
 
         # Wildcard here.
         res = PythonResultSet(
@@ -1825,8 +1832,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             ))))
 
-        self.assertEqual(
-            res.getResults()[0], ({u'uid': u'1'},))
+        res = res.getResults()
+        self.assertEqual(res[-1], 1)
+        self.assertEqual(res[0], ({u'uid': u'1'},))
 
     def test_queryparser_stemming_with_wildcards_STD(self):
 
