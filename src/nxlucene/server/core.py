@@ -597,8 +597,9 @@ class LuceneServer(object):
                 break
 
             table = {}
-            for k in return_fields:
-                for field in doc.getFields(k):
+            for field in doc:
+                k = field.name()
+                if k in return_fields:
                     v = field.stringValue()
                     if not table.has_key(k):
                         table[k] = v
