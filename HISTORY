@@ -1,4 +1,24 @@
 ===========================================================
+Package: NXLucene 0.11.0
+===========================================================
+First release built by: lregebro at: 2006-10-24T16:17:14
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.11.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@49823
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- Performance improvement when doing a search with return_fields set. 
+
+===========================================================
 Package: NXLucene 0.10.2
 ===========================================================
 First release built by: lregebro at: 2006-10-18T14:20:41
