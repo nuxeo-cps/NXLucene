@@ -49,15 +49,14 @@ class NXAsciiFilter(object):
             return None
 
         ttext = token.termText()
-        
+
         if not ttext:
             return None
 
-        try:
-            ttext = str(ttext.encode('ISO-8859-15'))
-            ttext = self.toAscii(ttext)
-        except UnicodeEncodeError:
-            ttext = ttext
+        ttext = ttext.encode('ISO-8859-15', 'ignore')
+        # ensure that this is really ASCII now, if some weird char
+        # has gone through. Backend will convert to unicode anyway:
+        ttext = unicode(self.toAscii(ttext), 'ascii', 'ignore')
 
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
@@ -67,7 +66,7 @@ class NXSortAnalyzer(object):
 
     Dedicated analyzer for soring purpose. It only applies a standard
     and the lowercase analyzers.
-
+    
     Use this analyzer applied on fields that you will use for soring
     purpose only.
     """

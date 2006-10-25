@@ -52,7 +52,7 @@ class FakeXMLInputStream(object):
             self._fields[id_] = {
                 'id' : id_,
                 'attribute' : id_,
-                'type' : id_ == 'fulltext' and 'Unstored' or 'Text',
+                'type' : id_ == 'fulltext' and 'Sort' or 'Text',
                 'value': getattr(ob, id_),
                 }
 
@@ -579,6 +579,21 @@ class LuceneServerTestCase(unittest.TestCase):
 
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(len(res), 1)
+
+    def test_indexation_with_wrong_char(self):
+        phrase = unicode('Jean-Luc Godard. Ann\xe9es 60, juste un portrait de la jeunesse\xe2\x80\xa6', 'iso-8859-15')
+        
+        self.assertEqual(len(self._server), 0)
+
+        uid = '/portal/foo/bar'
+
+        object = P('x', fulltext=phrase)
+
+        self._server.indexDocument(
+           uid, FakeXMLInputStream(object, attributs=('name', 'fulltext')))
+
+        self.assertEqual(len(self._server), 1)
+        
 
 class LuceneServerWithPyDirectoryTestCase(LuceneServerTestCase):
 

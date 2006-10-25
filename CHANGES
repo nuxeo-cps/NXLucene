@@ -6,7 +6,8 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- AsciiFilter : ensure that this is really ASCII if some weird char
+  has gone through
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 
