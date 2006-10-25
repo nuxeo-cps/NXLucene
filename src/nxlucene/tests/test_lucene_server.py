@@ -52,7 +52,7 @@ class FakeXMLInputStream(object):
             self._fields[id_] = {
                 'id' : id_,
                 'attribute' : id_,
-                'type' : id_ == 'fulltext' and 'Sort' or 'Text',
+                'type' : id_ == 'fulltext' and 'Unstored' or 'Text',
                 'value': getattr(ob, id_),
                 }
 
