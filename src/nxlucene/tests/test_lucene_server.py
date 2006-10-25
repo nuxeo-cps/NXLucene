@@ -84,9 +84,9 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def _indexObjects(self):
         self.assertEqual(len(self._server), 0)
-        self._server.indexDocument(1, FakeXMLInputStream(self._o1, 
+        self._server.indexDocument(1, FakeXMLInputStream(self._o1,
                                    attributs=('name','fulltext')))
-        self._server.indexDocument(2, FakeXMLInputStream(self._o2, 
+        self._server.indexDocument(2, FakeXMLInputStream(self._o2,
                                    attributs=('name','fulltext')))
         self.assertEqual(len(self._server), 2)
 
@@ -317,17 +317,17 @@ class LuceneServerTestCase(unittest.TestCase):
         res = PythonResultSet(ResultSet(res)).getResults()[0]
         self.assertEqual(res, ({u'uid': u'2'},))
 
-        # Reindexing just one field cleares unstored indexes. This is a known
+        # Reindexing just one field cleares unstored fields. This is a known
         # problem with Lucene, for which we have no solution at the moment.
-        # So the following test which demonstrates this) is currently 
+        # So the following test which demonstrates this) is currently
         # commented out.
         ## Search o2 on fulltext (no return fields)
-        #res = self._server.searchQuery(return_fields=(),
-                                       #search_fields=({'id' : u'fulltext',
-                                                       #'value': u'object2'},))
+        res = self._server.searchQuery(return_fields=(),
+                                       search_fields=({'id' : u'fulltext',
+                                                       'value': u'object2'},))
 
-        #res = PythonResultSet(ResultSet(res)).getResults()[0]
-        #self.assertEqual(res, ({u'uid': u'2'},),) 
+        res = PythonResultSet(ResultSet(res)).getResults()[0]
+        self.assertEqual(res, ({u'uid': u'2'},),)
 
     def test_clearing(self):
 
@@ -582,7 +582,7 @@ class LuceneServerTestCase(unittest.TestCase):
 
     def test_indexation_with_wrong_char(self):
         phrase = unicode('Jean-Luc Godard. Ann\xe9es 60, juste un portrait de la jeunesse\xe2\x80\xa6', 'iso-8859-15')
-        
+
         self.assertEqual(len(self._server), 0)
 
         uid = '/portal/foo/bar'
@@ -593,7 +593,7 @@ class LuceneServerTestCase(unittest.TestCase):
            uid, FakeXMLInputStream(object, attributs=('name', 'fulltext')))
 
         self.assertEqual(len(self._server), 1)
-        
+
 
 class LuceneServerWithPyDirectoryTestCase(LuceneServerTestCase):
 

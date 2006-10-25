@@ -191,8 +191,10 @@ class LuceneServer(object):
                 doc.add(
                     PyLucene.Field.Text(field_id, field_value))
 
+            # :XXX: We can't use unstored index since this is amazingly not
+            # supported by
             elif field_type.lower() == 'unstored':
-                doc.add(PyLucene.Field.UnStored(field_id, field_value))
+                doc.add(PyLucene.Field.Text(field_id, field_value))
 
             elif field_type.lower() == 'unindexed':
                 doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
