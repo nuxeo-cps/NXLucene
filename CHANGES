@@ -6,7 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- A question mark standing by itself would break of tokenization.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

@@ -211,9 +211,9 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
 
     def test_french_complet(self):
-        text = "Test n°67-236: Les parts sociales ne peuvent être données en " \
-               "nantissement. Je suis un enfant de l'indépendance. Je ch?rche " \
-               "f*rcement bien!"
+        text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
+               "nantissement. ? Je suis un enfant de l'indépendance. Je "\
+               "ch?rche f*rcement bien!"
 
         term_str = unicode(text, 'latin-1')
 

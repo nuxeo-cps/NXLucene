@@ -98,9 +98,12 @@ class WildCardTokenizer(PyLucene.Tokenizer):
                     result += char
                     result += next_char
                     continue
-                # The end of a word, and therefore probably the end of a 
-                # sentence. We skip the question mark, and return the word.
-                break 
+                if result:
+                    # The end of a word, and therefore probably the end of a 
+                    # sentence. We skip the question mark, and return the word,
+                    break
+                # This question mark was standing by itself. Ignore it and..
+                continue
             else:
                 # Not a letter, not a wildcard. 
                 if result: # We have a word
@@ -169,8 +172,8 @@ class NXFrenchAnalyzer(object):
     """
 
     def tokenStream(self, fieldName, reader):
-
         result = WildCardTokenizer(reader)
+        #result = PyLucene.StandardTokenizer(reader)
 
         # Standard / Lowercase filtering
         result = PyLucene.StandardFilter(result)
