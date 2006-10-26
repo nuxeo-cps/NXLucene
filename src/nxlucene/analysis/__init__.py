@@ -21,14 +21,13 @@ $Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
 
 import PyLucene
 
-from fr.analyzer import NXFrenchAnalyzer#, NXFrenchWildcardAnalyzer
+from fr.analyzer import NXFrenchAnalyzer
 from sort import NXSortAnalyzer
 
 analyzers_map = {
     # XXX not complete
     'standard'       : PyLucene.StandardAnalyzer(),
     'french'         : NXFrenchAnalyzer(),
-#    'french-wildcard': NXFrenchWildcardAnalyzer(),
     'sort'           : NXSortAnalyzer(),
     'keyword'        : PyLucene.KeywordAnalyzer(),
     }

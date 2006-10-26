@@ -23,7 +23,7 @@ $Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
 import unittest
 import PyLucene
 
-from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer#, NXFrenchWildcardAnalyzer
+from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer
 from nxlucene.analysis.sort import NXSortAnalyzer
 
 class NXFrenchAnalyzerTestCase(unittest.TestCase):
@@ -180,25 +180,6 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             tokens = [token.termText() for token in tokens]
             self.assertEquals(tokens, [u'deontolog'])
 
-    #def test_french_wildcards(self):
-
-        #term_str = unicode("INVENTA?RE", 'latin-1')
-
-        #a = NXFrenchWildcardAnalyzer()
-        #reader = PyLucene.StringReader(term_str)
-        #tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-
-        #self.assertEquals(tokens_fr, [u"inventa?r"])
-
-    #def test_french_stemming_wildcards(self):
-
-        #term_str = unicode("GE?DE", 'latin-1')
-
-        #a = NXFrenchWildcardAnalyzer()
-        #reader = PyLucene.StringReader(term_str)
-        #tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-
-        #self.assertEquals(tokens_fr, ['ge?d'])
 
     def test_french_misc(self):
 
@@ -224,21 +205,6 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
                           [u'test', u'67-236', u'part', u'social', 
                            u'peuvent', u'don', u'nant', u'suis', u'enfant',
                            u'independ', u'cherch', u'forc', u'bien'])
-
-    #def test_french_complet_wildcards(self):
-        #text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
-               #"nantissement. ? Je suis un enfant de l'indépendance. Je "\
-               #"ch?rche f*rcement bien!"
-
-        #term_str = unicode(text, 'latin-1')
-
-        #a = NXFrenchWildcardAnalyzer()
-        #reader = PyLucene.StringReader(term_str)
-        #tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-        #self.assertEquals(tokens_fr, 
-                          #[u'test', u'67', u'236', u'part', u'social', 
-                           #u'peuvent', u'don', u'nant', u'suis', u'enfant',
-                           #u'independ', u'ch?rche', u'f*rcement', u'bien'])
 
 def test_suite():
     suite = unittest.TestSuite()
