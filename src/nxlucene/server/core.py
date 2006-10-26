@@ -77,6 +77,9 @@ class LuceneServer(object):
                 shutil.rmtree(self.store_dir)
             os.makedirs(self.store_dir)
 
+        self.log.info("Using backened=%s in dir=%s with creation_flag=%s" % (
+            self.store_backened_id, self.store_dir, str(creation)))
+                 
         return getRegistry().makeInstance(self.store_backened_id,
                                           self.store_dir, creation)
 
