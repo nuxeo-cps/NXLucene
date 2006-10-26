@@ -44,125 +44,170 @@ xlate_table = {ord(u'é'): u'e',
                ord(u'ç'): u'c',
                }
 
-class WildCardTokenizer(PyLucene.Tokenizer):
-    
+class NXAccentFilter(object):
+
     def __init__(self, tokenStream):
-        if not isinstance(tokenStream, PyLucene.StringReader):
-            # Sometimes this is called with a PyLucene.Reader.
-            # I wrap it in a StringReader to get a consistent interface.
-            tokenStream = PyLucene.StringReader(tokenStream.read())
         self.input = tokenStream
-        self.offset = 0
-        
-    def _getChar(self):
-        val = self.input.read()
-        self.offset += 1
-        if val == -1:
-            return None
-        return unichr(val)
-    
+
     def next(self):
-        result = ''
-        old_offset = self.offset
-        while True:
-            char = self._getChar()
-            if char is None:
-                break
-            if char.isalnum():
-                result += char
-                continue
-            elif char == '*':
-                # Asterisks are wildcards if part of a word, ignored otherwise.
-                if len(result) == 0:
-                    next_char = self._getChar()
-                    if next_char is None:
-                        # End of stream.
-                        break
-                    if not next_char.isalnum():
-                        # First AND last character in the word. Skip.
-                        continue
-                # Part of a word. Keep:
-                result += char
-                continue
-            elif char == '?':
-                # Question marks can either be wildcards or end of sentences.
-                # We assume that if it comes at the end of a word, it's a 
-                # wildcard.
-                next_char = self._getChar()
-                if next_char is None:
-                    # End of stream.
-                    break
-                if next_char.isalnum():
-                    # The word continues after the question mark. It's a
-                    # wildcard, add both to the result.
-                    result += char
-                    result += next_char
-                    continue
-                if result:
-                    # The end of a word, and therefore probably the end of a 
-                    # sentence. We skip the question mark, and return the word,
-                    break
-                # This question mark was standing by itself. Ignore it and..
-                continue
-            else:
-                # Not a letter, not a wildcard. 
-                if result: # We have a word
-                    break
-                # We haven't found the start of the word yet. 
-                continue
-        if result:
-            #print result,
-            return PyLucene.Token(result, old_offset, self.offset, u'word')
-        return None
-
-
-
-class WildCardMagikBefore(PyLucene.Tokenizer):
-    
-    def __init__(self, tokenstream, wildcards):
-        self._wildcards = wildcards
-        self.input = tokenstream
-        self.count = 0
-        
-    def next(self):
-        term = self.input.next()
-        if term is None:
+        token = self.input.next()
+        if token is None:
             return None
-        text = term.termText()
-        self._wildcards[self.count] = {}
+
+        ttext = token.termText()
+        if not ttext:
+            return None
+        
+        ttext = ttext.translate(xlate_table)
+        return PyLucene.Token(ttext, token.startOffset(),
+                              token.endOffset(), token.type())
+
+
+#class WildCardTokenizer(PyLucene.Tokenizer):
+    
+    #def __init__(self, tokenStream):
+        #if not isinstance(tokenStream, PyLucene.StringReader):
+            ## Sometimes this is called with a PyLucene.Reader.
+            ## I wrap it in a StringReader to get a consistent interface.
+            #tokenStream = PyLucene.StringReader(tokenStream.read())
+        #self.input = tokenStream
+        #self.offset = 0
+        
+    #def _getChar(self):
+        #val = self.input.read()
+        #self.offset += 1
+        #if val == -1:
+            #return None
+        #return unichr(val)
+    
+    #def next(self):
+        #result = ''
+        #old_offset = self.offset
+        #while True:
+            #char = self._getChar()
+            #if char is None:
+                #break
+            #if char.isalnum():
+                #result += char
+                #continue
+            #elif char == '*':
+                ## Asterisks are wildcards if part of a word, ignored otherwise.
+                #if len(result) == 0:
+                    #next_char = self._getChar()
+                    #if next_char is None:
+                        ## End of stream.
+                        #break
+                    #if not next_char.isalnum():
+                        ## First AND last character in the word. Skip.
+                        #continue
+                ## Part of a word. Keep:
+                #result += char
+                #continue
+            #elif char == '?':
+                ## Question marks can either be wildcards or end of sentences.
+                ## We assume that if it comes at the end of a word, it's a 
+                ## wildcard.
+                #next_char = self._getChar()
+                #if next_char is None:
+                    ## End of stream.
+                    #break
+                #if next_char.isalnum():
+                    ## The word continues after the question mark. It's a
+                    ## wildcard, add both to the result.
+                    #result += char
+                    #result += next_char
+                    #continue
+                #if result:
+                    ## The end of a word, and therefore probably the end of a 
+                    ## sentence. We skip the question mark, and return the word,
+                    #break
+                ## This question mark was standing by itself. Ignore it and..
+                #continue
+            #else:
+                ## Not a letter, not a wildcard. 
+                #if result: # We have a word
+                    #break
+                ## We haven't found the start of the word yet. 
+                #continue
+        #if result:
+            ##print result,
+            #return PyLucene.Token(result, old_offset, self.offset, u'word')
+        #return None
+
+
+
+#class WildCardMagikBefore(PyLucene.Tokenizer):
+    
+    #def __init__(self, tokenstream, wildcards):
+        #self._wildcards = wildcards
+        #self.input = tokenstream
+        #self.count = 0
+        
+    #def next(self):
+        #term = self.input.next()
+        #if term is None:
+            #return None
+        #text = term.termText()
+        #self._wildcards[self.count] = {}
             
-        for wildcard in ('?', '*'):
-            pos = 0
-            while True:
-                pos = text.find(wildcard, pos+1)
-                if pos == -1:
-                    break
-                self._wildcards[self.count][pos] = wildcard
-                text = text[:pos] + 'n' + text[pos+1:]
-        self.count += 1
-        return PyLucene.Token(text, term.startOffset(), 
-                              term.endOffset(), u'word')
+        #for wildcard in ('?', '*'):
+            #pos = 0
+            #while True:
+                #pos = text.find(wildcard, pos+1)
+                #if pos == -1:
+                    #break
+                #self._wildcards[self.count][pos] = wildcard
+                #text = text[:pos] + 'n' + text[pos+1:]
+        #self.count += 1
+        #return PyLucene.Token(text, term.startOffset(), 
+                              #term.endOffset(), u'word')
     
-class WildCardMagikAfter(PyLucene.Tokenizer):
+#class WildCardMagikAfter(PyLucene.Tokenizer):
     
-    def __init__(self, tokenstream, wildcards):
-        self._wildcards = wildcards
-        self.input = tokenstream
-        self.count = 0
+    #def __init__(self, tokenstream, wildcards):
+        #self._wildcards = wildcards
+        #self.input = tokenstream
+        #self.count = 0
 
-    def next(self):
-        term = self.input.next()
-        if term is None:
-            return None
-        text = term.termText()
-        for pos, char in self._wildcards[self.count].items():
-            text = text[:pos] + char + text[pos+1:]
-        self.count += 1
-        return PyLucene.Token(text, term.startOffset(), 
-                              term.endOffset(), u'word')
+    #def next(self):
+        #term = self.input.next()
+        #if term is None:
+            #return None
+        #text = term.termText()
+        #for pos, char in self._wildcards[self.count].items():
+            #text = text[:pos] + char + text[pos+1:]
+        #self.count += 1
+        #return PyLucene.Token(text, term.startOffset(), 
+                              #term.endOffset(), u'word')
+
+
+#class NXFrenchWildcardAnalyzer(object):
+    #"""French analyzer with wildcard support"""
+    
+    #def tokenStream(self, fieldName, reader):
+
+        #result = WildCardTokenizer(reader)
+
+        ## Standard / Lowercase filtering
+        #result = PyLucene.StandardFilter(result)
+        #result = PyLucene.LowerCaseFilter(result)
+
+        ##  French stemmer.
+        #wildcards = {}
+        #result = WildCardMagikBefore(result, wildcards)
+        #result = PyLucene.FrenchStemFilter(result)
+        #result = WildCardMagikAfter(result, wildcards)
+
+        ## Get rid of accents:
+        #result = NXAccentFilter(result)
         
-    
-    
+        ## Stop filters.
+        #result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
+        #result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
+
+        #return result
+
+        
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
 
@@ -172,27 +217,27 @@ class NXFrenchAnalyzer(object):
     """
 
     def tokenStream(self, fieldName, reader):
-        result = WildCardTokenizer(reader)
-        #result = PyLucene.StandardTokenizer(reader)
+        result = PyLucene.StandardTokenizer(reader)
 
         # Standard / Lowercase filtering
         result = PyLucene.StandardFilter(result)
         result = PyLucene.LowerCaseFilter(result)
 
-        #  French stemmer.
-        wildcards = {}
-        result = WildCardMagikBefore(result, wildcards)
-        result = PyLucene.FrenchStemFilter(result)
-        result = WildCardMagikAfter(result, wildcards)
-
         # Custom French filter (see below)
         result = NXFrenchFilter(result)
 
+        #  French stemmer.
+        result = PyLucene.FrenchStemFilter(result)
+
+        # Get rid of accents:
+        result = NXAccentFilter(result)
+        
         # Stop filters.
         result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
         result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
 
         return result
+
 
 class NXFrenchFilter(object):
 
@@ -227,8 +272,6 @@ class NXFrenchFilter(object):
 
             if ttext.lower().endswith("'s"):
                 ttext = ttext[:2]
-
-        ttext = ttext.translate(xlate_table)
 
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
