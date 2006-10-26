@@ -6,9 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
-- AsciiFilter : ensure that this is really ASCII if some weird char
-  has gone through
-- Remove the UnStored field internally since it seems possible with Lucene to update a document incrementally with unstored fields.
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

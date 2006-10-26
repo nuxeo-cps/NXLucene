@@ -1,4 +1,26 @@
 ===========================================================
+Package: NXLucene 0.11.1
+===========================================================
+First release built by: gracinet at: 2006-10-26T02:51:40
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.11.1
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@49836
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- AsciiFilter : ensure that this is really ASCII if some weird char
+  has gone through
+- Remove the UnStored field internally since it seems possible with Lucene to update a document incrementally with unstored fields.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 0.11.0
 ===========================================================
 First release built by: lregebro at: 2006-10-24T16:17:14
