@@ -150,6 +150,9 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
     def xmlrpc_debug(self, msg):
         return msg
 
+    def xmlrpc_getFieldTerms(self, field):
+        return self._core.getFieldTerms(field)
+
 
     #
     # Private API

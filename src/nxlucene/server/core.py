@@ -626,22 +626,20 @@ class LuceneServer(object):
 
         searcher.close()
         return results.getStream()
-    
-    def getTerms(self):
-        """Returns all the terms used in the store."""
-        reader = self.getReader().get()
-        return reader.terms()
-
-    def getFieldTerms(self, field):
-        """Returns all the terms for a specific field
         
-        Note that this does not return an object with next() and term()
-        methods, but a straight list.
+    def getFieldTerms(self, field):
+        """Returns a list with all the terms for a specific field
         """
-        terms = self.getTerms()
+        reader = self.getReader()
+        indexreader = reader.get()
+        start_term = PyLucene.Term(field, '')
+        terms = indexreader.terms(start_term)
         res = []
-        while terms.next():
+        while True:
             term = terms.term()
-            if term.field() == field:
-                res.append(term.text())
+            if term is None or term.field() != field:
+                break
+            res.append(term.text())
+            if not terms.next():
+                break
         return res

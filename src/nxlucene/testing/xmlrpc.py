@@ -74,6 +74,9 @@ class FakeXMLRPCLuceneServer(object):
     def debug(self, msg):
         return self._core.xmlrpc_debug(msg)
 
+    def getFieldTerms(self, field):
+        return self._core.xmlrpc_getFieldTerms(field)
+
 import os
 import xmlrpclib
 import shutil

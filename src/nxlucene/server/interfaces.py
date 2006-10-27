@@ -131,6 +131,10 @@ class IXMLRPCLuceneServer(zope.interface.Interface):
     def xmlrpc_hasUID(uid):
         """Has the store a document having this UID ?
         """
+        
+    def xmlrpc_getFieldTerms(field):
+        """Return all the terms of a field.
+        """
 
 class ILuceneServer(zope.interface.Interface):
     """Lucene server interface
@@ -232,6 +236,10 @@ class ILuceneServer(zope.interface.Interface):
 
     def searchQuery(return_fields=(), search_fields=(), search_options={}):
         """Search results.
+        """
+
+    def getFieldTerms(field):
+        """Return all the terms of a field.
         """
 
 class IXMLSearchQuery(zope.interface.Interface):

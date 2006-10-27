@@ -71,15 +71,6 @@ class LuceneServerTestCase(unittest.TestCase):
         if os.path.exists(self._store_dir):
             shutil.rmtree(self._store_dir)
 
-    def test_terms(self):
-        self._indexObjects()
-        terms = self._server.getTerms()
-        list = []
-        while terms.next():
-            list.append(terms.term().text())
-        self.failUnlessEqual(list, 
-             [u'fulltext', u'object1', u'object2', u'bar', u'foo', u'1', u'2'])
-
     def test_fieldterms(self):
         self._indexObjects()
         terms = self._server.getFieldTerms('uid')
