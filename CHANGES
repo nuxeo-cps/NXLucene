@@ -6,8 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
-- A question mark standing by itself would break off tokenization.
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- The wildcard support in the french analyzer has been removed, as Lucene
-  will handle it separatelt and ignore the analyzer anyway.
+- 

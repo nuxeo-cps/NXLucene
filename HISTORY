@@ -1,4 +1,25 @@
 ===========================================================
+Package: NXLucene 0.12.0
+===========================================================
+First release built by: lregebro at: 2006-10-27T12:08:40
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.12.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@49855
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- A question mark standing by itself would break off tokenization.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- The wildcard support in the french analyzer has been removed, as Lucene
+  will handle it separatelt and ignore the analyzer anyway.
+
+===========================================================
 Package: NXLucene 0.11.1
 ===========================================================
 First release built by: gracinet at: 2006-10-26T02:51:40
