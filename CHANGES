@@ -3,9 +3,7 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
-- A getFieldTerms method wich returns a list of all terms used in a field.
-  Useful to get all the values for a dropdown box or all the UIDs of all 
-  indexed documents.
+-
 Bug fixes
 ~~~~~~~~~
 -

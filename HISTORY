@@ -1,4 +1,26 @@
 ===========================================================
+Package: NXLucene 0.13.0
+===========================================================
+First release built by: lregebro at: 2006-11-02T16:11:29
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.13.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@49907
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- A getFieldTerms method wich returns a list of all terms used in a field.
+  Useful to get all the values for a dropdown box or all the UIDs of all 
+  indexed documents.
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 0.12.0
 ===========================================================
 First release built by: lregebro at: 2006-10-27T12:08:40
