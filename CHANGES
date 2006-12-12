@@ -3,7 +3,7 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
--
+- #1796: per-field negative queries using 'NOT' condition
 Bug fixes
 ~~~~~~~~~
 -

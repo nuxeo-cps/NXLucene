@@ -415,6 +415,66 @@ class LuceneSeachTestCase(unittest.TestCase):
                             },))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
 
+    def test_keyword_not_search(self):
+        attributs = ( ('allowedRolesAndUsers', 'MultiKeyword'),
+                      ('type', 'Keyword'), )
+
+        ob = Foo(allowedRolesAndUsers="xx:yy", type='foo')
+        query = FakeXMLInputStream(ob, attributs=attributs)
+        self._server.indexDocument('5', query)
+
+        ob = Foo(allowedRolesAndUsers="MMM#xx:zz", type='bar')
+        query = FakeXMLInputStream(ob, attributs=attributs)
+        self._server.indexDocument('6', query)
+
+        def _search(*fields):
+            return PythonResultSet(
+                ResultSet(self._server.searchQuery(
+                (),
+                search_fields=fields)))
+
+        # non purely negative
+        res = _search({'id' : u'allowedRolesAndUsers',
+                       'type' : 'MultiKeyword',
+                       'value': u'xx:yy',
+                       },
+                      {'id' : u'type',
+                       'type' : 'Keyword',
+                       'value': u'bar',
+                       'condition': 'NOT',
+                       },)
+        self.assertEqual(res.getResults()[0], ({u'uid': u'5'},))
+
+        res = _search({'id' : u'type',
+                       'type' : 'Keyword',
+                       'value': u'foo',
+                       'condition': 'NOT',
+                       },)
+        self.assertEqual(res.getResults()[0], ({u'uid': u'6'},))
+
+        # purely negative
+        res = _search({'id' : u'allowedRolesAndUsers',
+                       'type' : 'MultiKeyword',
+                       'value': u'MMM',
+                       'condition': 'NOT',
+                       },
+                      {'id' : u'type',
+                       'type' : 'Keyword',
+                       'value': u'bar',
+                       'condition': 'NOT',
+                       },)
+        self.assertEqual(res.getResults()[0], ({u'uid': u'5'},))
+
+        ob = Foo(allowedRolesAndUsers="xx:zz", type='bar')
+        query = FakeXMLInputStream(ob, attributs=attributs)
+        self._server.indexDocument('7', query)
+        res = _search({'id' : u'allowedRolesAndUsers',
+                       'type' : 'MultiKeyword',
+                       'value': u'MMM#xx:yy',
+                       'condition': 'NOT',
+                       },)
+        self.assertEqual(res.getResults()[0], ({u'uid': u'7'},))
+
     def test_text_more_keyword(self):
 
         uid = unicode(str(random.randint(0, 1000)))

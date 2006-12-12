@@ -395,12 +395,17 @@ class LuceneServer(object):
         query.setMaxClauseCount(sys.maxint)
         date_filter = None
 
+        # will be used to add MatchAllDocs to purely negative queries
+        pure_negative = True
+        from nxlucene.search.query import boolean_clauses_map
         for field in search_fields:
-
             index = field['id']
             value = field['value']
             type =  field.get('type', '')
             condition = field.get('condition', 'AND')
+            # won't play well with QueryParser stuff
+            if condition != 'NOT':
+                pure_negative = False 
             usage = field.get('usage', '')
 
             analyzer = field.get('analyzer', 'standard')
@@ -410,7 +415,6 @@ class LuceneServer(object):
             analyzer = analyzer.lower()
 
             if type.lower() in ('keyword', 'multikeyword'):
-
                 subquery = PyLucene.BooleanQuery()
 
                 # FIXME use tokenizer... this sucks...
@@ -420,17 +424,10 @@ class LuceneServer(object):
                     values = [value]
 
                 # FIXME use tokenizer... this sucks...
+                sub_op = boolean_clauses_map.get('OR')
                 for each in values:
-#                    each = each.replace(':', '_')
                     subquery.add(
-                        PyLucene.TermQuery(PyLucene.Term(index, each)),
-                        nxlucene.search.query.boolean_clauses_map.get('OR'))
-
-                query.add(
-                    subquery,
-                    nxlucene.search.query.boolean_clauses_map.get(
-                    condition, default_clause))
-
+                        PyLucene.TermQuery(PyLucene.Term(index, each)), sub_op)
             elif type.lower() == 'path':
 
                 subquery = PyLucene.BooleanQuery()
@@ -442,52 +439,36 @@ class LuceneServer(object):
                     values = value.split()
 
                 # FIXME use tokenizer... this sucks...
+                sub_op = boolean_clauses_map.get('OR')
                 for each in values:
 
                     if each.endswith('*'):
                         # :FIXME:
                         each  = each[:-1]
 
-                    # Remove trailing '/' since we remove it at
-                    # indexation time.
-                    if each.endswith('/'):
+                    # Remove trailing '/' since we did at indexation time
+                    if each[-1] == '/':
                         each  = each[:-1]
 
                     term = PyLucene.Term(index, each)
-                    ssquery = PyLucene.TermQuery(term)
-
-                    subquery.add(
-                        ssquery,
-                        nxlucene.search.query.boolean_clauses_map.get('OR')
-                        )
-
-                query.add(
-                    subquery,
-                    nxlucene.search.query.boolean_clauses_map.get(
-                    condition, default_clause))
+                    subquery.add(PyLucene.TermQuery(term), sub_op)
 
             elif type.lower() == 'date':
 
                 subquery = None
 
-                start_date = None
-                end_date = None
-
+                start_date = end_date = None
                 if usage and usage != 'range:min:max':
-
                     if usage == 'range:min':
                         start_date = PyLucene.Term(index, value)
-
                     elif usage == 'range:max':
                         end_date = PyLucene.Term(index, value)
-
                     else:
                         self.log.error("Usage not supported %s" % str(usage))
 
                     if start_date is not None or end_date is not None:
                         subquery = PyLucene.RangeQuery(
                             start_date, end_date, True)
-
                 else:
                     values = value.split('#')
                     if len(values) == 2:
@@ -501,13 +482,7 @@ class LuceneServer(object):
                         term = PyLucene.Term(index, value)
                         subquery = PyLucene.TermQuery(term)
 
-                if subquery is not None:
-                    query.add(
-                        subquery,
-                        nxlucene.search.query.boolean_clauses_map.get(
-                        condition, default_clause))
-
-            else:
+            else: # Fallback to Query Parser
 
                 this_analyzer = nxlucene.analysis.getAnalyzerById(analyzer)
 
@@ -523,13 +498,21 @@ class LuceneServer(object):
                     subquery = qparser.parseQuery(value)
                 except PyLucene.JavaError:
                     return results.getStream()
+                else:
+                    if len(search_fields) == 1:
+                        # pure QueryParser search, it might be purely negative
+                        pure_negative = True
 
-                query.add(
-                    subquery,
-                    nxlucene.search.query.boolean_clauses_map.get(
+            if subquery is not None:
+                query.add(subquery,
+                          nxlucene.search.query.boolean_clauses_map.get(
                     condition, default_clause))
 
-        self.log.debug('query %s' % query.toString())
+        if pure_negative:
+            query.add(PyLucene.BooleanClause(PyLucene.MatchAllDocsQuery(),
+                                               True, False))
+
+        self.log.debug('query "%s"' % query.toString())
 
         # Probably no indexes are created yet.
         searcher = self.getSearcher()
