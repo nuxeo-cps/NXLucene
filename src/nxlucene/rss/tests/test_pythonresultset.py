@@ -43,6 +43,12 @@ class PythonResultSetTestCase(unittest.TestCase):
         self.assertEqual(len(results[0]), 2)
         self.assertEqual(results[0], ({u'givenName': 'Julien', u'uid': '1', u'name': 'Anguenot'}, {u'givenName': u'\xc9ric', u'uid': '2', u'name': 'Barroca'}))
 
+    def test_empty_None(self):
+        # Test for #1797
+        self._rs.addItem('3', {'name' : u'Racinet', 'givenName' : None})
+        results = self._pyrs.getResults()
+        self.assertEqual(results[0][2]['givenName'], u'')
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(PythonResultSetTestCase))

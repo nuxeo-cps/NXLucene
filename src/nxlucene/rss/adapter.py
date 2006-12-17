@@ -47,7 +47,13 @@ class PythonResultSet(object):
                 k = unicode(field.attrib['id'])
                 if k == u'uid':
                     continue
-                v = unicode(field.text)
+                if field.text is None:
+                    # should not really happen but does (#1797)
+                    v = u''
+                else:
+                    v = unicode(field.text)
+
+                # Multiple occurences of same element produce lists 
                 existing = res.get(k)
                 if existing is None:
                     res[k] = v
