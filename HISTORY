@@ -1,4 +1,25 @@
 ===========================================================
+Package: NXLucene 0.15.0
+===========================================================
+First release built by: gracinet at: 2006-12-18T15:02:01
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.15.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@50636
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+- #1797: some empty strings were returned in result sets as u'None'
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 0.14.0
 ===========================================================
 First release built by: gracinet at: 2006-12-13T19:47:01

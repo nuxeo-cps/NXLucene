@@ -4,7 +4,6 @@ Requires
 New features
 ~~~~~~~~~~~~
 -
-- #1797: some empty strings were returned in result sets as u'None'
 Bug fixes
 ~~~~~~~~~
 -
