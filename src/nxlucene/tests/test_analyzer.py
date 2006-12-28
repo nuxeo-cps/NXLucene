@@ -191,6 +191,16 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens_fr, ['enfant'])
 
 
+    def test_french_misc_02(self):
+
+        term_str = unicode("Paris", 'latin-1')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['paris'])
+
+
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
                "nantissement. ? Je suis un enfant de l'indépendance. Je "\
