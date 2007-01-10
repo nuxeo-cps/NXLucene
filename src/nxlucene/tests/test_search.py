@@ -1,5 +1,5 @@
 # -*- coding: ISO-8859-15 -*-
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
+# (C) Copyright 2006-2007 Nuxeo SAS <http://nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -86,9 +86,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
-            ()
-,            search_fields=({'id' : u'fulltext',
-                             'value': u'ab'},))))
+            (),
+            search_fields=({'id' : u'fulltext',
+                            'value': u'ab'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'2'},))
 
         res = PythonResultSet(
@@ -130,7 +130,7 @@ class LuceneSeachTestCase(unittest.TestCase):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en " \
        "nantissement. Je suis un enfant de l'indépendance. Je ch?rche " \
        "f*rcement bien!"
-        text = unicode(text, 'latin-1')
+        text = unicode(text, 'iso-8859-15')
 
         # Indes a new document.
         ob = Foo(fulltext=text)
@@ -154,7 +154,7 @@ class LuceneSeachTestCase(unittest.TestCase):
                              'analyzer': 'french'},))))
         self.assertEqual(res.getResults()[0], ({u'uid': u'2.1'},))
 
-    
+
     def test_path(self):
 
         # Indes a new document.
@@ -932,7 +932,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_analyzer_stopwords(self):
 
-        fr = unicode("eu avoir chanté", 'latin-1')
+        fr = unicode("eu avoir chanté", 'iso-8859-15')
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -950,7 +950,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': unicode('avoir', 'latin-1'),
+             'value': unicode('avoir', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -966,7 +966,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': unicode('eu', 'latin-1'),
+             'value': unicode('eu', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -982,7 +982,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': unicode('avoir', 'latin-1'),
+             'value': unicode('avoir', 'iso-8859-15'),
              'analyzer' : 'standard',
             },
 
@@ -992,7 +992,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_filter(self):
 
-        fr = unicode("L'enfant a chanté", 'latin-1')
+        fr = unicode("L'enfant a chanté", 'iso-8859-15')
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -1034,7 +1034,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_stemmer(self):
 
-        fr = unicode("chanté", "latin-1")
+        fr = unicode("chanté", "iso-8859-15")
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -1051,7 +1051,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': unicode('chanté', 'latin-1'),
+             'value': unicode('chanté', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -1082,7 +1082,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Text',
-             'value': unicode("chantée", "latin-1"),
+             'value': unicode("chantée", "iso-8859-15"),
              'analyzer' : 'french',
             },
 
@@ -1092,7 +1092,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_stemmer_unstored(self):
 
-        fr = unicode("chanté", "latin-1")
+        fr = unicode("chanté", "iso-8859-15")
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -1109,7 +1109,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'Unstored',
-             'value': unicode('chanté', 'latin-1'),
+             'value': unicode('chanté', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -1140,7 +1140,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'UnStored',
-             'value': unicode("chantée", "latin-1"),
+             'value': unicode("chantée", "iso-8859-15"),
              'analyzer' : 'french',
             },
 
@@ -1150,7 +1150,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_filter_unstored(self):
 
-        fr = unicode("L'enfant a chanté", 'latin-1')
+        fr = unicode("L'enfant a chanté", 'iso-8859-15')
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -1192,7 +1192,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_french_analyzer_stopwords_unstored(self):
 
-        fr = unicode("eu avoir chanté", 'latin-1')
+        fr = unicode("eu avoir chanté", 'iso-8859-15')
         ob1 = Foo(content=fr)
 
         query = FakeXMLInputStream(
@@ -1210,7 +1210,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'UnStored',
-             'value': unicode('avoir', 'latin-1'),
+             'value': unicode('avoir', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -1226,7 +1226,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'UnStored',
-             'value': unicode('eu', 'latin-1'),
+             'value': unicode('eu', 'iso-8859-15'),
              'analyzer' : 'french',
             },
 
@@ -1242,7 +1242,7 @@ class LuceneSeachTestCase(unittest.TestCase):
 
             {'id' : u'content',
              'type' : 'UnStored',
-             'value': unicode('avoir', 'latin-1'),
+             'value': unicode('avoir', 'iso-8859-15'),
              'analyzer' : 'standard',
             },
 
@@ -1277,9 +1277,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_search_sort_analyzer_no_french(self):
 
-        ob1 = Foo(value=unicode('Bonjour', 'latin-1'))
-        ob2 = Foo(value=unicode('Assez bien', 'latin-1'))
-        ob3 = Foo(value=unicode('Très bien', 'latin-1'))
+        ob1 = Foo(value=unicode('Bonjour', 'iso-8859-15'))
+        ob2 = Foo(value=unicode('Assez bien', 'iso-8859-15'))
+        ob3 = Foo(value=unicode('Très bien', 'iso-8859-15'))
 
         for uid, ob in ((1, ob1), (2, ob2), (3, ob3)):
 
@@ -1401,9 +1401,9 @@ class LuceneSeachTestCase(unittest.TestCase):
 
     def test_search_sort_analyzer_french(self):
 
-        ob1 = Foo(value=unicode('Ça va', 'latin-1'))
-        ob2 = Foo(value=unicode('À voir', 'latin-1'))
-        ob3 = Foo(value=unicode('Très bien', 'latin-1'))
+        ob1 = Foo(value=unicode('Ça va', 'iso-8859-15'))
+        ob2 = Foo(value=unicode('À voir', 'iso-8859-15'))
+        ob3 = Foo(value=unicode('Très bien', 'iso-8859-15'))
 
         for uid, ob in ((1, ob1), (2, ob2), (3, ob3)):
 

@@ -43,7 +43,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("chanté", 'latin-1')
+        term_str = unicode("chanté", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -52,7 +52,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             tokens, [u'chant'])
 
         # Make sure it also works if you skip the accent:
-        term_str = unicode("chante", 'latin-1')
+        term_str = unicode("chante", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -64,7 +64,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("messages", 'latin-1')
+        term_str = unicode("messages", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -76,7 +76,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("jolie", 'latin-1')
+        term_str = unicode("jolie", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -88,7 +88,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("l'enfant", 'latin-1')
+        term_str = unicode("l'enfant", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -112,7 +112,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXSortAnalyzer()
 
-        term_str = unicode("A La MaiSon", 'latin-1')
+        term_str = unicode("A La MaiSon", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -144,7 +144,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("àâéèêëïôùc", 'latin-1')
+        term_str = unicode("àâéèêëïôùc", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
@@ -175,7 +175,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
 
         for word in search_words:
-            term_str = unicode(word, 'latin-1')
+            term_str = unicode(word, 'iso-8859-15')
 
             reader = PyLucene.StringReader(term_str)
             tokens = a.tokenStream('', reader)
@@ -185,7 +185,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def test_french_misc_00(self):
 
-        term_str = unicode("l'enfant", 'latin-1')
+        term_str = unicode("l'enfant", 'iso-8859-15')
 
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
@@ -195,7 +195,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def test_french_misc_01(self):
 
-        term_str = unicode("débat", 'latin-1')
+        term_str = unicode("débat", 'iso-8859-15')
 
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
@@ -205,7 +205,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def test_french_misc_02(self):
 
-        term_str = unicode("Paris", 'latin-1')
+        term_str = unicode("Paris", 'iso-8859-15')
 
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
@@ -215,7 +215,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def test_french_misc_03(self):
 
-        term_str = unicode("hameçon", 'latin-1')
+        term_str = unicode("hameçon", 'iso-8859-15')
 
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
@@ -249,7 +249,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
                "Je suis un enfant de l'indépendance. "\
                "Je cherche forcement bien!"
 
-        term_str = unicode(text, 'latin-1')
+        term_str = unicode(text, 'iso-8859-15')
 
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)

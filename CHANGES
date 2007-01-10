@@ -14,6 +14,8 @@ Bug fixes
   file. The retrieving was done in Latin1 while it shall be done in UTF-8
   because the stopwords.txt file is UTF-8 encoded.
 - Added unit tests for the "oe" and the "ae" latin letters.
+- Replaced "latin-1" everywhere it appears by "iso-8859-15" which is the
+  preferred Latin European charset.
 - Added missing SVN properties.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
