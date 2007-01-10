@@ -3,7 +3,7 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
--
+- Better French analyzer, which deserves a new minor version number increase.
 Bug fixes
 ~~~~~~~~~
 - In the French analyzer moved the StopFilters before the StemFilter so that
@@ -19,4 +19,4 @@ Bug fixes
 - Added missing SVN properties.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+-
