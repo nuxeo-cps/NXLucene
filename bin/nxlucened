@@ -29,7 +29,7 @@ function start() {
 
 function stop() {
 
-    echo "Stoping NXLucene:"
+    echo "Stopping NXLucene:"
 
     ps ax |grep twistd |grep $NAME &>/dev/null
     if [ "$?" -eq 0 ]; then
