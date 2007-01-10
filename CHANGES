@@ -3,20 +3,10 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
-- Better French analyzer, which deserves a new minor version number increase.
+-
 Bug fixes
 ~~~~~~~~~
-- In the French analyzer moved the StopFilters before the StemFilter so that
-  stemmed words are not removed (for example this was the case of "Paris").
-- In the French analyzer fixed the NXAccentFilter and NXFrenchFilter to be
-  iterable.
-- In the French analyzer fixed the retrieving of words from the stopwords.txt
-  file. The retrieving was done in Latin1 while it shall be done in UTF-8
-  because the stopwords.txt file is UTF-8 encoded.
-- Added unit tests for the "oe" and the "ae" latin letters.
-- Replaced "latin-1" everywhere it appears by "iso-8859-15" which is the
-  preferred Latin European charset.
-- Added missing SVN properties.
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
--
+- 
