@@ -13,6 +13,7 @@ Bug fixes
 - In the French analyzer fixed the retrieving of words from the stopwords.txt
   file. The retrieving was done in Latin1 while it shall be done in UTF-8
   because the stopwords.txt file is UTF-8 encoded.
+- Added unit test for the "oe" latin letter.
 - Added missing SVN properties.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~

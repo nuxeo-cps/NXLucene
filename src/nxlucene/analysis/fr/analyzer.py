@@ -47,8 +47,8 @@ XLATE_TABLE = {
     ord(u'ï'): u'i',
     ord(u'ô'): u'o',
     ord(u'ù'): u'u',
-#    ord(u'½'): u'oe',
     ord(u'ç'): u'c',
+    ord(u'½'): u'oe',
     }
 
 

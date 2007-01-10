@@ -1,6 +1,8 @@
 # -*- coding: ISO-8859-15 -*-
 # (C) Copyright 2006-2007 Nuxeo SAS <http://nuxeo.com>
-# Author: Julien Anguenot <ja@nuxeo.com>
+# Authors:
+# Julien Anguenot <ja@nuxeo.com>
+# M.-A. Darche <madarche@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -181,7 +183,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             self.assertEquals(tokens, [u'deontolog'])
 
 
-    def test_french_misc(self):
+    def test_french_misc_00(self):
 
         term_str = unicode("l'enfant", 'latin-1')
 
@@ -189,6 +191,16 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['enfant'])
+
+
+    def test_french_misc_01(self):
+
+        term_str = unicode("débat", 'latin-1')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['debat'])
 
 
     def test_french_misc_02(self):
@@ -199,6 +211,26 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['par'])
+
+
+    def test_french_misc_03(self):
+
+        term_str = unicode("hameçon", 'latin-1')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['hamecon'])
+
+
+    def test_french_misc_04(self):
+
+        term_str = unicode("œuvre", 'iso-8859-15')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['oeuvr'])
 
 
     def test_french_complet(self):
@@ -212,8 +244,8 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(tokens_fr, 
-                          [u'test', u'67-236', u'part', u'social', 
+        self.assertEquals(tokens_fr,
+                          [u'test', u'67-236', u'part', u'social',
                            u'peuvent', u'don', u'nant', u'auteur', u'suis', u'enfant',
                            u'independ', u'cherch', u'forc', u'bien'])
 
