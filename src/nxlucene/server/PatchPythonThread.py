@@ -1,7 +1,7 @@
 # PyLucene memory leak fix !
 # See http://lists.osafoundation.org/pipermail/pylucene-dev/2006-May/001022.html
 
-# $Id: $
+# $Id$
 
 from PyLucene import Thread
 import threading

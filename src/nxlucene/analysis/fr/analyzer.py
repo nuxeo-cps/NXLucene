@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """Analyzer helper
 
-$Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
+$Id$
 """
 import string
 import os.path
@@ -31,11 +31,11 @@ for each in f.readlines():
     FRENCH_STOP_WORDS.append(string.rstrip(each))
 f.close()
 
-FRENCH_STOP_WORDS = [unicode(x, 'latin-1') for x in FRENCH_STOP_WORDS]
+FRENCH_STOP_WORDS = [unicode(x, 'utf-8') for x in FRENCH_STOP_WORDS]
 
 FRENCH_EXCLUDED_WORDS = []
 
-xlate_table = {ord(u'é'): u'e',
+XLATE_TABLE = {ord(u'é'): u'e',
                ord(u'è'): u'e',
                ord(u'ê'): u'e',
                ord(u'ë'): u'e',
@@ -44,12 +44,35 @@ xlate_table = {ord(u'é'): u'e',
                ord(u'ç'): u'c',
                }
 
-class NXAccentFilter(object):
+
+class NXFilter(object):
+    """Base class which provides the __iter__ method.
+    """
+
+    def __init__(self):
+        raise RuntimeError, "You must inherit from this class."
+
+    def __iter__(self):
+        """Returns an iterator over the tokens returned by this filter.
+        """
+        result = []
+        while True:
+            token = self.next()
+            if token is not None:
+                result.append(token)
+            else:
+                break
+        return iter(result)
+
+
+class NXAccentFilter(NXFilter):
 
     def __init__(self, tokenStream):
         self.input = tokenStream
 
     def next(self):
+        """Move to the next token.
+        """
         token = self.input.next()
         if token is None:
             return None
@@ -57,18 +80,19 @@ class NXAccentFilter(object):
         ttext = token.termText()
         if not ttext:
             return None
-        
-        ttext = ttext.translate(xlate_table)
+
+        ttext = ttext.translate(XLATE_TABLE)
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
 
-
-class NXFrenchFilter(object):
+class NXFrenchFilter(NXFilter):
 
     def __init__(self, tokenStream):
         self.input = tokenStream
 
     def next(self):
+        """Move to the next token.
+        """
         token = self.input.next()
         if token is None:
             return None
@@ -118,14 +142,15 @@ class NXFrenchAnalyzer(object):
         # Custom French filter (see below)
         result = NXFrenchFilter(result)
 
+        # Stop filters.
+        result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
+        result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
+
         #  French stemmer.
         result = PyLucene.FrenchStemFilter(result)
 
         # Get rid of accents:
         result = NXAccentFilter(result)
-        
-        # Stop filters.
-        result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
-        result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
 
         return result
+

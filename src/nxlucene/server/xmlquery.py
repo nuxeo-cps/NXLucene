@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """Stream
 
-$Id: xmlquery.py 46520 2006-06-14 19:41:42Z janguenot $
+$Id$
 """
 
 import base64

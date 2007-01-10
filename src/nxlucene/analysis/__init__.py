@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """Analyzer Helper
 
-$Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
+$Id$
 """
 
 import PyLucene

@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """Fake XML-RPC Lucene Server interfaces.
 
-$Id: server.py 30816 2006-02-28 18:09:59Z janguenot $
+$Id$
 """
 
 import zope.interface

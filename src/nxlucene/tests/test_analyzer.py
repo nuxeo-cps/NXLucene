@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """NXFrenchAnalyzer helper
 
-$Id: core.py 31300 2006-03-15 03:10:04Z janguenot $
+$Id$
 """
 
 import unittest
@@ -198,13 +198,14 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(tokens_fr, ['paris'])
+        self.assertEquals(tokens_fr, ['par'])
 
 
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
-               "nantissement. ? Je suis un enfant de l'indépendance. Je "\
-               "cherche forcement bien!"
+               "nantissement par des auteurs. ? "\
+               "Je suis un enfant de l'indépendance. "\
+               "Je cherche forcement bien!"
 
         term_str = unicode(text, 'latin-1')
 
@@ -213,7 +214,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, 
                           [u'test', u'67-236', u'part', u'social', 
-                           u'peuvent', u'don', u'nant', u'suis', u'enfant',
+                           u'peuvent', u'don', u'nant', u'auteur', u'suis', u'enfant',
                            u'independ', u'cherch', u'forc', u'bien'])
 
 def test_suite():

@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-13
 """Test txn managers
 
-$Id: test_txn_managers.py 30575 2005-12-13 16:15:42Z janguenot $
+$Id$
 """
 
 import unittest

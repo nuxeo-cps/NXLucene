@@ -21,7 +21,7 @@ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/203871
 
 Thanks Tim Lesher
 
-$Id: $
+$Id$
 """
 import gc
 from time import sleep
