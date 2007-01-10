@@ -37,14 +37,19 @@ FRENCH_STOP_WORDS = [unicode(x, 'utf-8') for x in FRENCH_STOP_WORDS]
 
 FRENCH_EXCLUDED_WORDS = []
 
-XLATE_TABLE = {ord(u'é'): u'e',
-               ord(u'è'): u'e',
-               ord(u'ê'): u'e',
-               ord(u'ë'): u'e',
-               ord(u'à'): u'a',
-               ord(u'ù'): u'u',
-               ord(u'ç'): u'c',
-               }
+XLATE_TABLE = {
+    ord(u'à'): u'a',
+    ord(u'â'): u'a',
+    ord(u'é'): u'e',
+    ord(u'è'): u'e',
+    ord(u'ê'): u'e',
+    ord(u'ë'): u'e',
+    ord(u'ï'): u'i',
+    ord(u'ô'): u'o',
+    ord(u'ù'): u'u',
+#    ord(u'½'): u'oe',
+    ord(u'ç'): u'c',
+    }
 
 
 class NXFilter(object):

@@ -1,5 +1,5 @@
 # -*- coding: ISO-8859-15 -*-
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
+# (C) Copyright 2006-2007 Nuxeo SAS <http://nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -142,13 +142,13 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("éèëêàùc", 'latin-1')
+        term_str = unicode("àâéèêëïôùc", 'latin-1')
 
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(
-            tokens, [u'eeeeauc'])
+            tokens, [u'aaeeeeiouc'])
 
     def test_french_case_accents_stemming(self):
         # This is to make sure that case, accent and endings all result
