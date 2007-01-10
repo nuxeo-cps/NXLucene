@@ -49,6 +49,7 @@ XLATE_TABLE = {
     ord(u'ù'): u'u',
     ord(u'ç'): u'c',
     ord(u'½'): u'oe',
+    ord(u'æ'): u'ae',
     }
 
 
@@ -70,26 +71,6 @@ class NXFilter(object):
             else:
                 break
         return iter(result)
-
-class NXAccentFilter(NXFilter):
-
-    def __init__(self, tokenStream):
-        self.input = tokenStream
-
-    def next(self):
-        """Move to the next token.
-        """
-        token = self.input.next()
-        if token is None:
-            return None
-
-        ttext = token.termText()
-        if not ttext:
-            return None
-
-        ttext = ttext.translate(XLATE_TABLE)
-        return PyLucene.Token(ttext, token.startOffset(),
-                              token.endOffset(), token.type())
 
 class NXFrenchFilter(NXFilter):
 
@@ -130,6 +111,26 @@ class NXFrenchFilter(NXFilter):
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
 
+class NXAccentFilter(NXFilter):
+
+    def __init__(self, tokenStream):
+        self.input = tokenStream
+
+    def next(self):
+        """Move to the next token.
+        """
+        token = self.input.next()
+        if token is None:
+            return None
+
+        ttext = token.termText()
+        if not ttext:
+            return None
+
+        ttext = ttext.translate(XLATE_TABLE)
+        return PyLucene.Token(ttext, token.startOffset(),
+                              token.endOffset(), token.type())
+
 
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
@@ -160,7 +161,7 @@ class NXFrenchAnalyzer(object):
 
         # Get rid of accents.
         # The accents need to be removed in the end and especially after the
-        # stemming, otherwise the stemming will of course don't work.
+        # stemming, otherwise the stemming will of course not work.
         result = NXAccentFilter(result)
 
         return result

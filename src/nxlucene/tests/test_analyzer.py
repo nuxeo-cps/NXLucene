@@ -233,6 +233,16 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens_fr, ['oeuvr'])
 
 
+    def test_french_misc_05(self):
+
+        term_str = unicode("ægyrine", 'iso-8859-15')
+
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['aegyrin'])
+
+
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
                "nantissement par des auteurs. ? "\
