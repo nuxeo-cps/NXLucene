@@ -1,6 +1,8 @@
 # -*- coding: ISO-8859-15 -*-
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
-# Author: Julien Anguenot <ja@nuxeo.com>
+# (C) Copyright 2006-2007 Nuxeo SAS <http://nuxeo.com>
+# Authors:
+# Julien Anguenot <ja@nuxeo.com>
+# M.-A. Darche <madarche@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -64,7 +66,6 @@ class NXFilter(object):
                 break
         return iter(result)
 
-
 class NXAccentFilter(NXFilter):
 
     def __init__(self, tokenStream):
@@ -124,6 +125,7 @@ class NXFrenchFilter(NXFilter):
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
 
+
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
 
@@ -143,13 +145,17 @@ class NXFrenchAnalyzer(object):
         result = NXFrenchFilter(result)
 
         # Stop filters.
+        # The stop filters should be run before the stemmer otherwise too much
+        # words (a stemmed word could look like a stop word) would be removed.
         result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
         result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
 
-        #  French stemmer.
+        # French stemmer
         result = PyLucene.FrenchStemFilter(result)
 
-        # Get rid of accents:
+        # Get rid of accents.
+        # The accents need to be removed in the end and especially after the
+        # stemming, otherwise the stemming will of course don't work.
         result = NXAccentFilter(result)
 
         return result
