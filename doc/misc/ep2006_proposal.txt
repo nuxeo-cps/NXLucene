@@ -3,7 +3,7 @@ Lucene-based cataloging solution for Zope-3 and CPS-3.4
 ========================================================
 
 :Author: Julien Anguenot
-:Revision: $Id: README.txt 45134 2006-05-02 10:41:54Z sfermigier $
+:Revision: $Id$
 
 .. sectnum::    :depth: 1
 .. contents::   :depth: 1

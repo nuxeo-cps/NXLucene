@@ -1,5 +1,5 @@
 # NXLucene doc Makefile
-# $Id: $
+# $Id$
 # to build api documentation you need python docutils and epydoc
 #
 .PHONY: all epydoc clean

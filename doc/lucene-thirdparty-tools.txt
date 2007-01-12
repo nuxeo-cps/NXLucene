@@ -3,7 +3,7 @@ Lucene third party tools
 ========================
 
 :Author: Julien Anguenot
-:Revision: $Id: INSTALL.txt 32177 2006-03-31 14:45:36Z janguenot $
+:Revision: $Id$
 
 .. sectnum::    :depth: 1
 .. contents::   :depth: 1
