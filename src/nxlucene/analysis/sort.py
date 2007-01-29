@@ -64,10 +64,10 @@ class NXAsciiFilter(object):
 class NXSortAnalyzer(object):
     """NX SortAnalyzer
 
-    Dedicated analyzer for soring purpose. It only applies a standard
+    Dedicated analyzer for sorting purpose. It only applies a standard
     and the lowercase analyzers.
-    
-    Use this analyzer applied on fields that you will use for soring
+
+    Use this analyzer applied on fields that you will use for sorting
     purpose only.
     """
 
