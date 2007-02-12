@@ -259,7 +259,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def testUrlAnalyzer(self):
 
-        term_str = unicode("http://www.cite-musique. fr", 'iso-8859-15')
+        term_str = unicode("http://www.cite-musique.fr", 'iso-8859-15')
 
         a = NXUrlAnalyzer()
         reader = PyLucene.StringReader(term_str)
