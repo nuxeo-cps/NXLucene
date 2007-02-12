@@ -1,4 +1,4 @@
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
+# Copyright (C) 2006-2007, Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -23,12 +23,14 @@ import PyLucene
 
 from fr.analyzer import NXFrenchAnalyzer
 from sort import NXSortAnalyzer
+from url import NXUrlAnalyzer
 
 analyzers_map = {
     # XXX not complete
     'standard'       : PyLucene.StandardAnalyzer(),
     'french'         : NXFrenchAnalyzer(),
     'sort'           : NXSortAnalyzer(),
+    'url'            : NXUrlAnalyzer(),
     'keyword'        : PyLucene.KeywordAnalyzer(),
     }
 
@@ -41,3 +43,4 @@ def getPerFieldAnalyzerWrapper(default_analyzer=None):
     if default_analyzer is None:
         default_analyzer = PyLucene.StandardAnalyzer()
     return PyLucene.PerFieldAnalyzerWrapper(default_analyzer)
+

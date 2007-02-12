@@ -27,6 +27,7 @@ import PyLucene
 
 from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer
 from nxlucene.analysis.sort import NXSortAnalyzer
+from nxlucene.analysis.url import NXUrlAnalyzer
 
 class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
@@ -183,6 +184,19 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             self.assertEquals(tokens, [u'deontolog'])
 
 
+#    def test_french_separators(self):
+#
+#        a = NXFrenchAnalyzer()
+#
+#        term_str = unicode("apres-midi", 'iso-8859-15')
+#
+#        reader = PyLucene.StringReader(term_str)
+#
+#        tokens = [token.termText() for token in a.tokenStream('', reader)]
+#        self.assertEquals(
+#            tokens, [u'apres-midi'])
+
+
     def test_french_misc_00(self):
 
         term_str = unicode("l'enfant", 'iso-8859-15')
@@ -241,6 +255,16 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['aegyrin'])
+
+
+    def testUrlAnalyzer(self):
+
+        term_str = unicode("http://www.cite-musique. fr", 'iso-8859-15')
+
+        a = NXUrlAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, [u'www', u'cite', u'musique', u'fr'])
 
 
     def test_french_complet(self):
