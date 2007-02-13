@@ -44,7 +44,7 @@ class NXFilter(object):
         return iter(result)
 
 
-class NXUrlTokenizer(NXFilter):
+class NXUrlTokenizer(object):
 
     # A regexp that does word splitting using alpha-numerical words.
     WORD_SPLITTING_REGEXP = re.compile('[^a-zA-Z0-9]*')
@@ -68,7 +68,7 @@ class NXUrlTokenizer(NXFilter):
         # Simple code to use a reader, the only implemented in PyLucene
         while True:
             res = reader.read()
-            print "res = [%s] of type = %s" % (res, type(res))
+            #print "res = [%s] of type = %s" % (res, type(res))
             if isinstance(res, str) or isinstance(res, unicode):
                 if res == '':
                     break
@@ -96,11 +96,10 @@ class NXUrlTokenizer(NXFilter):
 
         text_splitted = self.WORD_SPLITTING_REGEXP.split(text)
         text_splitted2 = self.WORD_SPLITTING_WITHOUT_DASH_REGEXP.split(text)
-        print text_splitted + text_splitted2
         for w in text_splitted + text_splitted2:
             words_set.add(w)
         words = [x for x in words_set if x]
-        print "words = %s" % words
+        #print "words = %s" % words
 
         # XXX : offsets should be computed here and not set to 0 0 but this
         # works alright for our usage here.
@@ -115,7 +114,10 @@ class NXUrlTokenizer(NXFilter):
     def next(self):
         """Returns an iterator over the tokens returned by this filter.
         """
-        return self.iterator.next()
+        try:
+            return self.iterator.next()
+        except StopIteration:
+            return None
 
 
 class NXAsciiFilter(NXFilter):

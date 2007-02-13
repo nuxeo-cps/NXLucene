@@ -287,6 +287,31 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens, res)
 
 
+    def testUrlAnalyzer3(self):
+        term_str = unicode("http://www.culture.gouv.fr/culture/fouilles/accueil.html",
+                           'iso-8859-15')
+
+        a = NXUrlAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'http://www.culture.gouv.fr/culture/fouilles/accueil.html',
+               u'www.culture.gouv.fr/culture/fouilles/accueil.html',
+               u'www', u'culture', u'gouv', u'fr', u'fouilles', u'accueil',
+               u'html']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
+
+        # Testing the next call on the token stream
+        a = NXUrlAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        stream = a.tokenStream('', reader)
+        token = stream.next()
+        while token:
+            token = stream.next()
+        self.assertEquals(token, None)
+
+
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
                "nantissement par des auteurs. ? "\
