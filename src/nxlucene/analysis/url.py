@@ -48,8 +48,9 @@ class NXUrlTokenizer(NXFilter):
 
     # A regexp that does word splitting using alpha-numerical words.
     WORD_SPLITTING_REGEXP = re.compile('[^a-zA-Z0-9]*')
+    WORD_SPLITTING_WITHOUT_DASH_REGEXP = re.compile('[^-a-zA-Z0-9]*')
 
-    UNWANTED_URL_WORDS = ['http', 'https', 'ftp']
+    UNWANTED_WORDS = ['http://', 'https://', 'ftp://']
 
     def __init__(self, reader):
         self.tokens = []
@@ -67,12 +68,40 @@ class NXUrlTokenizer(NXFilter):
         # Simple code to use a reader, the only implemented in PyLucene
         while True:
             res = reader.read()
-            if res == -1:
+            print "res = [%s] of type = %s" % (res, type(res))
+            if isinstance(res, str) or isinstance(res, unicode):
+                if res == '':
+                    break
+                text += res
+            elif isinstance(res, int):
+                if res == -1:
+                    break
+                text += chr(res)
+            else:
                 break
-            text += chr(res)
 
-        words = self.WORD_SPLITTING_REGEXP.split(text)
-        words = [x for x in words if x not in self.UNWANTED_URL_WORDS]
+        words_set = set()
+        # Adding the whole URL
+        words_set.add(text)
+
+        for unwanted_word in self.UNWANTED_WORDS:
+            pos = text.find(unwanted_word)
+            if pos >= 0:
+                text = text[len(unwanted_word):]
+                break
+        # Adding the address without the URL scheme and pontential trailing "/"
+        if text.endswith('/'):
+            text = text[:-1]
+        words_set.add(text)
+
+        text_splitted = self.WORD_SPLITTING_REGEXP.split(text)
+        text_splitted2 = self.WORD_SPLITTING_WITHOUT_DASH_REGEXP.split(text)
+        print text_splitted + text_splitted2
+        for w in text_splitted + text_splitted2:
+            words_set.add(w)
+        words = [x for x in words_set if x]
+        print "words = %s" % words
+
         # XXX : offsets should be computed here and not set to 0 0 but this
         # works alright for our usage here.
         self.tokens = [PyLucene.Token(w, 0, 0) for w in words]

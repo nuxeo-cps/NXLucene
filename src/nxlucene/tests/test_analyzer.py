@@ -257,14 +257,34 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         self.assertEquals(tokens_fr, ['aegyrin'])
 
 
-    def testUrlAnalyzer(self):
-
+    def testUrlAnalyzer1(self):
         term_str = unicode("http://www.cite-musique.fr", 'iso-8859-15')
 
         a = NXUrlAnalyzer()
         reader = PyLucene.StringReader(term_str)
-        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(tokens_fr, [u'www', u'cite', u'musique', u'fr'])
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'http://www.cite-musique.fr',
+               u'www.cite-musique.fr',
+               u'cite-musique',
+               u'www', u'cite', u'musique', u'fr']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
+
+
+    def testUrlAnalyzer2(self):
+        term_str = unicode("http://www.epoch-net.org/", 'iso-8859-15')
+
+        a = NXUrlAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'http://www.epoch-net.org/',
+               u'www.epoch-net.org',
+               u'epoch-net',
+               u'www', u'epoch', u'net', u'org']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
 
 
     def test_french_complet(self):
