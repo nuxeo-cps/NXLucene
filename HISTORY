@@ -1,4 +1,24 @@
 ===========================================================
+Package: NXLucene 0.17.0
+===========================================================
+First release built by: madarche at: 2007-02-16T18:11:22
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.17.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@51108
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- Added the NXUrlAnalyzer designed to usefully index URLs.
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 0.16.2
 ===========================================================
 First release built by: madarche at: 2007-02-06T11:40:37
