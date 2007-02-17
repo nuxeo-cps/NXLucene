@@ -27,13 +27,13 @@ class IFakeXMLRPCLuceneServer(zope.interface.Interface):
     See nxlucene.interfaces.IXMLRPCLuceneServer for documentation.
     """
 
-    def indexDocument(uid, xml_query='', b64=False):
+    def indexDocument(uid, xml_query='', b64=False, sync=False):
         pass
 
-    def reindexDocument(uid, xml_query='', b64=False):
+    def reindexDocument(uid, xml_query='', b64=False, sync=False):
         pass
 
-    def unindexDocument(uid):
+    def unindexDocument(uid, sync=False):
         pass
 
     def searchQuery(xml_query=''):

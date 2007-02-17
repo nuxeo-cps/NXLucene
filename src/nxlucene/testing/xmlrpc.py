@@ -44,14 +44,14 @@ class FakeXMLRPCLuceneServer(object):
         self._core = core
         self._core._write_sync = True
 
-    def indexDocument(self, uid, xml_query='', b64=False):
-        return self._core.xmlrpc_indexDocument(uid, xml_query, b64)
+    def indexDocument(self, uid, xml_query='', b64=False, sync=False):
+        return self._core.xmlrpc_indexDocument(uid, xml_query, b64, sync)
 
-    def reindexDocument(self, uid, xml_query='', b64=False):
-        return self._core.xmlrpc_reindexDocument(uid, xml_query, b64)
+    def reindexDocument(self, uid, xml_query='', b64=False, sync=False):
+        return self._core.xmlrpc_reindexDocument(uid, xml_query, b64, sync)
 
-    def unindexDocument(self, uid):
-        return self._core.xmlrpc_unindexDocument(uid)
+    def unindexDocument(self, uid, sync=False):
+        return self._core.xmlrpc_unindexDocument(uid, sync)
 
     def searchQuery(self, xml_query=''):
         return self._core.xmlrpc_searchQuery(xml_query)
