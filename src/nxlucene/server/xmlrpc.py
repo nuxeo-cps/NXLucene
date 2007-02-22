@@ -43,14 +43,17 @@ class XMLRPCLuceneServer(xmlrpc.XMLRPC, object):
 
     __user_for__ = ILuceneServer
 
-    def __init__(self, core, write_pool_size=10):
+    def __init__(self, core, write_pool_size=10, mode='synchronous'):
 
         super(XMLRPCLuceneServer, self).__init__()
         assert (core is not None)
         self._core = core
 
         # Thread write pool
-        self._write_sync = False
+        if mode.startswith('async'):
+            self._write_sync = False
+        else:
+            self._write_sync = True
         self._write_pool = None
         self._write_pool_size = write_pool_size
 

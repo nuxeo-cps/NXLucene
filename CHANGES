@@ -3,10 +3,13 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
--
+- New ``mode`` option in the nxlucene.conf to choose between asynchronous or
+  synchronous mode for writer calls.
+  The default is synchronous, note that previous version of nxlucene
+  were asynchronous.
 Bug fixes
 ~~~~~~~~~
 -
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+-

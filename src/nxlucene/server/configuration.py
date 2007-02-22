@@ -89,3 +89,7 @@ class NXLuceneConfiguration(object):
         logfilepath = logfile.text.strip()
         if not logfilepath.startswith('/'):
             return os.environ.get('INSTANCE_HOME') + '/' + logfilepath
+
+    def getMode(self):
+        mode = self._nxlucened.find('{%s}mode' % NS)
+        return mode.text.lower().strip()

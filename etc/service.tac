@@ -96,7 +96,8 @@ class NXLuceneController(object):
 
         # Adapt to RPC and register this resource.
         self._root.putChild('RPC2', XMLRPCLuceneServer(
-            core, self._conf.getThreadsNumber()))
+            core, self._conf.getThreadsNumber(),
+            self._conf.getMode()))
 
         self.log.info(
             "XML-RPC server "
