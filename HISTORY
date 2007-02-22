@@ -1,4 +1,27 @@
 ===========================================================
+Package: NXLucene 0.18.0
+===========================================================
+First release built by: ben at: 2007-02-22T16:34:59
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/0.18.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@51230
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- New ``mode`` option in the nxlucene.conf to choose between asynchronous or
+  synchronous mode for writer calls.
+  The default is synchronous, note that previous version of nxlucene
+  were asynchronous.
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+-
+
+===========================================================
 Package: NXLucene 0.17.0
 ===========================================================
 First release built by: madarche at: 2007-02-16T18:11:22
