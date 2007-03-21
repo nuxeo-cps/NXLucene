@@ -9,11 +9,12 @@
 
 
 RETVAL=0
-PWD=`pwd`
 NAME='nxlucened'
 
-# Change me.
-NXLUCENE_HOME='..'
+# Detection of the NXLUCENE_HOME directory
+BIN_DIR=$(cd $(dirname $0) && pwd)
+NXLUCENE_HOME=$BIN_DIR'/..'
+
 
 # Chane me if needed
 #export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib/
@@ -28,7 +29,6 @@ function start() {
 }
 
 function stop() {
-
     echo "Stopping NXLucene:"
 
     ps ax |grep twistd |grep $NAME &>/dev/null
