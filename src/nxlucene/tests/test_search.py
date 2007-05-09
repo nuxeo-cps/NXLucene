@@ -1056,7 +1056,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
         res = PythonResultSet(
@@ -1071,10 +1070,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
-        # Not found here.
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -1087,7 +1084,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
     def test_french_stemmer_unstored(self):
@@ -1114,7 +1110,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
         res = PythonResultSet(
@@ -1129,10 +1124,8 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
-        # Not found here.
         res = PythonResultSet(
             ResultSet(self._server.searchQuery(
             (),
@@ -1145,7 +1138,6 @@ class LuceneSeachTestCase(unittest.TestCase):
             },
 
             ))))
-
         self.assertEqual(len(res.getResults()[0]), 1)
 
     def test_french_filter_unstored(self):
