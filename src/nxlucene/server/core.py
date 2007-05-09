@@ -1,5 +1,8 @@
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
-# Author: Julien Anguenot <ja@nuxeo.com>
+# Copyright (C) 2006-2007, Nuxeo SAS <http://www.nuxeo.com>
+# Authors:
+# Julien Anguenot <ja@nuxeo.com>
+# M.-A. Darche <madarche@nuxeo.com>
+# Benoit Delbosc <bdelbosc@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -79,7 +82,7 @@ class LuceneServer(object):
 
         self.log.info("Using backened=%s in dir=%s with creation_flag=%s" % (
             self.store_backened_id, self.store_dir, str(creation)))
-                 
+
         return getRegistry().makeInstance(self.store_backened_id,
                                           self.store_dir, creation)
 
@@ -405,7 +408,7 @@ class LuceneServer(object):
             condition = field.get('condition', 'AND')
             # won't play well with QueryParser stuff
             if condition != 'NOT':
-                pure_negative = False 
+                pure_negative = False
             usage = field.get('usage', '')
 
             analyzer = field.get('analyzer', 'standard')
@@ -483,8 +486,11 @@ class LuceneServer(object):
                         subquery = PyLucene.TermQuery(term)
 
             else: # Fallback to Query Parser
-
-                this_analyzer = nxlucene.analysis.getAnalyzerById(analyzer)
+                # Retrieving the matching analyzer.
+                # Note that we may use a slightly different analyzer for search
+                # than for indexation cf. analysis/__init__.py
+                this_analyzer = nxlucene.analysis.getAnalyzerById(analyzer,
+                                                                  mode='search')
 
                 self.log.debug("Using analyzer of type %s for field %s" %
                                (str(this_analyzer), index))
@@ -609,7 +615,7 @@ class LuceneServer(object):
 
         searcher.close()
         return results.getStream()
-        
+
     def getFieldTerms(self, field):
         """Returns a list with all the terms for a specific field
         """

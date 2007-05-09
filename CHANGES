@@ -11,4 +11,5 @@ Bug fixes
   directory.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+- Added support for using different analyzers for indexing and searching and
+  providing such ones for the French and URL analyzers.

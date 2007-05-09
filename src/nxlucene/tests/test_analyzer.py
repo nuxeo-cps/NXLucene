@@ -25,9 +25,9 @@ $Id$
 import unittest
 import PyLucene
 
-from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer
+from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer, NXFrenchSearchAnalyzer
 from nxlucene.analysis.sort import NXSortAnalyzer
-from nxlucene.analysis.url import NXUrlAnalyzer
+from nxlucene.analysis.url import NXUrlAnalyzer, NXUrlSearchAnalyzer
 
 class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
@@ -145,13 +145,15 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
         a = NXFrenchAnalyzer()
 
-        term_str = unicode("àâéèêëïôùc", 'iso-8859-15')
+        term_str = unicode("àâéèêë ï ôù", 'iso-8859-15')
 
         reader = PyLucene.StringReader(term_str)
 
         tokens = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(
-            tokens, [u'aaeeeeiouc'])
+        res = [u'aaeeee', u'aaeee', u'i', u'ou']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
 
     def test_french_case_accents_stemming(self):
         # This is to make sure that case, accent and endings all result
@@ -184,73 +186,87 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             self.assertEquals(tokens, [u'deontolog'])
 
 
-#    def test_french_separators(self):
-#
-#        a = NXFrenchAnalyzer()
-#
-#        term_str = unicode("apres-midi", 'iso-8859-15')
-#
-#        reader = PyLucene.StringReader(term_str)
-#
-#        tokens = [token.termText() for token in a.tokenStream('', reader)]
-#        self.assertEquals(
-#            tokens, [u'apres-midi'])
+    def testFrenchSeparators1(self):
+        a = NXFrenchAnalyzer()
+        term_str = unicode("grand-mère", 'iso-8859-15')
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'grand-mere', u'grand', u'mer']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
 
+    def testFrenchSeparators2(self):
+        a = NXFrenchAnalyzer()
+        term_str = unicode("midi-pyrénée", 'iso-8859-15')
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'midi-pyrenee', u'mid', u'pyren', u'pyrene']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
+
+    def testFrenchSearchAnalyzer1(self):
+        a = NXFrenchSearchAnalyzer()
+        term_str = unicode("midi-pyrénée", 'iso-8859-15')
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'midi-pyrenee']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
 
     def test_french_misc_00(self):
-
         term_str = unicode("l'enfant", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['enfant'])
 
-
     def test_french_misc_01(self):
-
         term_str = unicode("débat", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['debat'])
 
-
     def test_french_misc_02(self):
+        term_str = unicode("chantée", 'iso-8859-15')
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['chant', 'chante'])
 
+    def test_french_misc_021(self):
+        term_str = unicode("chanté", 'iso-8859-15')
+        a = NXFrenchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
+        self.assertEquals(tokens_fr, ['chant'])
+
+    def test_french_misc_03(self):
         term_str = unicode("Paris", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['par'])
 
-
-    def test_french_misc_03(self):
-
+    def test_french_misc_04(self):
         term_str = unicode("hameçon", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['hamecon'])
 
-
-    def test_french_misc_04(self):
-
+    def test_french_misc_05(self):
         term_str = unicode("½uvre", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
         self.assertEquals(tokens_fr, ['oeuvr'])
 
-
-    def test_french_misc_05(self):
-
+    def test_french_misc_06(self):
         term_str = unicode("ægyrine", 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
@@ -259,7 +275,6 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
 
     def testUrlAnalyzer1(self):
         term_str = unicode("http://www.cite-musique.fr", 'iso-8859-15')
-
         a = NXUrlAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -271,10 +286,8 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         res.sort()
         self.assertEquals(tokens, res)
 
-
     def testUrlAnalyzer2(self):
         term_str = unicode("http://www.epoch-net.org/", 'iso-8859-15')
-
         a = NXUrlAnalyzer()
         reader = PyLucene.StringReader(term_str)
         tokens = [token.termText() for token in a.tokenStream('', reader)]
@@ -285,7 +298,6 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens.sort()
         res.sort()
         self.assertEquals(tokens, res)
-
 
     def testUrlAnalyzer3(self):
         term_str = unicode("http://www.culture.gouv.fr/culture/fouilles/accueil.html",
@@ -311,22 +323,32 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
             token = stream.next()
         self.assertEquals(token, None)
 
+    def testUrlSearchAnalyzer1(self):
+        term_str = unicode("http://www.cite-musique.fr", 'iso-8859-15')
+        a = NXUrlSearchAnalyzer()
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'http://www.cite-musique.fr']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
 
     def test_french_complet(self):
         text = "Test n°67-236: Les parts sociales ne peuvent être données en "\
                "nantissement par des auteurs. ? "\
                "Je suis un enfant de l'indépendance. "\
-               "Je cherche forcement bien!"
-
+               "Je cherche forcement bien chanté !"
         term_str = unicode(text, 'iso-8859-15')
-
         a = NXFrenchAnalyzer()
         reader = PyLucene.StringReader(term_str)
-        tokens_fr = [token.termText() for token in a.tokenStream('', reader)]
-        self.assertEquals(tokens_fr,
-                          [u'test', u'67-236', u'part', u'social',
-                           u'peuvent', u'don', u'nant', u'auteur', u'suis', u'enfant',
-                           u'independ', u'cherch', u'forc', u'bien'])
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'test', u'67-236', u'part', u'social',
+               u'peuvent', u'donne', u'don', u'nant', u'auteur', u'suis', u'enfant',
+               u'independ', u'cherch', u'forc', u'bien', u'chant']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
+
 
 def test_suite():
     suite = unittest.TestSuite()

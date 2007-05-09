@@ -23,27 +23,11 @@ $Id$
 
 import string
 import re
+
 import PyLucene
 
-class NXFilter(object):
-    """Base class which provides the __iter__ method.
-    """
-
-    def __init__(self):
-        raise RuntimeError, "You must inherit from this class."
-
-    def __iter__(self):
-        """Returns an iterator over the tokens returned by this filter.
-        """
-        result = []
-        while True:
-            token = self.next()
-            if token is not None:
-                result.append(token)
-            else:
-                break
-        return iter(result)
-
+from nxlucene.analysis.base import NXAsciiFilter
+from nxlucene.analysis.base import NXWordTokenizer
 
 class NXUrlTokenizer(object):
 
@@ -53,18 +37,11 @@ class NXUrlTokenizer(object):
 
     UNWANTED_WORDS = ['http://', 'https://', 'ftp://']
 
-    def __init__(self, reader):
-        self.tokens = []
-        self.iterator = None
+    tokens = []
+    iterator = None
 
+    def __init__(self, reader):
         text = ''
-        # Good optimized code to use a reader but not implemented in PyLucene
-##         while True:
-##             chars = []
-##             res = reader.read(chars)
-##             if res == -1:
-##                 break
-##             text += ''.join(chars)
 
         # Simple code to use a reader, the only implemented in PyLucene
         while True:
@@ -121,58 +98,63 @@ class NXUrlTokenizer(object):
             return None
 
 
-class NXAsciiFilter(NXFilter):
+class NXUrlNormalizer(object):
 
-    ACCENTED_CHARS_TRANSLATIONS = string.maketrans(
-        r"""¿¡¬√ƒ≈«»… ÀÃÕŒœ—“”‘’÷ÿŸ⁄€‹›‡·‚„‰ÂÁËÈÍÎÏÌÓÔÒÚÛÙıˆ¯˘˙˚¸˝ˇ""",
-        r"""AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy""")
+    tokens = []
+    iterator = None
 
-    def __init__(self, tokenStream):
-        self.input = tokenStream
+    def __init__(self, reader):
+        text = ''
 
-    def toAscii(self, s):
-        """Change accented and special characters by ASCII characters.
+        # Simple code to use a reader, the only implemented in PyLucene
+        while True:
+            res = reader.read()
+            #print "res = [%s] of type = %s" % (res, type(res))
+            if isinstance(res, str) or isinstance(res, unicode):
+                if res == '':
+                    break
+                text += res
+            elif isinstance(res, int):
+                if res == -1:
+                    break
+                text += chr(res)
+            else:
+                break
+
+        # XXX : offsets should be computed here and not set to 0 0 but this
+        # works alright for our usage here.
+        self.tokens = [PyLucene.Token(w, 0, 0) for w in [text]]
+        self.iterator = iter(self.tokens)
+
+    def __iter__(self):
+        """Returns an iterator over the tokens returned by this filter.
         """
-        s = s.translate(self.ACCENTED_CHARS_TRANSLATIONS)
-        s = s.replace('∆', 'AE')
-        s = s.replace('Ê', 'ae')
-        s = s.replace('º', 'OE')
-        s = s.replace('Ω', 'oe')
-        s = s.replace('ﬂ', 'ss')
-        return s
+        return self.iterator
 
     def next(self):
-        token = self.input.next()
-        if token is None:
+        """Returns an iterator over the tokens returned by this filter.
+        """
+        try:
+            return self.iterator.next()
+        except StopIteration:
             return None
 
-        ttext = token.termText()
-
-        if not ttext:
-            return None
-
-        ttext = ttext.encode('ISO-8859-15', 'ignore')
-        # ensure that this is really ASCII now, if some weird char
-        # has gone through. Backend will convert to unicode anyway:
-        ttext = unicode(self.toAscii(ttext), 'ascii', 'ignore')
-
-        return PyLucene.Token(ttext, token.startOffset(),
-                              token.endOffset(), token.type())
 
 class NXUrlAnalyzer(object):
-    """NX UrlAnalyzer
-
-    Dedicated analyzer for sorting purpose. It only applies a standard
-    and the lowercase analyzers.
-
-    Use this analyzer applied on fields that you will use for sorting
-    purpose only.
+    """Dedicated analyzer for searching URLs.
     """
-
     def tokenStream(self, fieldName, reader):
+        stream = NXUrlTokenizer(reader)
+        stream = NXAsciiFilter(stream)
+        stream = PyLucene.LowerCaseFilter(stream)
+        return stream
 
-        result = NXUrlTokenizer(reader)
-        result = NXAsciiFilter(result)
-        result = PyLucene.LowerCaseFilter(result)
 
-        return result
+class NXUrlSearchAnalyzer(object):
+    """Dedicated analyzer for indexing URLs.
+    """
+    def tokenStream(self, fieldName, reader):
+        stream = NXUrlNormalizer(reader)
+        stream = NXAsciiFilter(stream)
+        stream = PyLucene.LowerCaseFilter(stream)
+        return stream

@@ -21,9 +21,18 @@
 
 $Id$
 """
+
 import string
 import os.path
+import re
+
 import PyLucene
+
+from nxlucene.analysis.base import NXFilter
+from nxlucene.analysis.base import NXAsciiFilter
+from nxlucene.analysis.base import NXAccentFilter
+from nxlucene.analysis.base import NXWordTokenizer
+from nxlucene.analysis.base import NXTextTokenizer
 
 FR_STOPWORDS_PATH = os.path.join(os.path.split(__file__)[0], 'stopwords.txt')
 
@@ -37,40 +46,51 @@ FRENCH_STOP_WORDS = [unicode(x, 'utf-8') for x in FRENCH_STOP_WORDS]
 
 FRENCH_EXCLUDED_WORDS = []
 
-XLATE_TABLE = {
-    ord(u'à'): u'a',
-    ord(u'â'): u'a',
-    ord(u'é'): u'e',
-    ord(u'è'): u'e',
-    ord(u'ê'): u'e',
-    ord(u'ë'): u'e',
-    ord(u'ï'): u'i',
-    ord(u'ô'): u'o',
-    ord(u'ù'): u'u',
-    ord(u'ç'): u'c',
-    ord(u'½'): u'oe',
-    ord(u'æ'): u'ae',
-    }
+class NXWordSplittingTokenizer(NXTextTokenizer):
+    """A Tokenizer that does word splitting on non-alpha-numerical characters
+    unless there's a number in the token, in which case the whole token is
+    interpreted as a product number and is not split.
 
-
-class NXFilter(object):
-    """Base class which provides the __iter__ method.
+    This tokenizer also keeps the orginal non-splitted words.
     """
 
-    def __init__(self):
-        raise RuntimeError, "You must inherit from this class."
+    def __init__(self, reader):
+        text_splitted = self._tokenize(reader)
+        words_set = set()
+        for w in text_splitted:
+            #print "w = [%s] of type = %s" % (w, type(w))
+            words_set.add(w)
+            pos = w.find('-')
+            if pos >= 0:
 
-    def __iter__(self):
-        """Returns an iterator over the tokens returned by this filter.
-        """
-        result = []
-        while True:
-            token = self.next()
-            if token is not None:
-                result.append(token)
-            else:
-                break
-        return iter(result)
+                word_extracted = w[:pos]
+                try:
+                    # If one of the word is a number we don't split the word
+                    # further.
+                    number = int(word_extracted)
+                    continue
+                except ValueError:
+                    pass
+                words_set.add(word_extracted)
+
+                word_extracted = w[pos + 1:]
+                try:
+                    # If one of the word is a number we don't split the word
+                    # further.
+                    number = int(word_extracted)
+                    continue
+                except ValueError:
+                    pass
+                words_set.add(word_extracted)
+
+        words = [x for x in words_set if x]
+        #print "words = %s" % words
+
+        # XXX : offsets should be computed here and not set to 0 0 but this
+        # works alright for our usage here.
+        self.tokens = [PyLucene.Token(w, 0, 0) for w in words]
+        self.iterator = iter(self.tokens)
+
 
 class NXFrenchFilter(NXFilter):
 
@@ -111,26 +131,6 @@ class NXFrenchFilter(NXFilter):
         return PyLucene.Token(ttext, token.startOffset(),
                               token.endOffset(), token.type())
 
-class NXAccentFilter(NXFilter):
-
-    def __init__(self, tokenStream):
-        self.input = tokenStream
-
-    def next(self):
-        """Move to the next token.
-        """
-        token = self.input.next()
-        if token is None:
-            return None
-
-        ttext = token.termText()
-        if not ttext:
-            return None
-
-        ttext = ttext.translate(XLATE_TABLE)
-        return PyLucene.Token(ttext, token.startOffset(),
-                              token.endOffset(), token.type())
-
 
 class NXFrenchAnalyzer(object):
     """FrenchAnalyzer
@@ -141,28 +141,114 @@ class NXFrenchAnalyzer(object):
     """
 
     def tokenStream(self, fieldName, reader):
-        result = PyLucene.StandardTokenizer(reader)
+        # Either use the StandardTokenizer or the NXWordSplittingTokenizer.
+        # The NXWordSplittingTokenizer is specialized in dealing with words like
+        # grand-mère.
+        #stream = PyLucene.StandardTokenizer(reader)
+        stream = NXWordSplittingTokenizer(reader)
 
         # Standard / Lowercase filtering
-        result = PyLucene.StandardFilter(result)
-        result = PyLucene.LowerCaseFilter(result)
+        stream = PyLucene.StandardFilter(stream)
+        stream = PyLucene.LowerCaseFilter(stream)
+
+        # Custom French filter which removes meaningless letters (l', s', etc.)
+        stream = NXFrenchFilter(stream)
+
+        # Stop filters which removes meaningless words (et, a, etc.)
+        # The stop filters should be run before the stemmer otherwise too much
+        # words (a stemmed word could look like a stop word) would be removed.
+        stream = PyLucene.StopFilter(stream, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
+        stream = PyLucene.StopFilter(stream, FRENCH_STOP_WORDS)
+
+        words = set()
+        token = stream.next()
+        while token is not None:
+            words.add(token.termText())
+            token = stream.next()
+        #print "words0 = %s" % words
+
+        # Generate 2 streams
+        stream1 = NXWordTokenizer(words)
+        stream2 = NXWordTokenizer(words)
+        words = set()
+
+        # French stemming on accented characters
+        stream1 = PyLucene.FrenchStemFilter(stream1)
+        token = stream1.next()
+        while token is not None:
+            words.add(token.termText())
+            token = stream1.next()
+        #print "words1 = %s" % words
+
+        # French stemming on non-accented characters
+        stream2 = NXAccentFilter(stream2)
+        stream2 = PyLucene.FrenchStemFilter(stream2)
+        token = stream2.next()
+        while token is not None:
+            words.add(token.termText())
+            token = stream2.next()
+        #print "words2 = %s" % words
+
+        # Finally getting rid of all accents
+        stream = NXWordTokenizer(words)
+        stream = NXAccentFilter(stream)
+
+        # Removing duplicate words
+        words = set()
+        token = stream.next()
+        while token is not None:
+            words.add(token.termText())
+            token = stream.next()
+        stream = NXWordTokenizer(words)
+
+##         # Debug
+##         words = set()
+##         token = stream.next()
+##         while token is not None:
+##             words.add(token.termText())
+##             token = stream.next()
+##         print "words = %s" % words
+
+        return stream
+
+
+class NXFrenchSearchAnalyzer(object):
+    """FrenchSearchAnalyzer
+
+    Search part analyzer.
+    """
+
+    def tokenStream(self, fieldName, reader):
+        stream = NXTextTokenizer(reader)
+
+        # Standard / Lowercase filtering
+        stream = PyLucene.StandardFilter(stream)
+        stream = PyLucene.LowerCaseFilter(stream)
 
         # Custom French filter (see below)
-        result = NXFrenchFilter(result)
+        stream = NXFrenchFilter(stream)
 
         # Stop filters.
         # The stop filters should be run before the stemmer otherwise too much
         # words (a stemmed word could look like a stop word) would be removed.
-        result = PyLucene.StopFilter(result, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
-        result = PyLucene.StopFilter(result, FRENCH_STOP_WORDS)
+        stream = PyLucene.StopFilter(stream, PyLucene.StopAnalyzer.ENGLISH_STOP_WORDS)
+        stream = PyLucene.StopFilter(stream, FRENCH_STOP_WORDS)
 
         # French stemmer
-        result = PyLucene.FrenchStemFilter(result)
+        stream = PyLucene.FrenchStemFilter(stream)
 
         # Get rid of accents.
         # The accents need to be removed in the end and especially after the
         # stemming, otherwise the stemming will of course not work.
-        result = NXAccentFilter(result)
+        stream = NXAccentFilter(stream)
 
-        return result
+##         # Debug
+##         words = set()
+##         token = stream.next()
+##         while token is not None:
+##             words.add(token.termText())
+##             token = stream.next()
+##         print "words = %s" % words
+
+        return stream
 
