@@ -28,16 +28,18 @@ import re
 
 import PyLucene
 
-from nxlucene.analysis.base import NXFilter
-from nxlucene.analysis.base import NXAsciiFilter
-from nxlucene.analysis.base import NXAccentFilter
-from nxlucene.analysis.base import NXWordTokenizer
-from nxlucene.analysis.base import NXTextTokenizer
+from base import NXFilter
+from base import NXAsciiFilter
+from base import NXAccentFilter
+from base import NXWordTokenizer
+from base import NXTextTokenizer
 
-FR_STOPWORDS_PATH = os.path.join(os.path.split(__file__)[0], 'stopwords.txt')
+FR_STOPWORDS_FILE_NAME = 'fr-stopwords.txt'
+FR_STOPWORDS_FILE_PATH = os.path.join(os.path.split(__file__)[0],
+                                      FR_STOPWORDS_FILE_NAME)
 
 FRENCH_STOP_WORDS = []
-f = open(FR_STOPWORDS_PATH, 'r')
+f = open(FR_STOPWORDS_FILE_PATH, 'r')
 for each in f.readlines():
     FRENCH_STOP_WORDS.append(string.rstrip(each))
 f.close()

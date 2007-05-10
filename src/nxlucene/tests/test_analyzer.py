@@ -25,7 +25,7 @@ $Id$
 import unittest
 import PyLucene
 
-from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer, NXFrenchSearchAnalyzer
+from nxlucene.analysis.fr import NXFrenchAnalyzer, NXFrenchSearchAnalyzer
 from nxlucene.analysis.sort import NXSortAnalyzer
 from nxlucene.analysis.url import NXUrlAnalyzer, NXUrlSearchAnalyzer
 

@@ -24,9 +24,9 @@ $Id$
 
 import PyLucene
 
-from nxlucene.analysis.fr.analyzer import NXFrenchAnalyzer, NXFrenchSearchAnalyzer
-from nxlucene.analysis.sort import NXSortAnalyzer
-from nxlucene.analysis.url import NXUrlAnalyzer, NXUrlSearchAnalyzer
+from fr import NXFrenchAnalyzer, NXFrenchSearchAnalyzer
+from sort import NXSortAnalyzer
+from url import NXUrlAnalyzer, NXUrlSearchAnalyzer
 
 # LOGIC
 #

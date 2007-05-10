@@ -1,5 +1,5 @@
 # -*- coding: ISO-8859-15 -*-
-# Copyright (C) 2006, Nuxeo SAS <http://www.nuxeo.com>
+# Copyright (C) 2006-2007 Nuxeo SAS <http://www.nuxeo.com>
 # Author: Julien Anguenot <ja@nuxeo.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@ $Id$
 """
 
 import string
+
 import PyLucene
 
 class NXAsciiFilter(object):

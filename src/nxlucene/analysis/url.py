@@ -1,4 +1,3 @@
-# -*- coding: ISO-8859-15 -*-
 # Copyright (C) 2007 Nuxeo SAS <http://www.nuxeo.com>
 # Authors:
 # M.-A. Darche <madarche@nuxeo.com>
@@ -26,8 +25,8 @@ import re
 
 import PyLucene
 
-from nxlucene.analysis.base import NXAsciiFilter
-from nxlucene.analysis.base import NXWordTokenizer
+from base import NXAsciiFilter
+from base import NXWordTokenizer
 
 class NXUrlTokenizer(object):
 
