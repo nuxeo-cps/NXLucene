@@ -1,4 +1,27 @@
 ===========================================================
+Package: NXLucene 1.0.0
+===========================================================
+First release built by: madarche at: 2007-05-10T16:54:47
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/1.0.0
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@51711
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- Added autodetection of the NXLUCENE_HOME directory so that the nxlucened
+  control script can be called from everywhere and not called from only the bin
+  directory.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- Added support for using different analyzers for indexing and searching and
+  providing such ones for the French and URL analyzers.
+
+===========================================================
 Package: NXLucene 0.18.0
 ===========================================================
 First release built by: ben at: 2007-02-22T16:34:59

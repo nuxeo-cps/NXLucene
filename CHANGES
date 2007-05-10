@@ -6,10 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
-- Added autodetection of the NXLUCENE_HOME directory so that the nxlucened
-  control script can be called from everywhere and not called from only the bin
-  directory.
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- Added support for using different analyzers for indexing and searching and
-  providing such ones for the French and URL analyzers.
+- 
