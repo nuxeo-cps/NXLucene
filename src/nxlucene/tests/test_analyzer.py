@@ -211,7 +211,7 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         term_str = unicode("Franche-Comté", 'iso-8859-15')
         reader = PyLucene.StringReader(term_str)
         tokens = [token.termText() for token in a.tokenStream('', reader)]
-        res = [u'franche-comte', u'franch', u'comte', u'comt']
+        res = [u'franche-comte', u'franch', u'comt']
         tokens.sort()
         res.sort()
         self.assertEquals(tokens, res)
