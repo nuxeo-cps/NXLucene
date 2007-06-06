@@ -206,6 +206,16 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         res.sort()
         self.assertEquals(tokens, res)
 
+    def testFrenchSeparators3(self):
+        a = NXFrenchAnalyzer()
+        term_str = unicode("Franche-Comté", 'iso-8859-15')
+        reader = PyLucene.StringReader(term_str)
+        tokens = [token.termText() for token in a.tokenStream('', reader)]
+        res = [u'franche-comte', u'franch', u'comte', u'comt']
+        tokens.sort()
+        res.sort()
+        self.assertEquals(tokens, res)
+
     def testFrenchSearchAnalyzer1(self):
         a = NXFrenchSearchAnalyzer()
         term_str = unicode("midi-pyrénée", 'iso-8859-15')
@@ -280,8 +290,9 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         res = [u'http://www.cite-musique.fr',
                u'www.cite-musique.fr',
+               u'cite-musique.fr',
                u'cite-musique',
-               u'www', u'cite', u'musique', u'fr']
+               u'cite', u'musique', u'fr']
         tokens.sort()
         res.sort()
         self.assertEquals(tokens, res)
@@ -293,8 +304,9 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         res = [u'http://www.epoch-net.org/',
                u'www.epoch-net.org',
+               u'epoch-net.org',
                u'epoch-net',
-               u'www', u'epoch', u'net', u'org']
+               u'epoch', u'net', u'org']
         tokens.sort()
         res.sort()
         self.assertEquals(tokens, res)
@@ -308,7 +320,8 @@ class NXFrenchAnalyzerTestCase(unittest.TestCase):
         tokens = [token.termText() for token in a.tokenStream('', reader)]
         res = [u'http://www.culture.gouv.fr/culture/fouilles/accueil.html',
                u'www.culture.gouv.fr/culture/fouilles/accueil.html',
-               u'www', u'culture', u'gouv', u'fr', u'fouilles', u'accueil',
+               u'culture.gouv.fr/culture/fouilles/accueil.html',
+               u'culture', u'gouv', u'fr', u'fouilles', u'accueil',
                u'html']
         tokens.sort()
         res.sort()

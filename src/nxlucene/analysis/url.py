@@ -71,6 +71,11 @@ class NXUrlTokenizer(object):
             text = text[:-1]
         words_set.add(text)
 
+        # Adding the address without a pontential leading "www"
+        if text.startswith('www'):
+            text = text[4:]
+        words_set.add(text)
+
         text_splitted = self.WORD_SPLITTING_REGEXP.split(text)
         text_splitted2 = self.WORD_SPLITTING_WITHOUT_DASH_REGEXP.split(text)
         for w in text_splitted + text_splitted2:
