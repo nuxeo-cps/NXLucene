@@ -3,11 +3,11 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
--
+- Merged pylucene2 branch. Now NXLucene uses PyLucene 2.x features.
 Bug fixes
 ~~~~~~~~~
 - Made the URL analyzer index "mysite.net" out of "www.mysite.net"
   and not index "www" anymore.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+-
