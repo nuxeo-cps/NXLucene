@@ -45,6 +45,9 @@ import nxlucene.analysis
 
 from nxlucene.server.store.registry import getRegistry
 
+# support 64-bit architectures
+MAXINT = int(2**31-1)
+
 class LuceneServer(object):
     """Lucene server.
     """
@@ -195,15 +198,21 @@ class LuceneServer(object):
 
             if field_type.lower() == 'text':
                 doc.add(
-                    PyLucene.Field.Text(field_id, field_value))
+                    PyLucene.Field(field_id, field_value,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.TOKENIZED))
 
             # :XXX: We can't use unstored index since this is amazingly not
             # supported by
             elif field_type.lower() == 'unstored':
-                doc.add(PyLucene.Field.Text(field_id, field_value))
+                doc.add(PyLucene.Field(field_id, field_value,
+                                       PyLucene.Field.Store.NO,
+                                       PyLucene.Field.Index.TOKENIZED))
 
             elif field_type.lower() == 'unindexed':
-                doc.add(PyLucene.Field.UnIndexed(field_id, field_value))
+                doc.add(PyLucene.Field(field_id, field_value,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.NO))
 
             elif field_type.lower() == 'multikeyword':
 
@@ -218,15 +227,21 @@ class LuceneServer(object):
                     values = [field_value]
 
                 for value in values:
-                    doc.add(PyLucene.Field.Keyword(field_id, value))
+                    doc.add(PyLucene.Field(field_id, value,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.UN_TOKENIZED))
 
             elif field_type.lower() == 'keyword':
                 # Force analyzer to keyword here.
                 field_analyzer = 'keyword'
-                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+                doc.add(PyLucene.Field(field_id, field_value,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.UN_TOKENIZED))
 
             elif field_type.lower() == 'date':
-                doc.add(PyLucene.Field.Keyword(field_id, field_value))
+                doc.add(PyLucene.Field(field_id, field_value,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.UN_TOKENIZED))
 
             elif field_type.lower() == 'path':
 
@@ -247,7 +262,9 @@ class LuceneServer(object):
                 for i in xrange(len(field_value)):
                     subpath = '/'.join(field_value[:i+1])
                     doc.add(
-                        PyLucene.Field.Keyword(field_id, subpath)
+                        PyLucene.Field(field_id, subpath,
+                                       PyLucene.Field.Store.YES,
+                                       PyLucene.Field.Index.UN_TOKENIZED)
                         )
 
             elif field_type.lower() == 'sort':
@@ -259,11 +276,14 @@ class LuceneServer(object):
 
                 # Let's analyze the value now before storing it.
                 a = nxlucene.analysis.sort.NXSortAnalyzer()
-                tokens = [token.termText() for token in a.tokenStream('', reader)]
+                tokens = [token.termText() for token in a.tokenStream('',
+                                                                      reader)]
                 field_value = ' '.join(tokens)
 
                 doc.add(
-                    PyLucene.Field(field_id, field_value, False, True, False)
+                    PyLucene.Field(field_id, field_value,
+                                   PyLucene.Field.Store.NO,
+                                   PyLucene.Field.Index.UN_TOKENIZED)
                     )
 
             else:
@@ -272,8 +292,11 @@ class LuceneServer(object):
 ##                    "id=%s with value %s of type %s "
 ##                    "Adding a PyLucene.Field unindexed but stored"
 ##                    % (field_id, field_value, field_type))
+
                 doc.add(
-                    PyLucene.Field(field_id, field_value, True, True, False)
+                    PyLucene.Field(field_id, field_value,
+                                   PyLucene.Field.Store.YES,
+                                   PyLucene.Field.Index.UN_TOKENIZED)
                     )
 
             analyzer.addAnalyzer(
@@ -395,7 +418,7 @@ class LuceneServer(object):
         #
 
         query = PyLucene.BooleanQuery()
-        query.setMaxClauseCount(sys.maxint)
+        query.setMaxClauseCount(MAXINT)
         date_filter = None
 
         # will be used to add MatchAllDocs to purely negative queries
@@ -500,8 +523,8 @@ class LuceneServer(object):
                     # Set default operator
                     defaultop = nxlucene.search.query.query_parser_operators_map.get(default_query_operator,
                                 nxlucene.search.query.query_parser_operators_map.get('OR'))
-                    qparser.setOperator(defaultop)
-                    subquery = qparser.parseQuery(value)
+                    qparser.setDefaultOperator(defaultop)
+                    subquery = qparser.parse(value)
                 except PyLucene.JavaError:
                     return results.getStream()
                 else:
@@ -516,7 +539,7 @@ class LuceneServer(object):
 
         if pure_negative:
             query.add(PyLucene.BooleanClause(PyLucene.MatchAllDocsQuery(),
-                                               True, False))
+                                             PyLucene.BooleanClause.Occur.SHOULD))
 
         self.log.debug('query "%s"' % query.toString())
 
@@ -587,7 +610,7 @@ class LuceneServer(object):
         while i < start+size:
             try:
                 doc = hits[i]
-            except PyLucene.JavaError:
+            except IndexError:
                 break
 
             table = {}

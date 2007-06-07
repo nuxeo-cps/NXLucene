@@ -28,8 +28,8 @@ boolean_clauses_map = {
     }
 
 query_parser_operators_map = {
-    'AND': PyLucene.QueryParser.DEFAULT_OPERATOR_AND,
-    'OR' : PyLucene.QueryParser.DEFAULT_OPERATOR_OR,
+    'AND': PyLucene.QueryParser.Operator.AND,
+    'OR' : PyLucene.QueryParser.Operator.OR,
     }
 
 SPECIAL_CHARS = ('\\', '+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']',

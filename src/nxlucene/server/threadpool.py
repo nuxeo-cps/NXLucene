@@ -27,7 +27,7 @@ import gc
 from time import sleep
 import threading
 import logging
-from nxlucene.server.PatchPythonThread import PythonThread
+from PyLucene import PythonThread
 
 logger = logging.getLogger("NXLucene.ThreadPool")
 

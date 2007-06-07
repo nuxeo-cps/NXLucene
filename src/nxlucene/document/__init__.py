@@ -20,6 +20,7 @@ $Id$
 """
 
 import PyLucene
+from PyLucene import Field
 
 UID_FIELD_ID = 'uid'
 
@@ -31,7 +32,8 @@ class Document(PyLucene.Document):
             raise ValueError("You need to provide an uid for this document")
 
         PyLucene.Document.__init__(self)
-        self.add(PyLucene.Field.Keyword(UID_FIELD_ID, unicode(uid)))
+        self.add(Field(UID_FIELD_ID, unicode(uid), Field.Store.YES,
+                       Field.Index.UN_TOKENIZED))
 
     def getUID(self):
         return self.get(UID_FIELD_ID)

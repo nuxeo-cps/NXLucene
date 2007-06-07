@@ -31,7 +31,7 @@ Requirements
 
   - Python-2.4.x_ installed.
 
-  - PyLucene_ == 1.9.1.
+  - PyLucene_ >= 2.0.0
 
   - ZopeInterface_ >= 3.0.1. This depends of the Twisted_
     requirements. Note one version is embedded with NXLucene. You
@@ -86,9 +86,9 @@ Installation
     Installation on a Linux box ::
 
       $ cd /tmp
-      $ wget http://downloads.osafoundation.org/PyLucene/src/PyLucene-src-1.9.1.tar.gz
-      $ tar -xzf PyLucene-1.9.1.tgz
-      $ cd PyLucene-1.9.1
+      $ wget http://downloads.osafoundation.org/PyLucene/src/PyLucene-src-2.0.0-8.tar.gz
+      $ tar -xzf PyLucene-src-2.0.0-8.tar.gz
+      $ cd PyLucene-src-2.0.0-8
       $ vim Makefile
 
     Here, edit the Makefile and change the configuration for your Linux system.
