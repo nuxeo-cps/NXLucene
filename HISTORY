@@ -1,4 +1,25 @@
 ===========================================================
+Package: NXLucene 1.1.0
+===========================================================
+First release built by: alienoid at: 2007-06-17T01:14:16
+SVN Tag: https://rspivak@svn.nuxeo.org/pub/NXLucene/tags/1.1.0
+Build from: https://rspivak@svn.nuxeo.org/pub/NXLucene/trunk@51862
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- Merged pylucene2 branch. Now NXLucene uses PyLucene 2.x features.
+Bug fixes
+~~~~~~~~~
+- Made the URL analyzer index "mysite.net" out of "www.mysite.net"
+  and not index "www" anymore.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+-
+
+===========================================================
 Package: NXLucene 1.0.0
 ===========================================================
 First release built by: madarche at: 2007-05-10T16:54:47
