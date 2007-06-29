@@ -8,14 +8,30 @@ NXLucene Installation
 .. sectnum::    :depth: 6
 .. contents::   :depth: 1
 
+.. _Python-2.4.x: http://www.python.org/download/releases/2.4.3/
+.. _NXLucene: http://www.cps-project.org/sections/projects/nxlucene
+.. _PyLucene: http://pylucene.osafoundation.org/
+.. _ZopeInterface: http://zope.org/Products/ZopeInterface
+.. _Twisted: http://twistedmatrix.com/projects/core/
+.. _2.2.0: http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
+.. _TwistedWeb: http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
+.. _ElementTree: http://effbot.org/zone/element-index.htm
+.. _cElementTree: http://effbot.org/zone/celementtree.htm
+
+
 Requirements
 ============
 
   - *Linux* based operating system. NXLucene_ is using PyLucene_ and
-    PyLucene_ is reported to work on windows and macos. It means
-    running NXLucene_ on those platformes should be possible
+    PyLucene_ is reported to work on Windows and Mac OS. It means
+    running NXLucene_ on those platforms should be possible
     though. This is just not supported right now. You're welcome
     contributing installers for those platforms.
+
+  - There are available binaries for PyLucene_ including for Debian (Sarge),
+    check the `Downloads` section of the PyLucene_ project.
+    If there aren't any binaries for your target platform or if you experience
+    instability issues you will have to build PyLucene_ yourself.
 
   - Building NXLucene_ requires GNU's compiler for Java, GCJ as
     PyLucene_ requires it. Use gcc-3.4.6. This is the only branch
@@ -47,15 +63,6 @@ Requirements
 See the troubleshooting section if you are having errors at startup or
 while launching tests with the PyLucene installation.
 
-.. _Python-2.4.x: http://www.python.org/download/releases/2.4.3/
-.. _NXLucene: http://www.cps-project.org/sections/nxlucene/
-.. _PyLucene: http://pylucene.osafoundation.org/
-.. _ZopeInterface: http://zope.org/Products/ZopeInterface
-.. _Twisted: http://twistedmatrix.com/projects/core/
-.. _2.2.0: http://tmrc.mit.edu/mirror/twisted/Twisted/2.2/
-.. _TwistedWeb: http://tmrc.mit.edu/mirror/twisted/Web/0.5/TwistedWeb-0.5.0.tar.bz2
-.. _ElementTree: http://effbot.org/zone/element-index.htm
-.. _cElementTree: http://effbot.org/zone/celementtree.htm
 
 Installation
 ============
@@ -152,8 +159,7 @@ Installation
 
     You can now start the NXLucene_ server ::
 
-      $ cd ./bin
-      $ ./nxlucened start
+      $ bin/nxlucened start
 
 For administrators
 ==================
@@ -289,9 +295,7 @@ running NXLucene has read rights on executable files and others like text
 files listing stop words.
 
 
-.. Emacs
 .. Local Variables:
 .. mode: rst
 .. End:
-.. Vim
 .. vim: set filetype=rst:
