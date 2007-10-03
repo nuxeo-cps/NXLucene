@@ -6,7 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- Fixed bin/nxlucened to use Bash since it contains bashism.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

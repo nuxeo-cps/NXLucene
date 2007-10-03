@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # NXLucene:  Start/stop/restart/status service
 #
