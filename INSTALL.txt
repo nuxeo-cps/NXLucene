@@ -22,11 +22,12 @@ NXLucene Installation
 Requirements
 ============
 
-  - *Linux* based operating system. NXLucene_ is using PyLucene_ and
-    PyLucene_ is reported to work on Windows and Mac OS. It means
-    running NXLucene_ on those platforms should be possible
-    though. This is just not supported right now. You're welcome
-    contributing installers for those platforms.
+  - *Linux* based operating system.
+
+    But running NXLucene_ on Windows and Mac OS should be possible. This is just
+    not supported right now. You're welcome contributing installers for those
+    platforms. This should be possible because NXLucene_ is using PyLucene_, and
+    PyLucene_ is reported to work on Windows and Mac OS.
 
   - There are available binaries for PyLucene_ including for Debian (Sarge),
     check the `Downloads` section of the PyLucene_ project.
@@ -216,12 +217,33 @@ Testing for developpers
 
 .. _checkout: http://svn.nuxeo.org/pub/NXLucene/
 
+
 Troubleshooting
 ===============
 
 If you need support check the cps-devel_ list
 
 .. _cps-devel: http//lists.nuxeo.com/cps-devel/
+
+
+PATH and LD_LIBRARY_PATH
+------------------------
+
+If you have a system with different versions of PyLucene installed (for example
+1.9.x and 2.0.x), what determines which version your NXLucene instance will run
+is the python it will run.
+
+So the solution is to set the PATH to use the wanted version of Python for which
+PyLucene is installed. For example this will make you use Python 2.4.4 with the
+version of PyLucene installed for it::
+
+  $ export PATH=/usr/local/Python-2.4.4-PyLucene-2.0.0-3/bin/:$PATH
+
+Then your version of Python might need to use a specific GCC. If this is the
+case you have to set the LD_LIBRARY_PATH environment variable::
+
+  $ export LD_LIBRARY_PATH=/usr/local/gcc-3.4.6/lib
+
 
 Python and unicode problem
 --------------------------
@@ -255,6 +277,7 @@ In this case you have 2 options :
 
      You will certainly have to change the specified nxlucened Python
      interpretor in this case.
+
 
 TwistedWeb missing dependencies
 -------------------------------
