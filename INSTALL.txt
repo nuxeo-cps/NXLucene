@@ -50,6 +50,10 @@ Requirements
 
   - PyLucene_ >= 2.0.0
 
+    But so far, only NXLucene + PyLucene 2.1.0-1 or 2.1.0-2 have been reported
+    to be stable. With other versions of PyLucene memory consumption never stops
+    to grow until there is no more memory left.
+
   - ZopeInterface_ >= 3.0.1. This depends of the Twisted_
     requirements. Note one version is embedded with NXLucene. You
     might install this one on your Python.
