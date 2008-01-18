@@ -1,4 +1,27 @@
 ===========================================================
+Package: NXLucene 1.1.2
+===========================================================
+First release built by: madarche at: 2008-01-18T17:35:10
+SVN Tag: https://svn.nuxeo.org/pub/NXLucene/tags/1.1.2
+Build from: https://svn.nuxeo.org/pub/NXLucene/trunk@52470
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- Fixed bin/nxlucened to use Bash since it contains bashism.
+- Added on paragraph in the INSTALL file about PyLucene 2.1.0-1 or 2.1.0-2 being
+  the only versions reported to be stable, including in terms of memory
+  consumption.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: NXLucene 1.1.1
 ===========================================================
 First release built by: madarche at: 2007-08-22T10:22:54
