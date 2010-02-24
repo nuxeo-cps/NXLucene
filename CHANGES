@@ -6,7 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- #2121: control chars can cause RSS XML invalidity
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 
