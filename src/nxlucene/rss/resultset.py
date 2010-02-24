@@ -29,6 +29,9 @@ from nxlucene.rss import NXLuceneElement
 from nxlucene.rss.interfaces import IResultSet
 from nxlucene.rss.resultitem import ResultItem
 
+import logging
+logger = logging.getLogger('nxlucene.rss.resultset')
+
 class ResultSet(object):
     """RSS result set
     """
@@ -39,7 +42,11 @@ class ResultSet(object):
         if not xml_stream:
             self._doc = self._getElementSkel()
         else:
-            self._doc = etree.XML(xml_stream)
+            try:
+                self._doc = etree.XML(xml_stream)
+            except SyntaxError:
+                logger.error('XML syntax error, dump follows\n%s', xml_stream)
+                self._doc = self._getElementSkel()
 
     def getStream(self, pretty=False):
         if not pretty:

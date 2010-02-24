@@ -19,11 +19,15 @@
 $Id$
 """
 
+import re
 import zope.interface
 
 from nxlucene.rss.interfaces import IResultItem
 from nxlucene.rss import RSSElement
 from nxlucene.rss import NXLuceneElement
+
+# Official control characters, except \t\n\r (resp. \x09, \x0a, \x0d)
+CONTROL_CHARS = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]')
 
 class ResultItem(object):
     """RSS Result item
@@ -50,7 +54,7 @@ class ResultItem(object):
             for sv in v:
                 ielt = NXLuceneElement('field')
                 ielt.attrib['id'] = k
-                ielt.text = sv
+                ielt.text = CONTROL_CHARS.sub('', sv)
                 ifields.append(ielt)
         elt.append(ifields)
         return elt
